@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <form method="post" th:action="@{/login}">
+                    <form th:method="POST" th:action="@{/login}">
                         <div class="card-body">
                             <div>
                                 <div class="row">
@@ -55,7 +55,7 @@
                                     <div class="col-lg-6 col-md-6 pr-1">
                                         <div class="form-group">
                                             <label>Username</label>
-                                            <input type="text" class="form-control" placeholder="username">
+                                            <input type="text" th:name="username" class="form-control" placeholder="username">
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                     <div class="col-lg-6 col-md-6 pr-1">
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input type="password" class="form-control" placeholder="********">
+                                            <input type="password" th:name="password" class="form-control" placeholder="********">
                                         </div>
                                     </div>
                                 </div>
@@ -82,6 +82,15 @@
                             </div>
                         </div>
                     </form>
+                    <div class="row">
+                        <div class="col-lg-3">
+                        </div>
+                        <div class="col-lg-6 col-md-6 pr-1">
+                            <div class="form-group">
+                                <span class="has-error" th:text="${error}"></span>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="card-footer">
                         <div class="stats">
