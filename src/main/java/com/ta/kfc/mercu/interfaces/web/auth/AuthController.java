@@ -29,10 +29,6 @@ public class AuthController {
     @GetMapping("/login")
     public String getLoginPage(HttpServletRequest request, Model model) {
 
-        if (authService.isAuthenticated()) {
-            return "redirect:/";
-        }
-
         HttpSession session = request.getSession(false);
 
         String errorMessage = null;
@@ -48,7 +44,16 @@ public class AuthController {
 
         model.addAttribute("error", errorMessage);
 
+        if (authService.isAuthenticated()) {
+            return "redirect:/";
+        }
+
         return "login";
     }
-    
+
+    @GetMapping({"/", "/index"})
+    public String welcome(Model model) {
+        return "index";
+    }
+
 }

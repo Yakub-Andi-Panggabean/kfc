@@ -42,7 +42,11 @@ public class DefaultAuthService implements AuthService {
     @Override
     public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return null != authentication && authentication.isAuthenticated()
-                && !(authentication instanceof AnonymousAuthenticationToken);
+
+        if (authentication == null || AnonymousAuthenticationToken.class.
+                isAssignableFrom(authentication.getClass())) {
+            return false;
+        }
+        return authentication.isAuthenticated();
     }
 }
