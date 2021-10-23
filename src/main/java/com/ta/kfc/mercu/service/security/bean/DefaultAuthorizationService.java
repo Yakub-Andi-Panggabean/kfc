@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class DefaultAuthorizationService implements AuthorizationService {
                 .stream()
                 .map(Role::getMenus).findAny().orElse(Collections.emptySet());
 
-        return menus.stream().collect(Collectors.toList());
+        return menus.stream().sorted(Comparator.comparing(Menu::getId)).collect(Collectors.toList());
 
     }
 }
