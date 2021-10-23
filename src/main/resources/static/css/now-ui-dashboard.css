@@ -4209,7 +4209,7 @@ Created using IcoMoon - icomoon.io
   background: #141E30;
   /* fallback for old browsers */
   background: -webkit-gradient(linear, left top, right top, from(#0c2646), color-stop(60%, #204065), to(#2a5788));
-  background: linear-gradient(to right, #0c2646 0%, #204065 60%, #2a5788 100%);
+  background: linear-gradient(to right, rgba(166, 22, 3, 0.95) 0%, rgba(166, 22, 3, 0.95) 60%, rgba(166, 22, 3, 0.95) 100%);
   position: relative;
   overflow: hidden;
 }
