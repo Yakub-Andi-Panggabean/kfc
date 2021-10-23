@@ -1,4 +1,4 @@
-package com.ta.kfc.mercu.service.auth.bean;
+package com.ta.kfc.mercu.service.security.bean;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.Role;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

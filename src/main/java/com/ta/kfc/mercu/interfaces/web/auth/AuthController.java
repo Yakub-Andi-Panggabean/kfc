@@ -1,6 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.auth;
 
-import com.ta.kfc.mercu.service.auth.AuthService;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,6 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,10 +17,10 @@ public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    private AuthService authService;
+    private AuthenticationService authService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthenticationService authService) {
         this.authService = authService;
     }
 
@@ -49,11 +47,6 @@ public class AuthController {
         }
 
         return "login";
-    }
-
-    @GetMapping({"/", "/index"})
-    public String welcome(Model model) {
-        return "index";
     }
 
 }

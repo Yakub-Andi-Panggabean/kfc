@@ -30,57 +30,15 @@
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
           <li class="active ">
-            <a href="./dashboard.html">
+            <a th:href="@{/}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
-            <a href="./icons.html">
+          <li th:each="menu : ${menus}">
+            <a th:href="@{${menu.path}}">
               <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Master Data</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset Request</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  Borrowing</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  Return</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  Purchase</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  IN</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  OUT</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons arrows-1_minimal-right"></i>
-              <p>Asset  Distribution</p>
+              <p th:text="${menu.label}"/>
             </a>
           </li>
         </ul>

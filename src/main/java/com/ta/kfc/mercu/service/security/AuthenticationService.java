@@ -1,6 +1,6 @@
-package com.ta.kfc.mercu.service.auth;
+package com.ta.kfc.mercu.service.security;
 
-public interface AuthService {
+public interface AuthenticationService {
 
     boolean auth(String username, String password);
 

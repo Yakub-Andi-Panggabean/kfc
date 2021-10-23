@@ -1,5 +1,7 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.auth;
 
+import com.ta.kfc.mercu.infrastructure.db.orm.model.security.Menu;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,6 +17,9 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
+
+    @ManyToMany()
+    private Set<Menu> menus;
 
     public Long getId() {
         return id;
@@ -38,5 +43,13 @@ public class Role {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<Menu> menus) {
+        this.menus = menus;
     }
 }

@@ -1,6 +1,7 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.auth;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity

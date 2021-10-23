@@ -1,6 +1,6 @@
-package com.ta.kfc.mercu.service.auth.bean;
+package com.ta.kfc.mercu.service.security.bean;
 
-import com.ta.kfc.mercu.service.auth.AuthService;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultAuthService implements AuthService {
+public class DefaultAuthenticationService implements AuthenticationService {
 
     private UserDetailsService userDetailsService;
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    public DefaultAuthService(UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
+    public DefaultAuthenticationService(UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
     }
