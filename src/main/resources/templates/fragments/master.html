@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="master" class="content">
+    <div class="card card-nav-tabs card-plain">
+        <div class="card-header card-header-primary">
+            <div class="nav-tabs-navigation">
+                <div class="nav-tabs-wrapper">
+                    <ul class="nav nav-tabs justify-content-center" data-tabs="tabs">
+                        <li th:each="menu,iter : ${subMenus}" class="nav-item">
+                            <a th:class="${iter.index==0}? 'nav-link active' : 'nav-link'" th:href="@{${'#master_'+menu.id}}"
+                               data-toggle="tab" th:inline="text">[[${menu.label}]]</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body ">
+            <div class="tab-content text-center">
+                <div th:each="menu,iter : ${subMenus}" th:class="${iter.index==0}?'tab-pane active' : 'tab-pane'" th:id="${'master_'+menu.id}">
+                    <p>[[${menu.path}]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
