@@ -25,7 +25,7 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(HttpServletRequest request, Model model) {
+    public String login(Model model, HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
 
