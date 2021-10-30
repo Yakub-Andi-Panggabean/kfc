@@ -21,9 +21,7 @@ public class HomeController {
     @GetMapping({"/", "/index"})
     public String getHomePage(Model model) {
 
-        //model.addAttribute("menus", authorizationService.getAuthorizedMenu());
         model.addAttribute("template", "content");
-
 
         return "index";
     }
