@@ -5,8 +5,101 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="master_supplier">
-    <h1>master supplier</h1>
+<div th:fragment="master_supplier" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputSupplierName">Supplier Name</label>
+                        <input type="text" class="form-control" id="inputSupplierName" placeholder="Supplier Name">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputSupplierEmail">Email</label>
+                        <input type="text" class="form-control" id="inputSupplierEmail" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCity">City</label>
+                        <select id="inputCity" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPostalCode">Postal Code</label>
+                        <input type="text" class="form-control" id="inputPostalCode" placeholder="Postal Code">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputPhone1">Phone 1</label>
+                        <input type="text" class="form-control" id="inputPhone1" placeholder="Phone 1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPhone2">Phone 1</label>
+                        <input type="text" class="form-control" id="inputPhone2" placeholder="Phone 2">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputContactPerson">Contact Person</label>
+                        <input type="text" class="form-control" id="inputContactPerson" placeholder="Phone 1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputFax">Fax</label>
+                        <input type="text" class="form-control" id="inputFax" placeholder="Fax">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputAddress1">Address</label>
+                        <input type="text" class="form-control" id="inputAddress1" placeholder="Address 1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="inputAddress2">Address</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Address 2">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+
+        <div class="card">
+
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Supplier Name</th>
+                        <th class="text-center">City</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Phone</th>
+                        <th class="text-center">Action</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">S-xxx</td>
+                        <td class="text-center">Supplier-xxx</td>
+                        <td class="text-center">Batavia</td>
+                        <td class="text-center">supp@ss.com</td>
+                        <td class="text-center">08121348484</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-success btn-round">Edit</button>
+                            <button class="btn btn-danger btn-round">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

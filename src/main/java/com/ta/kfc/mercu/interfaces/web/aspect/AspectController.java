@@ -72,17 +72,23 @@ public class AspectController {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
+                Optional<Menu> parent = menus.stream().filter(p ->
+                        p.getChildren().
+                                stream().anyMatch(child ->
+                                        child.getPath().equals(request.getServletPath()))).findAny();
+
+
                 ((Model) arg).addAttribute("menus", menus);
                 ((Model) arg).addAttribute("current_path", request.getServletPath());
+                ((Model) arg).addAttribute("current_label", parent.map(Menu::getLabel)
+                        .orElse(currentMenu.map(Menu::getLabel).orElse("")));
+
 
                 if (currentSubMenus.isEmpty()) {
                     ((Model) arg).addAttribute("subMenus", siblings);
-                }else{
+                } else {
                     ((Model) arg).addAttribute("subMenus", currentSubMenus);
-
                 }
-
-
 
                 if (principal instanceof UserDetails) {
                     ((Model) arg).addAttribute("username", (String) ((UserDetails) principal).getUsername());
