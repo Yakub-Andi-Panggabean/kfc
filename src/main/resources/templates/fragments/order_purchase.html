@@ -5,7 +5,223 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="order_purchase" class="content">
+<div th:fragment="order_purchase" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <form>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="input-group no-border">
+                            <input type="text" id="inputRequestOrderID" value="" class="form-control"
+                                   placeholder="Search RO..." data-toggle="modal" data-target="#exampleModal">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="picDepartment">User ID</label>
+                        <input type="text" class="form-control" id="picDepartment" value="U-xxx-xxx" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputUserRole">User Name</label>
+                        <input type="text" class="form-control" id="inputUserRole" value="Ms. Nahira" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputRequestOrderCategory">User Role</label>
+                        <input type="text" class="form-control" id="inputRequestOrderCategory"
+                               value="Asset Admin" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputSupplier">Supplier</label>
+                        <select id="inputSupplier" class="form-control">
+                            <option selected>Supplier 1</option>
+                            <option>Supplier 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <br/>
+                <div class="card">
+
+                    <div class="table-responsive">
+                        <table class="table table-shopping">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Request ID</th>
+                                <th class="text-center">Request Category</th>
+                                <th class="text-center">Submitted Date</th>
+                                <th class="text-center">Requested By</th>
+                                <th class="text-center">Approved By</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">RO-2021-1234</td>
+                                <td class="text-center">RAM-Request-NewGate-18GB</td>
+                                <td class="text-center">2021-11-13 10:00:00</td>
+                                <td class="text-center">IT support 1</td>
+                                <td class="text-center">Asset Manager 1</td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-center">RO-2021-123</td>
+                                <td class="text-center">Laptop-Request-AlienWare-2021</td>
+                                <td class="text-center">2021-09-13 10:00:00</td>
+                                <td class="text-center">IT support 1</td>
+                                <td class="text-center">Asset Manager 1</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">RO-2020-1234</td>
+                                <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
+                                <td class="text-center">2020-10-13 10:00:00</td>
+                                <td class="text-center">IT support 1</td>
+                                <td class="text-center">Asset Manager 1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+
+    <!--    po table-->
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="table-responsive">
+            <table class="table table-shopping">
+                <thead>
+                <tr>
+                    <th class="text-center">Purchase ID</th>
+                    <th class="text-center">Submitted Date</th>
+                    <th class="text-center">Requested By</th>
+                    <th class="text-center">Supplier</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Action</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center">PO-2021-1234</td>
+                    <td class="text-center">2021-11-13 10:00:00</td>
+                    <td class="text-center">IT support 1</td>
+                    <td class="text-center">Supplier 1</td>
+                    <th class="text-center">OPEN</th>
+                    <td class="td-actions text-center">
+                        <button class="btn btn-success btn-round">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">PO-2021-123</td>
+                    <td class="text-center">2021-09-13 10:00:00</td>
+                    <td class="text-center">IT support 1</td>
+                    <td class="text-center">Supplier 2</td>
+                    <th class="text-center">DONE</th>
+                    <td class="td-actions text-center">
+                        <button class="btn btn-success btn-round">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">PO-2020-1234</td>
+                    <td class="text-center">2020-10-13 10:00:00</td>
+                    <td class="text-center">IT support 1</td>
+                    <td class="text-center">Supplier 3</td>
+                    <th class="text-center">OPEN</th>
+                    <td class="td-actions text-center">
+                        <button class="btn btn-success btn-round">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-bs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Request Order List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Request ID</th>
+                                    <th class="text-center">Request Category</th>
+                                    <th class="text-center">Submitted Date</th>
+                                    <th class="text-center">Requested By</th>
+                                    <th class="text-center">Approved By</th>
+                                    <th class="text-center">Action</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">RO-2021-1234</td>
+                                    <td class="text-center">RAM-Request-NewGate-18GB</td>
+                                    <td class="text-center">2021-11-13 10:00:00</td>
+                                    <td class="text-center">IT support 1</td>
+                                    <td class="text-center">Asset Manager 1</td>
+                                    <td class="td-actions text-center">
+                                        <button class="btn btn-info btn-round">Add</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">RO-2021-123</td>
+                                    <td class="text-center">Laptop-Request-AlienWare-2021</td>
+                                    <td class="text-center">2021-09-13 10:00:00</td>
+                                    <td class="text-center">IT support 1</td>
+                                    <td class="text-center">Asset Manager 1</td>
+                                    <td class="td-actions text-center">
+                                        <button class="btn btn-info btn-round">Add</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">RO-2020-1234</td>
+                                    <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
+                                    <td class="text-center">2020-10-13 10:00:00</td>
+                                    <td class="text-center">IT support 1</td>
+                                    <td class="text-center">Asset Manager 1</td>
+                                    <td class="td-actions text-center">
+                                        <button class="btn btn-info btn-round">Add</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

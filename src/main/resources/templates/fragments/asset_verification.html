@@ -5,7 +5,140 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="asset_verification" class="content">
+<div th:fragment="asset_verification" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputRecipient">Recipient</label>
+                        <input type="text" class="form-control" id="inputRecipient" value="MR. Kurt Cobain" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputDestination">Destination</label>
+                        <input type="text" class="form-control" id="inputDestination" value="Outlet Semanggi"
+                               disabled>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br/>
+        <br/>
+        <div class="card">
+
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center"></th>
+                        <th class="text-center">Request Order</th>
+                        <th class="text-center">Sender</th>
+                        <th class="text-center">Recipient</th>
+                        <th class="text-center">Destination</th>
+                        <th class="text-center">Submitted Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-info btn-round" data-toggle="modal"
+                                    data-target="#requestOrderDetail">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </button>
+                        </td>
+                        <td class="text-center">RO-xxx-xxxx</td>
+                        <td class="text-center">MR. Adam Lambert</td>
+                        <td class="text-center">MR. Kurt Cobain</td>
+                        <td class="text-center">Outlet Semanggi</td>
+                        <td class="text-center">2021-12-12 14:00:00</td>
+                        <td class="td-actions text-center">RECEIVED</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-danger btn-round">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-info btn-round" data-toggle="modal"
+                                    data-target="#requestOrderDetail">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </button>
+                        </td>
+                        <td class="text-center">RO-xxx-xxxx</td>
+                        <td class="text-center">MR. Benjamin Franklin</td>
+                        <td class="text-center">MR. Kurt Cobain</td>
+                        <td class="text-center">Outlet Semanggi</td>
+                        <td class="text-center">2021-12-12 14:00:00</td>
+                        <td class="td-actions text-center">SEND</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-success btn-round">Verify</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="requestOrderDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Request Order Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-left">Request ID</th>
+                                    <td class="text-left">RO-xxx-xxx</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Requested By</th>
+                                    <td class="text-left">MR. Kurt Cobain</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Location</th>
+                                    <td class="text-left">Outlet Semanggi</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Request Category</th>
+                                    <td class="text-left">RAM-Request-NewGate-18GB</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Approved By</th>
+                                    <td class="text-left">Mr. John</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Submitted Date</th>
+                                    <td class="text-left">2021-09-13 10:00:00</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Note</th>
+                                    <td class="text-left">Ram buat upgrade laptop engineer baru</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

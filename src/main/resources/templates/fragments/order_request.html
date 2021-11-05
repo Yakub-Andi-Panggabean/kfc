@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="order_request" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputOrderID">Created By</label>
+                        <input type="text" class="form-control" id="inputOrderID" value="RO-2021-123" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="picDepartment">User Department</label>
+                        <input type="text" class="form-control" id="picDepartment" value="Outlet Jakarta 1" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputUserRole">User Role</label>
+                        <input type="text" class="form-control" id="inputUserRole" value="IT Support" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputRequestCategory">Request Category</label>
+                        <select id="inputRequestCategory" class="form-control">
+                            <option selected>RAM-Request-NewGate-18GB</option>
+                            <option>Laptop-Request-Asus-ROG-zxv</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="requestOrderDesc">Description</label>
+                        <input type="text" class="form-control" id="requestOrderDesc" placeholder="Request Description">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="card">
+
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Request ID</th>
+                        <th class="text-center">Request Category</th>
+                        <th class="text-center">Submitted Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">RO-2021-1234</td>
+                        <td class="text-center">RAM-Request-NewGate-18GB</td>
+                        <td class="text-center">2021-11-13 10:00:00</td>
+                        <td class="text-center">WAITING_APPROVAL</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-danger btn-round">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">RO-2021-123</td>
+                        <td class="text-center">Laptop-Request-AlienWare-2021</td>
+                        <td class="text-center">2021-09-13 10:00:00</td>
+                        <td class="text-center">PURCHASING</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-dark btn-round">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">RO-2020-1234</td>
+                        <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
+                        <td class="text-center">2020-10-13 10:00:00</td>
+                        <td class="text-center">REJECTED</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-dark btn-round">Cancel</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

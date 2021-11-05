@@ -15,9 +15,7 @@ public class MasterController {
     public static final String MASTER_MODEL_PATH = MASTER_PATH + "/model";
     public static final String MASTER_SUPPLIER_PATH = MASTER_PATH + "/supplier";
     public static final String MASTER_USER_PATH = MASTER_PATH + "/user";
-
-
-
+    public static final String MASTER_OUTLET_PATH = MASTER_PATH + "/outlet";
 
 
     private AuthorizationService authorizationService;
@@ -79,6 +77,15 @@ public class MasterController {
 
         model.addAttribute("template", "master");
         model.addAttribute("master_template", "master_user");
+
+        return "index";
+    }
+
+    @GetMapping({MASTER_OUTLET_PATH})
+    public String getMasterOutletPage(Model model) {
+
+        model.addAttribute("template", "master");
+        model.addAttribute("master_template", "master_outlet");
 
         return "index";
     }
