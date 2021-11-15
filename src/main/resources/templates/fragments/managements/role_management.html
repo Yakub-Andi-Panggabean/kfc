@@ -5,8 +5,224 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="role_management">
-  <h1>role management</h1>
+<div th:fragment="role_management" class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-title"><h4>&nbsp;&nbsp;Role Management</h4></div>
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmployeeID">Role Name</label>
+                            <input type="text" class="form-control" id="inputEmployeeID" placeholder="Role Name">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Menu Name</th>
+                                    <th>Path</th>
+                                    <th class="text-right"></th>
+                                    <th class="text-right"></th>
+                                    <th class="text-right"></th>
+                                    <th class="text-right"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td>User Management</td>
+                                    <td>/user</td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> view
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> create
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> update
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> delete
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">2</td>
+                                    <td>Master Data</td>
+                                    <td>/master</td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> view
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> create
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> update
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> delete
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">3</td>
+                                    <td>Asset Adjustment</td>
+                                    <td>/asset/adjustment</td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> view
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> create
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> update
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                   value="option1"> delete
+                                            <span class="form-check-sign check"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Role</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-title col-md-4">
+                <br>
+                <div class="input-group no-border">
+                    <input type="text" id="inputRequestOrderID" value="" class="form-control"
+                           placeholder="Search By Role Name...">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Role ID</th>
+                            <th>Role Name</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>R-1</td>
+                            <td>Admin Asset</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>R-2</td>
+                            <td>IT Support</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>R-3</td>
+                            <td>Asset Manager</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

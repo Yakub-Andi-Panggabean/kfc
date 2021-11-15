@@ -12,6 +12,8 @@ public class ManagementController {
     public static final String MANAGEMENT_PATH = "/management";
     public static final String MANAGEMENT_USER_PATH = MANAGEMENT_PATH + "/user";
     public static final String MANAGEMENT_ROLE_PATH = MANAGEMENT_PATH + "/role";
+    public static final String MANAGEMENT_SUPPORT_PATH = MANAGEMENT_PATH + "/support";
+    public static final String MANAGEMENT_MENU_PATH = MANAGEMENT_PATH + "/menu";
 
 
     private AuthorizationService authorizationService;
@@ -44,6 +46,22 @@ public class ManagementController {
 
         model.addAttribute("template", "management");
         model.addAttribute("management_template", "role_management");
+        return "index";
+    }
+
+    @GetMapping({MANAGEMENT_SUPPORT_PATH})
+    public String getManagementSupportPage(Model model) {
+
+        model.addAttribute("template", "management");
+        model.addAttribute("management_template", "support_management");
+        return "index";
+    }
+
+    @GetMapping({MANAGEMENT_MENU_PATH})
+    public String getManagementMenuPage(Model model) {
+
+        model.addAttribute("template", "management");
+        model.addAttribute("management_template", "menu_management");
         return "index";
     }
 

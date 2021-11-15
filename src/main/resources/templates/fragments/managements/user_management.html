@@ -5,8 +5,137 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="user_management">
-    <h1>user management</h1>
+<div th:fragment="user_management" class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-title"><h4>&nbsp;&nbsp;User Registration</h4></div>
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmployeeID">Employee ID</label>
+                            <input type="text" class="form-control" id="inputEmployeeID" placeholder="Employee ID">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputFirstName">Employee Name</label>
+                            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputLastName"></label>
+                            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmployeeEmail">Employee ID</label>
+                            <input type="text" class="form-control" id="inputEmployeeEmail"
+                                   placeholder="Employee Email">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputUserRole">Role</label>
+                            <select id="inputUserRole" class="form-control">
+                                <option selected>Choose...</option>
+                                <option>IT Support</option>
+                                <option>Asset Admin</option>
+                                <option>Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-title col-md-4">
+                <br>
+                <div class="input-group no-border">
+                    <input type="text" id="inputRequestOrderID" value="" class="form-control"
+                           placeholder="Search By ID...">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>E-2021-112301</td>
+                            <td>Andrew Mike</td>
+                            <td>IT support</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>E-2021-112302</td>
+                            <td>John Doe</td>
+                            <td>Admin Asset</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>E-2021-112303</td>
+                            <td>Alex Mike</td>
+                            <td>Admin Manager</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="now-ui-icons users_single-02"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-success">
+                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

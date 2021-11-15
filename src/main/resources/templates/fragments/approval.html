@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="approval" class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-title"><h4>&nbsp;&nbsp;Approval</h4></div>
+            <div class="card-body">
+                <br>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Purchase Order</h4>
+                                        <p class="card-text">Need to buy MAC book pro max 2021.</p>
+                                        <a href="#" class="btn btn-primary" data-toggle="modal"
+                                           data-target="#requestDetail">View Detail</a>
+                                        <a href="#" class="btn btn-success">Approve</a>
+                                        <a href="#" class="btn btn-danger">Reject</a></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Purchase Order</h4>
+                                        <p class="card-text">Need to buy SAP license.</p>
+                                        <a href="#" class="btn btn-primary">View Detail</a>
+                                        <a href="#" class="btn btn-success">Approve</a>
+                                        <a href="#" class="btn btn-danger">Reject</a></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Purchase Order</h4>
+                                        <p class="card-text">Purchase samsung odyssey .</p>
+                                        <a href="#" class="btn btn-primary">View Detail</a>
+                                        <a href="#" class="btn btn-success">Approve</a>
+                                        <a href="#" class="btn btn-danger">Reject</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Request Order</h4>
+                                        <p class="card-text">Request monitor samsung odyssey 34 inch.</p>
+                                        <a href="#" class="btn btn-primary">View Detail</a>
+                                        <a href="#" class="btn btn-success">Approve</a>
+                                        <a href="#" class="btn btn-danger">Reject</a></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Transfer Item</h4>
+                                        <p class="card-text">Transfer From Outlet A to Outlet B.</p>
+                                        <a href="#" class="btn btn-primary">View Detail</a>
+                                        <a href="#" class="btn btn-success">Approve</a>
+                                        <a href="#" class="btn btn-danger">Reject</a></div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="requestDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Request Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-left">Request ID</th>
+                                    <td class="text-left">RO-xxx-xxx</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Request Type</th>
+                                    <td class="text-left">Purchase Order</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Requested By</th>
+                                    <td class="text-left">MR. Kurt Cobain</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Location</th>
+                                    <td class="text-left">Outlet Semanggi</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Request Category</th>
+                                    <td class="text-left">MAC-book-pro-max-2021</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Submitted Date</th>
+                                    <td class="text-left">2021-09-13 10:00:00</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Note</th>
+                                    <td class="text-left">Laptop buat engineer baru</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
