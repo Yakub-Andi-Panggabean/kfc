@@ -27,7 +27,7 @@ CREATE TABLE `menu` (
   `label` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'Master Data','/master'),(2,'Verify Asset','/asset/verification'),(3,'Asset Adjustment','/asset/adjustment'),(4,'Purchase Order','/order/purchase'),(5,'Item Receipt','/item/receipt'),(6,'Send Item','/item/shipment'),(7,'Transfer Item','/item/transfer'),(8,'Print Tagging','/tagging/print'),(9,'Master Product','/master/product'),(10,'Master Supplier','/master/supplier'),(11,'Master Brand','/master/brand'),(12,'Master Model','/master/model'),(13,'User Management','/management/user'),(14,'Management','/management'),(15,'Role Management','/management/role');
+INSERT INTO `menu` VALUES (1,'Master Data','/master'),(2,'Verify Asset','/asset/verification'),(3,'Asset Adjustment','/asset/adjustment'),(4,'Purchase Order','/order/purchase'),(5,'Item Receipt','/item/receipt'),(6,'Send Item','/item/shipment'),(7,'Transfer Item','/item/transfer'),(8,'Print Tagging','/tagging/print'),(9,'Master Product','/master/product'),(10,'Master Supplier','/master/supplier'),(11,'Master Brand','/master/brand'),(12,'Master Model','/master/model'),(13,'User Management','/management/user'),(14,'Management','/management'),(15,'Role Management','/management/role'),(16,'Request Order','/order/request'),(17,'Master Outlet','/master/outlet'),(18,'Approval','/approval'),(19,'Support Management','/management/support'),(20,'Menu Management','/management/menu');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `menu_children` (
 
 LOCK TABLES `menu_children` WRITE;
 /*!40000 ALTER TABLE `menu_children` DISABLE KEYS */;
-INSERT INTO `menu_children` VALUES (1,9),(1,10),(1,11),(1,12),(14,13),(14,15);
+INSERT INTO `menu_children` VALUES (1,9),(1,10),(1,11),(1,12),(14,13),(14,15),(1,17),(14,19),(14,20);
 /*!40000 ALTER TABLE `menu_children` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +114,7 @@ CREATE TABLE `role_menus` (
 
 LOCK TABLES `role_menus` WRITE;
 /*!40000 ALTER TABLE `role_menus` DISABLE KEYS */;
-INSERT INTO `role_menus` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,14);
+INSERT INTO `role_menus` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,14),(1,16),(1,18);
 /*!40000 ALTER TABLE `role_menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,4 +179,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-01  0:49:20
+-- Dump completed on 2021-11-17 16:10:56

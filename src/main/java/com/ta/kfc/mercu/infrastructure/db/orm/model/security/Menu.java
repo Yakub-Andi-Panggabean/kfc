@@ -14,6 +14,7 @@ public class Menu {
     private Long id;
     private String label;
     private String path;
+    private boolean enable;
 
     @ManyToMany(mappedBy = "menus")
     private Set<Role> roles;
@@ -59,5 +60,13 @@ public class Menu {
 
     public void setChildren(List<Menu> children) {
         this.children = children;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }
