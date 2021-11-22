@@ -1,28 +1,26 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
 import com.ta.kfc.mercu.service.security.AuthorizationService;
+import com.ta.kfc.mercu.service.security.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Controller
-public class MasterController {
+public class MasterPageController extends MasterModule {
 
-    public static final String MASTER_PATH = "/master";
-    public static final String MASTER_BRAND_PATH = MASTER_PATH + "/brand";
-    public static final String MASTER_PRODUCT_PATH = MASTER_PATH + "/product";
-    public static final String MASTER_MODEL_PATH = MASTER_PATH + "/model";
-    public static final String MASTER_SUPPLIER_PATH = MASTER_PATH + "/supplier";
-    public static final String MASTER_USER_PATH = MASTER_PATH + "/user";
-    public static final String MASTER_OUTLET_PATH = MASTER_PATH + "/outlet";
-
-
-    private AuthorizationService authorizationService;
+    private final AuthorizationService authorizationService;
+    private final MasterService masterService;
 
     @Autowired
-    public MasterController(AuthorizationService authorizationService) {
+    public MasterPageController(AuthorizationService authorizationService,
+                                MasterService masterService) {
         this.authorizationService = authorizationService;
+        this.masterService = masterService;
     }
 
     @GetMapping({MASTER_PATH})
@@ -54,10 +52,23 @@ public class MasterController {
 
 
     @GetMapping({MASTER_MODEL_PATH})
-    public String getMasterModelPage(Model model) {
+    public String getMasterModelPage(
+            @RequestParam(value = "isUpdate", required = false) boolean isUpdate,
+            @RequestParam(value = "id", required = false) Long id,
+            Model model) {
 
         model.addAttribute("template", "master");
         model.addAttribute("master_template", "master_model");
+        model.addAttribute("models", masterService.getAllModel());
+        if (isUpdate) {
+            Optional<com.ta.kfc.mercu.infrastructure.db.orm.model.master.Model> modelEntity = masterService.getModel(id);
+            if (modelEntity.isPresent()) {
+                model.addAttribute("isUpdate", true);
+                model.addAttribute("model", modelEntity.get());
+            }
+        } else {
+            model.addAttribute("model", new com.ta.kfc.mercu.infrastructure.db.orm.model.master.Model());
+        }
 
         return "index";
     }
@@ -86,6 +97,15 @@ public class MasterController {
 
         model.addAttribute("template", "master");
         model.addAttribute("master_template", "master_outlet");
+
+        return "index";
+    }
+
+    @GetMapping({MASTER_DEPARTMENT_PATH})
+    public String getMasterDepartmentPage(Model model) {
+
+        model.addAttribute("template", "master");
+        model.addAttribute("master_template", "master_department");
 
         return "index";
     }

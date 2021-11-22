@@ -16,6 +16,7 @@ public class Model {
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    private boolean enable;
 
     public Long getId() {
         return id;
@@ -47,5 +48,13 @@ public class Model {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

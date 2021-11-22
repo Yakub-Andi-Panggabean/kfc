@@ -13,6 +13,7 @@ public class UserDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String code;
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -107,5 +108,13 @@ public class UserDetail {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

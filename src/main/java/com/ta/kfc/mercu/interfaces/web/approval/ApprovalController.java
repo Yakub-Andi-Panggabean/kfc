@@ -1,4 +1,4 @@
-package com.ta.kfc.mercu.interfaces.web.approval;
+package com.ta.kfc.mercu.interfaces.web.page.approval;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

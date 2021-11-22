@@ -1,4 +1,4 @@
-package com.ta.kfc.mercu.interfaces.web.order;
+package com.ta.kfc.mercu.interfaces.web.page.order;
 
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;

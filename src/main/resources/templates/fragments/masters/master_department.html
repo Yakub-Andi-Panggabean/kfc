@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="master_department" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputModel">Department</label>
+                        <input type="text" class="form-control" id="inputModel" placeholder="Department Name">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Department</th>
+                        <th class="text-center">Action</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">M-1</td>
+                        <td class="text-center">Department x</td>
+                        <td class="td-actions text-center">
+                            <button class="btn btn-success btn-round">Edit</button>
+                            <button class="btn btn-danger btn-round">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
