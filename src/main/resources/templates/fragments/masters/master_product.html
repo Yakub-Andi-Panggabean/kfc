@@ -8,99 +8,123 @@
 <div th:fragment="master_product" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-body">
-            <form>
+            <form th:action="@{/master/product}" th:object="${product}" method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{enable}"/>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputBrand">Brand</label>
-                        <select id="inputBrand" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="inputBrand" th:field="*{brand}" class="form-control">
+                            <option th:each="brand : ${brands}" th:value="${brand.id}"
+                                    th:inline="text">[[${brand.name}]]
+                            </option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputModel">Model</label>
-                        <select id="inputModel" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="inputModel" th:field="*{model}" class="form-control">
+                            <option th:each="model : ${models}" th:value="${model.id}"
+                                    th:inline="text">[[${model.name}]]
+                            </option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputCategory">Product Type</label>
-                        <select id="inputCategory" class="form-control">
-                            <option selected>Hardware</option>
-                            <option>Software</option>
+                        <select id="inputCategory" th:field="*{productType}" class="form-control">
+                            <option th:value="HARDWARE">Hardware</option>
+                            <option th:value="SOFTWARE">Software</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="inputProductName">Address</label>
-                        <input type="text" class="form-control" id="inputProductName" placeholder="Product Name">
+                        <label for="inputProductName">Product Name</label>
+                        <input type="text" class="form-control" th:field="*{name}" id="inputProductName"
+                               placeholder="Product Name">
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Product Status</label>
-                        <br/>
-                        <div class="form-check form-check-radio form-check-inline">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="productState" id="productStateActive"
-                                       value="option1">
-                                <span class="form-check-sign"></span>
-                                Active
-                            </label>
-                        </div>
-                        <div class="form-check form-check-radio form-check-inline">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="productState"
-                                       id="productStateInactive"
-                                       value="option2" checked>
-                                <span class="form-check-sign"></span>
-                                Inactive
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button th:if="${isUpdate}" type="submit" class="btn btn-info">Update</button>
+                <button th:unless="${isUpdate}" type="submit" class="btn btn-primary">Add</button>
             </form>
         </div>
 
         <div class="card">
 
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Product Code</th>
-                        <th class="text-center">Brand</th>
-                        <th class="text-center">Model</th>
-                        <th class="text-center">Product Name</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="text-center">xxx-xxx-xxx</td>
-                        <td class="text-center">Brand x</td>
-                        <td class="text-center">Model x</td>
-                        <td class="text-center">Product Name x</td>
-                        <td class="text-center">Active</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">Edit</button>
-                            <button class="btn btn-danger btn-round">Delete</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-header">
+                <br>
+                <div class="form-group col-md-4">
+                    <div class="input-group no-border">
+                        <input type="text" id="searchProduct" value="" class="form-control"
+                               placeholder="Search..." onkeydown="searchProduct(event)">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Product ID</th>
+                            <th class="text-center">Brand</th>
+                            <th class="text-center">Model</th>
+                            <th class="text-center">Product Name</th>
+                            <th class="text-center">Action</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${products.empty}">
+                            <td colspan="6" class="text-center"> No Products Available</td>
+                        </tr>
+                        <tr th:each="product : ${products}">
+                            <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                            <td class="td-actions text-center">
+                                <a class="btn btn-success btn-round"
+                                   th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+product.id}">Edit</a>
+                                <a type="submit" th:if="${product.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+product.id}"
+                                   class="btn btn-danger btn-round">
+                                    Disable
+                                </a>
+                                <a type="submit" th:unless="${product.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+product.id}"
+                                   class="btn btn-info btn-round">
+                                    Enable
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function searchProduct(event) {
+            var value = document.getElementById("searchProduct").value;
+            if (event.keyCode == 13) {
+                let url = new URL(window.location.href);
+                url.searchParams.delete('search');
+                url.searchParams.append("search", value)
+                window.location.replace(url.href)
+            }
+        }
+    </script>
+
 </div>
 </body>
 </html>

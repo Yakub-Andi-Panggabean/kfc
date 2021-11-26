@@ -27,12 +27,12 @@ public class Product {
 
     @ManyToMany
     private List<Supplier> suppliers;
-    private boolean status;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    private boolean enable;
 
     public Long getId() {
         return id;
@@ -66,14 +66,6 @@ public class Product {
         this.productType = productType;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public String getName() {
         return name;
     }
@@ -104,5 +96,13 @@ public class Product {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }
