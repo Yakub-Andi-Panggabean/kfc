@@ -1,5 +1,7 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.auth;
 
+import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +17,10 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserDetail userDetail;
 
 
     public Long getId() {
@@ -47,5 +53,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 }

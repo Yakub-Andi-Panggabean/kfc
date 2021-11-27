@@ -135,4 +135,5 @@ public class RequestOrder {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
+
 }

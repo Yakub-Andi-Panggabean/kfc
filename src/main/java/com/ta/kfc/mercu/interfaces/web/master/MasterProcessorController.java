@@ -1,7 +1,9 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.service.master.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -132,6 +134,79 @@ public class MasterProcessorController extends MasterModule {
             attr.addAttribute("error", exception.getMessage());
         }
         return String.format("redirect:%s?", MASTER_PRODUCT_PATH);
+    }
+
+    @PostMapping({MASTER_UNIT_PATH})
+    public String addOrUpdateUnit(Model modelUi,
+                                  Unit unit,
+                                  RedirectAttributes attr) {
+        try {
+            unit.setUpdatedDate(new Date());
+            if (unit.getId() != null) {
+                masterService.updateUnit(unit);
+            } else {
+                unit.setCreatedDate(new Date());
+                masterService.saveUnit(unit);
+            }
+        } catch (Exception exception) {
+            attr.addAttribute("error", exception.getMessage());
+        }
+        return String.format("redirect:%s?", MASTER_UNIT_PATH);
+    }
+
+    @GetMapping({MASTER_UNIT_STATUS_PATH})
+    public String updateUnitStatus(Model modelUi,
+                                   @PathVariable("id") Long id,
+                                   RedirectAttributes attr) {
+        try {
+            Optional<Unit> unit = masterService.getUnit(id);
+            if (!unit.isPresent()) {
+                throw new RuntimeException("unit not found");
+            }
+            unit.get().setUpdatedDate(new Date());
+            unit.get().setEnable(!unit.get().isEnable());
+            masterService.updateUnit(unit.get());
+        } catch (Exception exception) {
+            attr.addAttribute("error", exception.getMessage());
+        }
+        return String.format("redirect:%s?", MASTER_UNIT_PATH);
+    }
+
+    @PostMapping({MASTER_DEPARTMENT_PATH})
+    public String addOrUpdateDepartment(Model modelUi,
+                                        Department department,
+                                        RedirectAttributes attr) {
+        try {
+            department.setUpdatedDate(new Date());
+            if (department.getId() != null) {
+                masterService.updateDepartment(department);
+            } else {
+                department.setCreatedDate(new Date());
+                masterService.saveDepartment(department);
+            }
+        } catch (Exception exception) {
+            attr.addAttribute("error", exception.getMessage());
+        }
+        return String.format("redirect:%s?", MASTER_DEPARTMENT_PATH);
+    }
+
+
+    @GetMapping({MASTER_DEPARTMENT_STATUS_PATH})
+    public String updateDepartmentStatus(Model modelUi,
+                                         @PathVariable("id") Long id,
+                                         RedirectAttributes attr) {
+        try {
+            Optional<Department> department = masterService.getDepartment(id);
+            if (!department.isPresent()) {
+                throw new RuntimeException("unit not found");
+            }
+            department.get().setUpdatedDate(new Date());
+            department.get().setEnable(!department.get().isEnable());
+            masterService.updateDepartment(department.get());
+        } catch (Exception exception) {
+            attr.addAttribute("error", exception.getMessage());
+        }
+        return String.format("redirect:%s?", MASTER_DEPARTMENT_PATH);
     }
 
 }

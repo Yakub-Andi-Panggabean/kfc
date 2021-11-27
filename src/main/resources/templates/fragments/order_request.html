@@ -8,30 +8,24 @@
 <div th:fragment="order_request" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-body">
-            <form>
+            <form th:action="@{/order/request}" th:object="${request_order}" method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputOrderID">Created By</label>
-                        <input type="text" class="form-control" id="inputOrderID" value="RO-2021-123" disabled>
+                        <input type="text" class="form-control" id="inputOrderID"
+                               th:value="${user.userDetail.firstName}" disabled>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="picDepartment">User Department</label>
-                        <input type="text" class="form-control" id="picDepartment" value="Outlet Jakarta 1" disabled>
+                        <input type="text" class="form-control" id="picDepartment"
+                               th:value="${user.userDetail.department.name}" disabled>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputUserRole">User Role</label>
-                        <input type="text" class="form-control" id="inputUserRole" value="IT Support" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputRequestCategory">Request Category</label>
-                        <select id="inputRequestCategory" class="form-control">
-                            <option selected>RAM-Request-NewGate-18GB</option>
-                            <option>Laptop-Request-Asus-ROG-zxv</option>
-                        </select>
+                        <input type="text" class="form-control" id="inputUserRole"
+                               th:value="${user.userDetail.position}" disabled>
                     </div>
                 </div>
                 <div class="form-row">
@@ -40,8 +34,54 @@
                         <input type="text" class="form-control" id="requestOrderDesc" placeholder="Request Description">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Create</button>
             </form>
+            <br>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputRequestOrderID" value="" class="form-control"
+                               placeholder="Choose Products..." data-toggle="modal"
+                               data-target="#productList">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Product ID</th>
+                            <th class="text-center">Brand</th>
+                            <th class="text-center">Model</th>
+                            <th class="text-center">Product Name</th>
+                            <th class="text-center">Action</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${requested_products.empty}">
+                            <td colspan="6" class="text-center"> No Products Picked</td>
+                        </tr>
+                        <tr th:each="product : ${requested_products}">
+                            <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                            <td class="td-actions text-center">
+                                <button class="btn btn-info btn-round">Remove</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -51,7 +91,6 @@
                     <thead>
                     <tr>
                         <th class="text-center">Request ID</th>
-                        <th class="text-center">Request Category</th>
                         <th class="text-center">Submitted Date</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
@@ -61,29 +100,29 @@
                     <tbody>
                     <tr>
                         <td class="text-center">RO-2021-1234</td>
-                        <td class="text-center">RAM-Request-NewGate-18GB</td>
                         <td class="text-center">2021-11-13 10:00:00</td>
                         <td class="text-center">WAITING_APPROVAL</td>
                         <td class="td-actions text-center">
                             <button class="btn btn-danger btn-round">Cancel</button>
+                            <button class="btn btn-info btn-round">Print</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">RO-2021-123</td>
-                        <td class="text-center">Laptop-Request-AlienWare-2021</td>
                         <td class="text-center">2021-09-13 10:00:00</td>
                         <td class="text-center">PURCHASING</td>
                         <td class="td-actions text-center">
                             <button class="btn btn-dark btn-round">Cancel</button>
+                            <button class="btn btn-info btn-round">Print</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-center">RO-2020-1234</td>
-                        <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
                         <td class="text-center">2020-10-13 10:00:00</td>
                         <td class="text-center">REJECTED</td>
                         <td class="td-actions text-center">
                             <button class="btn btn-dark btn-round">Cancel</button>
+                            <button class="btn btn-info btn-round">Print</button>
                         </td>
                     </tr>
                     </tbody>
@@ -91,6 +130,56 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="productList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-bs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Product ID</th>
+                                    <th class="text-center">Brand</th>
+                                    <th class="text-center">Model</th>
+                                    <th class="text-center">Product Name</th>
+                                    <th class="text-center">Action</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${products.empty}">
+                                    <td colspan="6" class="text-center"> No Products Available</td>
+                                </tr>
+                                <tr th:each="product : ${products}">
+                                    <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                                    <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                                    <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                                    <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                    <td class="td-actions text-center">
+                                        <button class="btn btn-info btn-round">Add</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.ta.kfc.mercu.interfaces.web.aspect;
 
+import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.security.Menu;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,10 +28,13 @@ import java.util.stream.Collectors;
 public class AspectController {
 
     private AuthorizationService authorizationService;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public AspectController(AuthorizationService authorizationService) {
+    public AspectController(AuthorizationService authorizationService,
+                            AuthenticationService authenticationService) {
         this.authorizationService = authorizationService;
+        this.authenticationService = authenticationService;
     }
 
     @Pointcut("execution(* *Page(..,org.springframework.ui.Model))")
@@ -90,10 +95,14 @@ public class AspectController {
                 }
 
                 if (principal instanceof UserDetails) {
-                    ((Model) arg).addAttribute("username", (String) ((UserDetails) principal).getUsername());
+                    String username = (String) ((UserDetails) principal).getUsername();
+                    ((Model) arg).addAttribute("username", username);
+
+                    Optional<User> user = authenticationService.findUserByUserName(username);
+                    if (user.isPresent()) {
+                        ((Model) arg).addAttribute("user", user.get());
+                    }
                 }
-
-
             }
         }
     }

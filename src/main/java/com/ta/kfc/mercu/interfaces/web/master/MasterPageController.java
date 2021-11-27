@@ -1,7 +1,9 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.master.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,8 @@ public class MasterPageController extends MasterModule {
     }
 
     @GetMapping({MASTER_PATH})
-    public String getMasterPage(@RequestParam(value = "isUpdate", required = false) boolean isUpdate,
-                                @RequestParam(value = "search", required = false) String search,
-                                @RequestParam(value = "id", required = false) Long id,
-                                Model model) {
-        getMasterProductPage(isUpdate, search, id, model);
-        return "index";
+    public String getMasterPage(Model model) {
+        return String.format("redirect:%s?", MASTER_PRODUCT_PATH);
     }
 
     @GetMapping({MASTER_BRAND_PATH})
@@ -129,20 +127,48 @@ public class MasterPageController extends MasterModule {
         return "index";
     }
 
-    @GetMapping({MASTER_OUTLET_PATH})
-    public String getMasterOutletPage(Model model) {
+    @GetMapping({MASTER_UNIT_PATH})
+    public String getMasterOutletPage(@RequestParam(value = "isUpdate", required = false) boolean isUpdate,
+                                      @RequestParam(value = "id", required = false) Long id,
+                                      Model model) {
 
         model.addAttribute("template", "master");
-        model.addAttribute("master_template", "master_outlet");
+        model.addAttribute("master_template", "master_unit");
+
+        model.addAttribute("units", masterService.getAllUnit());
+
+        if (isUpdate) {
+            Optional<Unit> unitEntity = masterService.getUnit(id);
+            if (unitEntity.isPresent()) {
+                model.addAttribute("isUpdate", true);
+                model.addAttribute("unit", unitEntity.get());
+            }
+        } else {
+            model.addAttribute("unit", new Unit());
+        }
+
 
         return "index";
     }
 
     @GetMapping({MASTER_DEPARTMENT_PATH})
-    public String getMasterDepartmentPage(Model model) {
+    public String getMasterDepartmentPage(@RequestParam(value = "isUpdate", required = false) boolean isUpdate,
+                                          @RequestParam(value = "id", required = false) Long id,
+                                          Model model) {
 
         model.addAttribute("template", "master");
         model.addAttribute("master_template", "master_department");
+        model.addAttribute("departments", masterService.getAllDepartments());
+
+        if (isUpdate) {
+            Optional<Department> departmentEntity = masterService.getDepartment(id);
+            if (departmentEntity.isPresent()) {
+                model.addAttribute("isUpdate", true);
+                model.addAttribute("department", departmentEntity.get());
+            }
+        } else {
+            model.addAttribute("department", new Department());
+        }
 
         return "index";
     }

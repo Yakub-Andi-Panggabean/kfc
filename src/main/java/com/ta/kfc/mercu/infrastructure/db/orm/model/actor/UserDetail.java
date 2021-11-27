@@ -1,10 +1,11 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.actor;
 
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_detail")
@@ -25,10 +26,17 @@ public class UserDetail {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
+    @ManyToOne
+    @JoinColumn(name = "unit_id", nullable = false)
+    private Unit unit;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+
+    @OneToOne(mappedBy = "userDetail")
+    private User user;
 
     public Long getId() {
         return id;
@@ -116,5 +124,21 @@ public class UserDetail {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

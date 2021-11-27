@@ -18,7 +18,10 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    @ManyToMany()
+    @ManyToMany
+    @JoinTable(name = "role_menus",
+            joinColumns = {@JoinColumn(name = "roles_id")},
+            inverseJoinColumns = {@JoinColumn(name = "menus_id")})
     private Set<Menu> menus;
 
     public Long getId() {

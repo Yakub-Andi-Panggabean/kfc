@@ -1,7 +1,10 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.master;
 
+import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "unit")
@@ -23,6 +26,10 @@ public class Unit {
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    private boolean enable;
+
+    @OneToMany(mappedBy = "unit")
+    private Set<UserDetail> userDetails;
 
     public Long getId() {
         return id;
@@ -32,13 +39,6 @@ public class Unit {
         this.id = id;
     }
 
-    public UnitType getUnitType() {
-        return unitType;
-    }
-
-    public void setUnitType(UnitType unitType) {
-        this.unitType = unitType;
-    }
 
     public String getUnitName() {
         return unitName;
@@ -86,5 +86,29 @@ public class Unit {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
+
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
+    }
+
+    public Set<UserDetail> getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(Set<UserDetail> userDetails) {
+        this.userDetails = userDetails;
     }
 }
