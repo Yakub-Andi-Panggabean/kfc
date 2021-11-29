@@ -25,11 +25,11 @@ public class PurchaseOrder {
     private UserDetail requester;
 
     @ManyToOne
-    @JoinColumn(name = "approver_id", nullable = false)
+    @JoinColumn(name = "approver_id")
     private UserDetail approver;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
+    @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
     @OneToMany

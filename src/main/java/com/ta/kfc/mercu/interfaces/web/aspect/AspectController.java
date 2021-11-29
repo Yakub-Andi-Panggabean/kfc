@@ -37,7 +37,7 @@ public class AspectController {
         this.authenticationService = authenticationService;
     }
 
-    @Pointcut("execution(* *Page(..,org.springframework.ui.Model))")
+    @Pointcut("execution(* com.ta.kfc.mercu.interfaces.web..*(..,org.springframework.ui.Model))")
     public void pagePointcut() {
     }
 

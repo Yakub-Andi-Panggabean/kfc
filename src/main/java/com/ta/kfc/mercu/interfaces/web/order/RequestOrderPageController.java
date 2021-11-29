@@ -1,5 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.order;
 
+import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
@@ -22,13 +23,15 @@ public class RequestOrderPageController extends OrderModule {
     private AuthorizationService authorizationService;
     private MasterService masterService;
     private RequestOrderService requestOrderService;
+    private FastContext context;
 
     @Autowired
-    public RequestOrderPageController(AuthorizationService authorizationService,
+    public RequestOrderPageController(FastContext context, AuthorizationService authorizationService,
                                       MasterService masterService, RequestOrderService requestOrderService) {
         this.authorizationService = authorizationService;
         this.masterService = masterService;
         this.requestOrderService = requestOrderService;
+        this.context = context;
     }
 
     @GetMapping(REQUEST_ORDER_PATH)
@@ -39,20 +42,15 @@ public class RequestOrderPageController extends OrderModule {
 
         model.addAttribute("template", "order_request");
 
-        User user = (User) model.getAttribute("user");
+        User user = context.getUser().get();
 
         Optional<RequestOrder> inProgressRequestOrder = requestOrderService.findInProgressRequestOrder(user.getUserDetail());
 
         if (inProgressRequestOrder.isPresent()) {
-            model.addAttribute("request_order", inProgressRequestOrder);
+            model.addAttribute("request_order", inProgressRequestOrder.get());
             model.addAttribute("requested_products", inProgressRequestOrder.get().getProducts());
         } else {
             final RequestOrder requestOrder = new RequestOrder();
-            requestOrder.setRequester(user.getUserDetail());
-            requestOrder.setTo(user.getUserDetail().getUnit());
-            requestOrder.setFrom(user.getUserDetail().getUnit());
-            requestOrder.setStatus(RequestOrderStatus.NEW);
-            requestOrder.setType(RequestOrderType.REQUEST_ORDER);
             model.addAttribute("request_order", requestOrder);
             model.addAttribute("requested_products", Collections.emptyList());
         }

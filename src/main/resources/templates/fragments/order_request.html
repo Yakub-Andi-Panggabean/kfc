@@ -11,6 +11,13 @@
             <form th:action="@{/order/request}" th:object="${request_order}" method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
+                        <label for="requestOrderId">ID</label>
+                        <input type="text" class="form-control" id="requestOrderId"
+                               th:value="*{id}" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
                         <label for="inputOrderID">Created By</label>
                         <input type="text" class="form-control" id="inputOrderID"
                                th:value="${user.userDetail.firstName}" disabled>
@@ -31,11 +38,13 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="requestOrderDesc">Description</label>
-                        <input type="text" class="form-control" id="requestOrderDesc" placeholder="Request Description">
+                        <input type="text" class="form-control" th:field="*{description}" id="requestOrderDesc"
+                               placeholder="Request Description">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
+
             <br>
             <div class="form-row">
                 <div class="form-group col-md-6">

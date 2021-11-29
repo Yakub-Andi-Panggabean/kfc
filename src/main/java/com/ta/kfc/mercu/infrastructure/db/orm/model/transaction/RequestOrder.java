@@ -20,7 +20,7 @@ public class RequestOrder {
     private UserDetail requester;
 
     @ManyToOne
-    @JoinColumn(name = "approver_id", nullable = false)
+    @JoinColumn(name = "approver_id")
     private UserDetail approver;
 
     @Enumerated(EnumType.STRING)
@@ -43,6 +43,7 @@ public class RequestOrder {
     @OneToMany(mappedBy = "order")
     private List<Transaction> transactions;
 
+    private String description;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
@@ -136,4 +137,11 @@ public class RequestOrder {
         this.updatedDate = updatedDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String desc) {
+        this.description = desc;
+    }
 }
