@@ -37,7 +37,7 @@ public class RequestOrder {
     @JoinColumn(name = "to_unit", nullable = false)
     private Unit to;
 
-    @OneToMany
+    @ManyToMany
     private List<Product> products;
 
     @OneToMany(mappedBy = "order")

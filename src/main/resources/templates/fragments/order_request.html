@@ -42,7 +42,8 @@
                                placeholder="Request Description">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button th:if="${requestOrderExist}" type="submit" class="btn btn-primary" disabled>Create</button>
+                <button th:unless="${requestOrderExist}" type="submit" class="btn btn-primary">Create</button>
             </form>
 
             <br>
@@ -84,61 +85,65 @@
                             <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
                             <td class="text-center" th:inline="text">[[${product.name}]]</td>
                             <td class="td-actions text-center">
-                                <button class="btn btn-info btn-round">Remove</button>
+                                <a class="btn btn-info btn-round"
+                                   th:href="@{/order/request/product/remove/{productId}(productId=${product.id})}">
+                                    Remove
+                                </a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div class="card">
-
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Request ID</th>
-                        <th class="text-center">Submitted Date</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="text-center">RO-2021-1234</td>
-                        <td class="text-center">2021-11-13 10:00:00</td>
-                        <td class="text-center">WAITING_APPROVAL</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-danger btn-round">Cancel</button>
-                            <button class="btn btn-info btn-round">Print</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">RO-2021-123</td>
-                        <td class="text-center">2021-09-13 10:00:00</td>
-                        <td class="text-center">PURCHASING</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-dark btn-round">Cancel</button>
-                            <button class="btn btn-info btn-round">Print</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">RO-2020-1234</td>
-                        <td class="text-center">2020-10-13 10:00:00</td>
-                        <td class="text-center">REJECTED</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-dark btn-round">Cancel</button>
-                            <button class="btn btn-info btn-round">Print</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <a th:if="${requestOrderExist}" class="btn btn-danger btn-round"
+               th:href="@{/order/request/approval/{roId}(roId=${request_order.id})}">
+                Submit
+            </a>
+            <a th:unless="${requestOrderExist}" class="btn btn-dark btn-round">
+                Submit
+            </a>
         </div>
     </div>
+
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="table-responsive">
+            <table class="table table-shopping">
+                <thead>
+                <tr>
+                    <th class="text-center">Request ID</th>
+                    <th class="text-center">Submitted Date</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Action</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${orders.empty}">
+                    <td colspan="5" class="text-center"> No Orders</td>
+                </tr>
+                <tr th:each="order : ${orders}">
+                    <td class="text-center" th:inline="text">[[${order.id}]]</td>
+                    <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                    <td class="text-center" th:inline="text">[[${order.status}]]</td>
+                    <td class="text-center" th:inline="text">[[${order.description}]]</td>
+                    <td class="td-actions text-center">
+                        <a th:unless=${#strings.equals(order.status,'CANCELED')} class="btn btn-danger btn-round"
+                           th:href="@{/order/request/cancel/{roId}(roId=${order.id})}">
+                            Cancel
+                        </a>
+                        <a th:if=${#strings.equals(order.status,'CANCELED')} class="btn btn-dark btn-round">
+                            Cancel
+                        </a>
+                        <button class="btn btn-info btn-round">Print</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="productList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -175,7 +180,10 @@
                                     <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
                                     <td class="text-center" th:inline="text">[[${product.name}]]</td>
                                     <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
+                                        <a class="btn btn-info btn-round"
+                                           th:href="@{/order/request/product/add/{productId}(productId=${product.id})}">
+                                            Add
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>

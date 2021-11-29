@@ -8,6 +8,7 @@ import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,11 @@ public class DefaultRequestOrderService implements RequestOrderService {
     }
 
     @Override
+    public Optional<RequestOrder> findRequestOrderById(Long id) {
+        return requestOrderRepository.findById(id);
+    }
+
+    @Override
     public Optional<RequestOrder> saveRequestOrder(RequestOrder requestOrder) {
         return Optional.of(requestOrderRepository.save(requestOrder));
     }
@@ -36,5 +42,10 @@ public class DefaultRequestOrderService implements RequestOrderService {
             throw new RuntimeException("request order is not exist");
         }
         return Optional.of(requestOrderRepository.save(requestOrder));
+    }
+
+    @Override
+    public List<RequestOrder> findRequestOrderPerUser(UserDetail userDetail) {
+        return requestOrderRepository.findByRequester(userDetail);
     }
 }

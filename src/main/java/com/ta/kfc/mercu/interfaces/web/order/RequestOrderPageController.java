@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class RequestOrderPageController extends OrderModule {
@@ -46,9 +47,15 @@ public class RequestOrderPageController extends OrderModule {
 
         Optional<RequestOrder> inProgressRequestOrder = requestOrderService.findInProgressRequestOrder(user.getUserDetail());
 
+        model.addAttribute("orders", requestOrderService.findRequestOrderPerUser(user.getUserDetail())
+                .stream()
+                .filter(ro -> !ro.getStatus().equals(RequestOrderStatus.NEW)).collect(Collectors.toList()));
+
+        model.addAttribute("requestOrderExist", false);
         if (inProgressRequestOrder.isPresent()) {
             model.addAttribute("request_order", inProgressRequestOrder.get());
             model.addAttribute("requested_products", inProgressRequestOrder.get().getProducts());
+            model.addAttribute("requestOrderExist", true);
         } else {
             final RequestOrder requestOrder = new RequestOrder();
             model.addAttribute("request_order", requestOrder);
