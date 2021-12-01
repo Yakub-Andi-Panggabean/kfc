@@ -16,126 +16,84 @@
                         <thead>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="request : ${requests}">
                             <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Purchase Order</h4>
-                                        <p class="card-text">Need to buy MAC book pro max 2021.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal"
-                                           data-target="#requestDetail">View Detail</a>
-                                        <a href="#" class="btn btn-success">Approve</a>
-                                        <a href="#" class="btn btn-danger">Reject</a></div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Purchase Order</h4>
-                                        <p class="card-text">Need to buy SAP license.</p>
-                                        <a href="#" class="btn btn-primary">View Detail</a>
-                                        <a href="#" class="btn btn-success">Approve</a>
-                                        <a href="#" class="btn btn-danger">Reject</a></div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Purchase Order</h4>
-                                        <p class="card-text">Purchase samsung odyssey .</p>
-                                        <a href="#" class="btn btn-primary">View Detail</a>
-                                        <a href="#" class="btn btn-success">Approve</a>
-                                        <a href="#" class="btn btn-danger">Reject</a>
+                                <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                                    <div class="card card-plain">
+                                        <div class="card-header" role="tab" id="headingOne">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               th:attr="href=${'#collapse'+request.id}"
+                                               aria-expanded="true" th:attrappend="aria-controls=${request.id}"
+                                               th:inline="text">
+                                                [[${request.type}]] : [[${request.id}]]
+                                                <i class="now-ui-icons arrows-1_minimal-down"></i>
+                                            </a>
+                                        </div>
+
+                                        <div th:id="${'collapse'+request.id}" class="collapse show" role="tabpanel"
+                                             aria-labelledby="headingOne">
+                                            <div class="card text-center">
+                                                <div class="card-body">
+                                                    <p class="card-title" th:inline="text">Description :
+                                                        [[${request.description}]]</p>
+                                                    <p class="card-title" th:inline="text">Requested By :
+                                                        [[${request.requester.firstName}]]</p>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-shopping">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center">Product ID</th>
+                                                                <th class="text-center">Brand</th>
+                                                                <th class="text-center">Model</th>
+                                                                <th class="text-center">Product Name</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="product : ${request.products}">
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${product.id}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${product.brand.name}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${product.model.name}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${product.name}]]
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="col-md-12">
+                                                        <a class="btn btn-success btn-round"
+                                                           th:href="@{/order/request/approve/{roId}(roId=${request.id})}">
+                                                            Approve
+                                                        </a>
+                                                        <a class="btn btn-danger btn-round"
+                                                           th:href="@{/order/request/reject/{roId}(roId=${request.id})}">
+                                                            Reject
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Request Order</h4>
-                                        <p class="card-text">Request monitor samsung odyssey 34 inch.</p>
-                                        <a href="#" class="btn btn-primary">View Detail</a>
-                                        <a href="#" class="btn btn-success">Approve</a>
-                                        <a href="#" class="btn btn-danger">Reject</a></div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Transfer Item</h4>
-                                        <p class="card-text">Transfer From Outlet A to Outlet B.</p>
-                                        <a href="#" class="btn btn-primary">View Detail</a>
-                                        <a href="#" class="btn btn-success">Approve</a>
-                                        <a href="#" class="btn btn-danger">Reject</a></div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
+                </td>
+                </tr>
+                </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="requestDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Request Detail</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th class="text-left">Request ID</th>
-                                    <td class="text-left">RO-xxx-xxx</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Request Type</th>
-                                    <td class="text-left">Purchase Order</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Requested By</th>
-                                    <td class="text-left">MR. Kurt Cobain</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Location</th>
-                                    <td class="text-left">Outlet Semanggi</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Request Category</th>
-                                    <td class="text-left">MAC-book-pro-max-2021</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Submitted Date</th>
-                                    <td class="text-left">2021-09-13 10:00:00</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Note</th>
-                                    <td class="text-left">Laptop buat engineer baru</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 </body>

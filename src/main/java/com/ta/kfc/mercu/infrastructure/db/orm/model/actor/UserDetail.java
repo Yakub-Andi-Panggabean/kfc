@@ -141,4 +141,9 @@ public class UserDetail {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
 }

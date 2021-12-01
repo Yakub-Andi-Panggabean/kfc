@@ -111,4 +111,9 @@ public class Unit {
     public void setUserDetails(Set<UserDetail> userDetails) {
         this.userDetails = userDetails;
     }
+
+    @Override
+    public String toString() {
+        return unitName;
+    }
 }

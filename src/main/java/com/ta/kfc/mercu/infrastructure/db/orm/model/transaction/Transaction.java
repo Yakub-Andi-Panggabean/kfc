@@ -32,6 +32,8 @@ public class Transaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
+    private String note;
+
     public Long getId() {
         return id;
     }
@@ -86,5 +88,13 @@ public class Transaction {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

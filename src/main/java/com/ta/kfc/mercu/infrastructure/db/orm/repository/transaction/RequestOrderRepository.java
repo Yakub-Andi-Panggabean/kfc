@@ -13,4 +13,6 @@ public interface RequestOrderRepository extends CrudRepository<RequestOrder, Lon
 
     List<RequestOrder> findByRequester(UserDetail requester);
 
+    List<RequestOrder> findAll();
+
 }

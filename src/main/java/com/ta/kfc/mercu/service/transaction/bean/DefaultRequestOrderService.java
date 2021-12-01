@@ -48,4 +48,9 @@ public class DefaultRequestOrderService implements RequestOrderService {
     public List<RequestOrder> findRequestOrderPerUser(UserDetail userDetail) {
         return requestOrderRepository.findByRequester(userDetail);
     }
+
+    @Override
+    public List<RequestOrder> findAllRequestOrders() {
+        return requestOrderRepository.findAll();
+    }
 }

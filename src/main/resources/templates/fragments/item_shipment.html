@@ -8,7 +8,8 @@
 <div th:fragment="item_shipment" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-body">
-            <form>
+            <form th:action="@{/item/shipment}" th:object="${itemShipmentDto}" method="post">
+                <input type="hidden" th:field="*{ro}">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <div class="input-group no-border">
@@ -25,73 +26,71 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
+                        <label for="inputRoId">Request Order</label>
+                        <input type="text" class="form-control" id="inputRoId" th:value="*{ro.id}" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label for="inputRecipient">Recipient</label>
-                        <input type="text" class="form-control" id="inputRecipient" value="Ms. Nurmala sari" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputDestination">Destination</label>
-                        <input type="text" class="form-control" id="inputDestination" value="Outlet Taman Anggrek"
-                               disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputSender">Sender</label>
-                        <input type="text" class="form-control" id="inputSender" value="Mr. John F Lennon" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputSenderRole">Sender Role</label>
-                        <input type="text" class="form-control" id="inputSenderRole" value="Asset Admin" disabled>
+                        <input type="text" class="form-control" id="inputRecipient" th:field="*{ro.requester}" disabled>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputSendFrom">Send From</label>
-                        <input type="text" class="form-control" id="inputSendFrom" value="KFC Gelael HQ" disabled>
+                        <select id="inputSendFrom" class="form-control">
+                            <option th:each="unit : ${units}" th:value="${unit.id}"
+                                    th:inline="text">[[${unit.unitName}]] - [[${unit.city}]] - [[${unit.zipCode}]]
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputDestination">Destination</label>
+                        <input type="text" class="form-control" id="inputDestination"
+                               th:value="*{ro.from.unitName+'-'+ro.from.city+'-'+ro.from.zipCode}"
+                               disabled>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputSendNote">Note</label>
                         <input type="text" class="form-control" id="inputSendNote"
-                               placeholder="Note something here ...">
+                               placeholder="Note something here ..." th:field="*{note}">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button th:if="${roSelected}" type="submit" class="btn btn-primary">Send</button>
+                <button th:unless="${roSelected}" type="submit" class="btn btn-dark" disabled>Send</button>
             </form>
         </div>
 
         <div class="card">
-
             <div class="table-responsive">
                 <table class="table table-shopping">
                     <thead>
                     <tr>
                         <th class="text-center">Request Order</th>
+                        <th class="text-center">Type</th>
                         <th class="text-center">Sender</th>
                         <th class="text-center">Recipient</th>
                         <th class="text-center">Destination</th>
                         <th class="text-center">Submitted Date</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Note</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="text-center">RO-xxx-xxxx</td>
-                        <td class="text-center">MR. Adam Lambert</td>
-                        <td class="text-center">MR. Kurt Cobain</td>
-                        <td class="text-center">Outlet Semanggi</td>
-                        <td class="text-center">2021-12-12 14:00:00</td>
-                        <td class="td-actions text-center">RECEIVED</td>
+                    <tr th:if="${itemShipmentDto.ro.transactions==null}">
+                        <td colspan="6" class="text-center"></td>
                     </tr>
-                    <tr>
-                        <td class="text-center">RO-xxx-xxxx</td>
-                        <td class="text-center">MR. Benjamin Franklin</td>
-                        <td class="text-center">MR. Freddy Mercury</td>
-                        <td class="text-center">Outlet Kemang</td>
-                        <td class="text-center">2021-12-12 14:00:00</td>
-                        <td class="td-actions text-center">SEND</td>
+                    <tr th:each="trx : ${itemShipmentDto.ro.transactions}">
+                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.id}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.transactionType}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.pic}]]</td>
+                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.requester}]]</td>
+                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.from.unitName}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.createdDate}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.status}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.note}]]</td>
                     </tr>
                     </tbody>
                 </table>
@@ -117,43 +116,27 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">Request ID</th>
-                                    <th class="text-center">Request Category</th>
                                     <th class="text-center">Submitted Date</th>
-                                    <th class="text-center">Requested By</th>
+                                    <th class="text-center">Status</th>
                                     <th class="text-center">Approved By</th>
+                                    <th class="text-center">Description</th>
                                     <th class="text-center">Action</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="text-center">RO-2021-1234</td>
-                                    <td class="text-center">RAM-Request-NewGate-18GB</td>
-                                    <td class="text-center">2021-11-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
+                                <tr th:if="${orders.empty}">
+                                    <td colspan="5" class="text-center"> No Orders</td>
                                 </tr>
-                                <tr>
-                                    <td class="text-center">RO-2021-123</td>
-                                    <td class="text-center">Laptop-Request-AlienWare-2021</td>
-                                    <td class="text-center">2021-09-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
+                                <tr th:each="order : ${orders}">
+                                    <td class="text-center" th:inline="text">[[${order.id}]]</td>
+                                    <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                                    <td class="text-center" th:inline="text">[[${order.status}]]</td>
+                                    <td class="text-center" th:inline="text">[[${order.approver.firstName}]]</td>
+                                    <td class="text-center" th:inline="text">[[${order.description}]]</td>
                                     <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">RO-2020-1234</td>
-                                    <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
-                                    <td class="text-center">2020-10-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
+                                        <a class="btn btn-info btn-round"
+                                           th:href="${#httpServletRequest.RequestURL+'?ro_id='+order.id}">Select</a>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -7,6 +7,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType;
+import com.ta.kfc.mercu.interfaces.web.approval.ApprovalModule;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
@@ -87,21 +88,31 @@ public class RequestOrderProcessorController extends OrderModule {
 
         Optional<RequestOrder> requestOrder = requestOrderService.findRequestOrderById(roId);
 
-        requestOrder.ifPresent(r -> {
-            r.setUpdatedDate(new Date());
+        String page = REQUEST_ORDER_PATH;
+
+        if (requestOrder.isPresent()) {
+            requestOrder.get().setUpdatedDate(new Date());
+            requestOrder.get().setApprover(user.getUserDetail());
             switch (status) {
                 case "approval":
-                    r.setStatus(RequestOrderStatus.WAITING_APPROVAL);
+                    requestOrder.get().setStatus(RequestOrderStatus.WAITING_APPROVAL);
                     break;
                 case "cancel":
-                    r.setStatus(RequestOrderStatus.CANCELED);
+                    requestOrder.get().setStatus(RequestOrderStatus.CANCELED);
+                    break;
+                case "approve":
+                    requestOrder.get().setStatus(RequestOrderStatus.APPROVED);
+                    page = ApprovalModule.APPROVAL_PATH;
+                    break;
+                case "reject":
+                    requestOrder.get().setStatus(RequestOrderStatus.REJECTED);
+                    page = ApprovalModule.APPROVAL_PATH;
                     break;
             }
-            requestOrderService.saveRequestOrder(r);
-        });
 
-
-        return String.format("redirect:%s?", REQUEST_ORDER_PATH);
+            requestOrderService.saveRequestOrder(requestOrder.get());
+        }
+        return String.format("redirect:%s?", page);
     }
 
 }

@@ -17,4 +17,6 @@ public interface RequestOrderService {
 
     List<RequestOrder> findRequestOrderPerUser(UserDetail userDetail);
 
+    List<RequestOrder> findAllRequestOrders();
+
 }
