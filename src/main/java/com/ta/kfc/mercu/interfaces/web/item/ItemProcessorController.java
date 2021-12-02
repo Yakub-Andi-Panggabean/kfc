@@ -4,10 +4,7 @@ import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.Transaction;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionStatus;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionType;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
@@ -44,7 +41,7 @@ public class ItemProcessorController extends ItemModule {
     }
 
     @PostMapping({ITEM_SHIPMENT_PATH})
-    public String getItemShipmentPage(ItemShipmentDto itemShipmentDto) {
+    public String sendRo(ItemShipmentDto itemShipmentDto) {
 
         Transaction transaction = new Transaction();
         transaction.setCreatedDate(new Date());
@@ -62,6 +59,15 @@ public class ItemProcessorController extends ItemModule {
             itemShipmentDto.getRo().setTransactions(Arrays.asList(transaction));
         }
 
+        itemShipmentDto.getRo().getAssets().stream().forEach(asset -> {
+            asset.setAssetStatus(AssetStatus.SEND);
+            asset.setUpdatedDate(new Date());
+            asset.setUnit(itemShipmentDto.getRo().getFrom());
+            assetService.update(asset);
+        });
+
+        itemShipmentDto.getRo().setStatus(RequestOrderStatus.IN_PROGRESS);
+        requestOrderService.updateRequestOrder(itemShipmentDto.getRo());
         transactionService.save(transaction);
 
         return String.format("redirect:%s", ITEM_SHIPMENT_PATH);

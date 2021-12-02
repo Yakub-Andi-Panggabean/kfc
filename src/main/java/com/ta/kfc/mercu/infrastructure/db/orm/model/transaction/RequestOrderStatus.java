@@ -1,5 +1,5 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.transaction;
 
 public enum RequestOrderStatus {
-    NEW, WAITING_APPROVAL, APPROVED, REJECTED, CANCELED
+    NEW, WAITING_APPROVAL, APPROVED, REJECTED, CANCELED, IN_PROGRESS
 }

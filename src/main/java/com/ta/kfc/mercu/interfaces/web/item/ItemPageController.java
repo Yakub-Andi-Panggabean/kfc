@@ -8,12 +8,11 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.UnitType;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
+import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +32,17 @@ public class ItemPageController extends ItemModule {
     private RequestOrderService requestOrderService;
     private MasterService masterService;
     private FastContext context;
+    private TransactionService transactionService;
 
     @Autowired
     public ItemPageController(FastContext context, AuthorizationService authorizationService,
-                              RequestOrderService requestOrderService, MasterService masterService) {
+                              RequestOrderService requestOrderService,
+                              MasterService masterService,
+                              TransactionService transactionService) {
         this.authorizationService = authorizationService;
         this.requestOrderService = requestOrderService;
         this.masterService = masterService;
+        this.transactionService = transactionService;
         this.context = context;
     }
 
@@ -58,6 +61,7 @@ public class ItemPageController extends ItemModule {
 
         ItemShipmentDto itemShipmentDto = new ItemShipmentDto();
         model.addAttribute("template", "item_shipment");
+        model.addAttribute("transactions", transactionService.findByType(TransactionType.SEND_ITEM));
         model.addAttribute("units", masterService.getAllUnit().stream()
                 .filter(u -> u.getUnitType().equals(UnitType.WAREHOUSE))
                 .collect(Collectors.toList()));

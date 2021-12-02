@@ -144,15 +144,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${itemShipmentDto.ro.transactions==null}">
-                        <td colspan="6" class="text-center"></td>
+                    <tr th:if="${transactions.empty}">
+                        <td colspan="8" class="text-center"></td>
                     </tr>
-                    <tr th:each="trx : ${itemShipmentDto.ro.transactions}">
-                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.id}]]</td>
+                    <tr th:each="trx : ${transactions}">
+                        <td class="text-center" th:inline="text">[[${trx.order.id}]]</td>
                         <td class="text-center" th:inline="text">[[${trx.transactionType}]]</td>
                         <td class="text-center" th:inline="text">[[${trx.pic}]]</td>
-                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.requester}]]</td>
-                        <td class="text-center" th:inline="text">[[${itemShipmentDto.ro.from.unitName}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.order.requester}]]</td>
+                        <td class="text-center" th:inline="text">[[${trx.order.from.unitName}]]</td>
                         <td class="text-center" th:inline="text">[[${trx.createdDate}]]</td>
                         <td class="text-center" th:inline="text">[[${trx.status}]]</td>
                         <td class="text-center" th:inline="text">[[${trx.note}]]</td>

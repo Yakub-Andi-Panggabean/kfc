@@ -2,6 +2,8 @@ package com.ta.kfc.mercu.service.transaction.bean;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.Transaction;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionType;
 import com.ta.kfc.mercu.infrastructure.db.orm.repository.transaction.RequestOrderRepository;
 import com.ta.kfc.mercu.infrastructure.db.orm.repository.transaction.TransactionRepository;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
@@ -26,6 +28,16 @@ public class DefaultTransactionService implements TransactionService {
     @Override
     public List<Transaction> findByRo(RequestOrder requestOrder) {
         return transactionRepository.findByOrder(requestOrder);
+    }
+
+    @Override
+    public List<Transaction> findByStatus(TransactionStatus transactionStatus) {
+        return transactionRepository.findByStatus(transactionStatus);
+    }
+
+    @Override
+    public List<Transaction> findByType(TransactionType transactionType) {
+        return transactionRepository.findByTransactionType(transactionType);
     }
 
     @Override
