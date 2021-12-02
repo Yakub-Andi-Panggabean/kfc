@@ -1,6 +1,7 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.master;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,6 +31,9 @@ public class Unit {
 
     @OneToMany(mappedBy = "unit")
     private Set<UserDetail> userDetails;
+
+    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
+    private Set<Asset> assets;
 
     public Long getId() {
         return id;
@@ -110,6 +114,14 @@ public class Unit {
 
     public void setUserDetails(Set<UserDetail> userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public Set<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
     }
 
     @Override

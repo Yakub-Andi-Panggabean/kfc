@@ -1,6 +1,7 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.transaction;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 
@@ -39,6 +40,9 @@ public class RequestOrder {
 
     @ManyToMany
     private List<Product> products;
+
+    @ManyToMany
+    private List<Asset> assets;
 
     @OneToMany(mappedBy = "order")
     private List<Transaction> transactions;
@@ -143,5 +147,13 @@ public class RequestOrder {
 
     public void setDescription(String desc) {
         this.description = desc;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
     }
 }

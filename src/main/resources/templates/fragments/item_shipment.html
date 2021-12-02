@@ -36,20 +36,82 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="inputSendFrom">Send From</label>
-                        <select id="inputSendFrom" class="form-control">
-                            <option th:each="unit : ${units}" th:value="${unit.id}"
-                                    th:inline="text">[[${unit.unitName}]] - [[${unit.city}]] - [[${unit.zipCode}]]
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
                         <label for="inputDestination">Destination</label>
                         <input type="text" class="form-control" id="inputDestination"
                                th:value="*{ro.from.unitName+'-'+ro.from.city+'-'+ro.from.zipCode}"
                                disabled>
                     </div>
                 </div>
+
+                <br>
+                <br>
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-shopping">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Brand</th>
+                                <th class="text-center">Model</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Asset Code</th>
+                                <th class="text-center">From</th>
+                                <th class="text-center"></th>
+
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${roItems.empty}">
+                                <td colspan="6" class="text-center"> No Products Available</td>
+                            </tr>
+                            <tr th:each="item : ${roItems}">
+                                <td class="text-center" th:inline="text">[[${item.product.brand.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${item.product.model.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${item.product.name}]]</td>
+                                <td th:if="${item.asset==null}" class="text-center" th:inline="text"></td>
+                                <td th:if="${item.asset==null}" class="text-center">
+                                    <div class="form-group">
+                                        <select th:id="${'from_'+item.product.id}" class="form-control">
+                                            <option th:each="unit : ${units}" th:value="${unit.id}"
+                                                    th:inline="text">[[${unit.unitName}]] - [[${unit.city}]] -
+                                                [[${unit.zipCode}]]
+                                            </option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td th:if="${item.asset==null}" class="text-center">
+                                    <div class="input-group no-border">
+                                        <input type="text" id="findAssetId" value=""
+                                               class="form-control"
+                                               placeholder="Search Asset..."
+                                               data-toggle="modal"
+                                               th:attr="data-product-id=${item.product.id}"
+                                               data-target="#assetListModal">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
+                                    [[${item.asset.code}]]
+                                </td>
+                                <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
+                                    [[${item.asset.unit}]]
+                                </td>
+                                <td th:unless="${item.asset==null}" class="text-center">
+                                    <button th:attr="data-action=@{/item/shipment/asset/remove/{roId}/{assetId} (roId=${ro_id},assetId=${item.asset.id})}"
+                                            class="btn btn-danger btn-round"
+                                            onclick="removeAsset(this,event)">Remove
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputSendNote">Note</label>
@@ -57,9 +119,12 @@
                                placeholder="Note something here ..." th:field="*{note}">
                     </div>
                 </div>
-                <button th:if="${roSelected}" type="submit" class="btn btn-primary">Send</button>
-                <button th:unless="${roSelected}" type="submit" class="btn btn-dark" disabled>Send</button>
+
+                <button th:if="${roSelected&&isRoEligible}" type="submit" class="btn btn-primary">Send</button>
+                <button th:unless="${roSelected&&isRoEligible}" type="submit" class="btn btn-dark" disabled>Send
+                </button>
             </form>
+
         </div>
 
         <div class="card">
@@ -150,7 +215,26 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="assetListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-bs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asset List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

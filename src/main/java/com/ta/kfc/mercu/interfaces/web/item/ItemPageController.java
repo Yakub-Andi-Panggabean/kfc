@@ -1,8 +1,13 @@
 package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
+import com.ta.kfc.mercu.dto.item.AddAssetDto;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
+import com.ta.kfc.mercu.dto.item.RoProductAsset;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.UnitType;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType;
@@ -13,8 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -49,16 +58,43 @@ public class ItemPageController extends ItemModule {
 
         ItemShipmentDto itemShipmentDto = new ItemShipmentDto();
         model.addAttribute("template", "item_shipment");
-        model.addAttribute("units", masterService.getAllUnit());
+        model.addAttribute("units", masterService.getAllUnit().stream()
+                .filter(u -> u.getUnitType().equals(UnitType.WAREHOUSE))
+                .collect(Collectors.toList()));
         model.addAttribute("orders", requestOrderService.findAllRequestOrders()
                 .stream()
                 .filter(ro -> ro.getType().equals(RequestOrderType.REQUEST_ORDER))
                 .filter(ro -> ro.getStatus().equals(RequestOrderStatus.APPROVED))
                 .collect(Collectors.toList()));
         if (roId != null) {
-            itemShipmentDto.setRo(requestOrderService.findRequestOrderById(roId).get());
+            model.addAttribute("ro_id", roId);
+            RequestOrder requestOrder = requestOrderService.findRequestOrderById(roId).get();
+            model.addAttribute("isRoEligible", requestOrder.getProducts()
+                    .size() > 0
+                    && requestOrder
+                    .getProducts().size() == requestOrder.getAssets().size());
+            List<Asset> availableAssets = requestOrder.getAssets();
+            itemShipmentDto.setRo(requestOrder);
             model.addAttribute("itemShipmentDto", itemShipmentDto);
             model.addAttribute("roSelected", true);
+            model.addAttribute("roItems", requestOrder.getProducts()
+                    .stream()
+                    .map(p -> {
+                        Optional<Asset> matchAsset = availableAssets
+                                .stream()
+                                .filter(asset -> asset.getProduct().getId() == p.getId())
+                                .findAny();
+
+                        if (matchAsset.isPresent()) {
+                            matchAsset.get().setAssetStatus(AssetStatus.LOCKED);
+                            availableAssets.remove(matchAsset.get());
+                            return new RoProductAsset(p, matchAsset.get());
+                        }
+
+                        return new RoProductAsset(p, null);
+                    }).collect(Collectors.toList()));
+
+
         } else {
             RequestOrder mockRo = new RequestOrder();
             Unit mockUnit = new Unit();
@@ -69,6 +105,8 @@ public class ItemPageController extends ItemModule {
             itemShipmentDto.setRo(mockRo);
             model.addAttribute("itemShipmentDto", itemShipmentDto);
             model.addAttribute("roSelected", false);
+            model.addAttribute("roItems", Collections.emptyList());
+            model.addAttribute("isRoEligible", false);
         }
 
         return "index";
@@ -80,6 +118,31 @@ public class ItemPageController extends ItemModule {
 
         model.addAttribute("template", "item_transfer");
         return "index";
+    }
+
+
+    @GetMapping({ITEM_SHIPMENT_PATH + "/{ro_id}"})
+    public String getItemShipmentModal(
+            @PathVariable(value = "ro_id") Long roId,
+            @RequestParam(value = "product_id", required = false) Long productId,
+            @RequestParam(value = "unit_id", required = false) Long unitId,
+            Model model) {
+
+        Optional<Unit> unit = masterService.getUnit(unitId);
+
+        model.addAttribute("ro_id", roId);
+        model.addAttribute("addAssetDto", new AddAssetDto());
+
+        if (unit.isPresent()) {
+
+            model.addAttribute("assets", unit.get().getAssets()
+                    .stream()
+                    .filter(asset -> asset.getProduct().getId() == productId)
+                    .filter(asset -> asset.getAssetStatus().equals(AssetStatus.AVAILABLE))
+                    .collect(Collectors.toList()));
+        }
+
+        return "fragments/item_shipment/modal_asset";
     }
 
 }

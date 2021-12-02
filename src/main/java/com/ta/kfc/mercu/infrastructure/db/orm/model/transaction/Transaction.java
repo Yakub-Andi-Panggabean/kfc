@@ -1,9 +1,11 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.transaction;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -97,4 +99,5 @@ public class Transaction {
     public void setNote(String note) {
         this.note = note;
     }
+
 }
