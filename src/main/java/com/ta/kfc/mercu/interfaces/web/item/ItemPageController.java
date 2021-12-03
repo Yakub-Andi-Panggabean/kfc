@@ -74,7 +74,8 @@ public class ItemPageController extends ItemModule {
         model.addAttribute("orders", requestOrderService.findAllRequestOrders()
                 .stream()
                 .filter(ro -> ro.getType().equals(RequestOrderType.REQUEST_ORDER))
-                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.APPROVED))
+                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.APPROVED)
+                        || ro.getStatus().equals(RequestOrderStatus.SEND_APPROVED))
                 .collect(Collectors.toList()));
         if (roId != null) {
             model.addAttribute("ro_id", roId);
@@ -85,6 +86,7 @@ public class ItemPageController extends ItemModule {
                     .getProducts().size() == requestOrder.getAssets().size());
             List<Asset> availableAssets = requestOrder.getAssets();
             itemShipmentDto.setRo(requestOrder);
+            model.addAttribute("isRoApproved", requestOrder.getStatus() == RequestOrderStatus.SEND_APPROVED);
             model.addAttribute("itemShipmentDto", itemShipmentDto);
             model.addAttribute("roSelected", true);
             model.addAttribute("roItems", requestOrder.getProducts()

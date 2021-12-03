@@ -101,7 +101,7 @@
                                     [[${item.asset.unit}]]
                                 </td>
                                 <td th:unless="${item.asset==null}" class="text-center">
-                                    <button th:attr="data-action=@{/item/shipment/asset/remove/{roId}/{assetId} (roId=${ro_id},assetId=${item.asset.id})}"
+                                    <button th:unless="${isRoApproved}" th:attr="data-action=@{/item/shipment/asset/remove/{roId}/{assetId} (roId=${ro_id},assetId=${item.asset.id})}"
                                             class="btn btn-danger btn-round"
                                             onclick="removeAsset(this,event)">Remove
                                     </button>
@@ -120,9 +120,16 @@
                     </div>
                 </div>
 
-                <button th:if="${roSelected&&isRoEligible}" type="submit" class="btn btn-primary">Send</button>
-                <button th:unless="${roSelected&&isRoEligible}" type="submit" class="btn btn-dark" disabled>Send
-                </button>
+                <div class="form-row" th:if="${isRoApproved}">
+                    <button th:if="${roSelected}" type="submit" class="btn btn-primary">Send Item</button>
+                </div>
+                <div class="form-row" th:unless="${isRoApproved}">
+                    <button th:if="${roSelected&&isRoEligible}" type="submit" class="btn btn-primary">Request Approval
+                    </button>
+                    <button th:unless="${roSelected&&isRoEligible}" type="submit" class="btn btn-dark" disabled>Request
+                        Approval
+                    </button>
+                </div>
             </form>
 
         </div>

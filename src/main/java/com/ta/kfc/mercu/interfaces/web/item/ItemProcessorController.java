@@ -46,11 +46,29 @@ public class ItemProcessorController extends ItemModule {
         Transaction transaction = new Transaction();
         transaction.setCreatedDate(new Date());
         transaction.setUpdatedDate(new Date());
-        transaction.setTransactionType(TransactionType.REQ_SEND_APPROVAL);
         transaction.setStatus(TransactionStatus.IN_PROGRESS);
         transaction.setOrder(itemShipmentDto.getRo());
         transaction.setPic(context.getUser().get().getUserDetail());
         transaction.setNote(itemShipmentDto.getNote());
+
+        if (itemShipmentDto.getRo().getStatus() == RequestOrderStatus.APPROVED) {
+            itemShipmentDto.getRo().setStatus(RequestOrderStatus.WAITING_SEND_APPROVAL);
+            transaction.setTransactionType(TransactionType.REQ_SEND_APPROVAL);
+            itemShipmentDto.getRo().getAssets().stream().forEach(asset -> {
+                asset.setAssetStatus(AssetStatus.LOCKED);
+                asset.setUpdatedDate(new Date());
+                assetService.update(asset);
+            });
+        } else {
+            itemShipmentDto.getRo().setStatus(RequestOrderStatus.SEND);
+            transaction.setTransactionType(TransactionType.SEND_ITEM);
+            itemShipmentDto.getRo().getAssets().stream().forEach(asset -> {
+                asset.setAssetStatus(AssetStatus.SEND);
+                asset.setUpdatedDate(new Date());
+                asset.setUnit(itemShipmentDto.getRo().getFrom());
+                assetService.update(asset);
+            });
+        }
 
         if (itemShipmentDto.getRo().getTransactions() != null) {
             itemShipmentDto.getRo().getTransactions().add(transaction);
@@ -58,16 +76,8 @@ public class ItemProcessorController extends ItemModule {
             itemShipmentDto.getRo().setTransactions(Arrays.asList(transaction));
         }
 
-        itemShipmentDto.getRo().getAssets().stream().forEach(asset -> {
-            asset.setAssetStatus(AssetStatus.LOCKED);
-            asset.setUpdatedDate(new Date());
-            assetService.update(asset);
-        });
-
-        itemShipmentDto.getRo().setStatus(RequestOrderStatus.WAITING_SEND_APPROVAL);
-        requestOrderService.updateRequestOrder(itemShipmentDto.getRo());
         transactionService.save(transaction);
-
+        requestOrderService.updateRequestOrder(itemShipmentDto.getRo());
         return String.format("redirect:%s", ITEM_SHIPMENT_PATH);
     }
 
