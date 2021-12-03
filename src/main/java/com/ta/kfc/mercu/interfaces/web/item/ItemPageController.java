@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,12 @@ public class ItemPageController extends ItemModule {
 
         ItemShipmentDto itemShipmentDto = new ItemShipmentDto();
         model.addAttribute("template", "item_shipment");
-        model.addAttribute("transactions", transactionService.findByType(TransactionType.SEND_ITEM));
+
+        List<Transaction> transactions = transactionService.findByType(TransactionType.SEND_ITEM);
+        transactions.addAll(transactionService.findByType(TransactionType.REQ_SEND_APPROVAL));
+        transactions.addAll(transactionService.findByType(TransactionType.SEND_APPROVAL));
+        model.addAttribute("transactions", transactions);
+
         model.addAttribute("units", masterService.getAllUnit().stream()
                 .filter(u -> u.getUnitType().equals(UnitType.WAREHOUSE))
                 .collect(Collectors.toList()));

@@ -46,12 +46,11 @@ public class ItemProcessorController extends ItemModule {
         Transaction transaction = new Transaction();
         transaction.setCreatedDate(new Date());
         transaction.setUpdatedDate(new Date());
-        transaction.setTransactionType(TransactionType.SEND_ITEM);
+        transaction.setTransactionType(TransactionType.REQ_SEND_APPROVAL);
         transaction.setStatus(TransactionStatus.IN_PROGRESS);
         transaction.setOrder(itemShipmentDto.getRo());
         transaction.setPic(context.getUser().get().getUserDetail());
         transaction.setNote(itemShipmentDto.getNote());
-
 
         if (itemShipmentDto.getRo().getTransactions() != null) {
             itemShipmentDto.getRo().getTransactions().add(transaction);
@@ -60,13 +59,12 @@ public class ItemProcessorController extends ItemModule {
         }
 
         itemShipmentDto.getRo().getAssets().stream().forEach(asset -> {
-            asset.setAssetStatus(AssetStatus.SEND);
+            asset.setAssetStatus(AssetStatus.LOCKED);
             asset.setUpdatedDate(new Date());
-            asset.setUnit(itemShipmentDto.getRo().getFrom());
             assetService.update(asset);
         });
 
-        itemShipmentDto.getRo().setStatus(RequestOrderStatus.IN_PROGRESS);
+        itemShipmentDto.getRo().setStatus(RequestOrderStatus.WAITING_SEND_APPROVAL);
         requestOrderService.updateRequestOrder(itemShipmentDto.getRo());
         transactionService.save(transaction);
 

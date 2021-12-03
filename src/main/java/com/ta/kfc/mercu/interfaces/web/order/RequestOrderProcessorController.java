@@ -4,13 +4,12 @@ import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.interfaces.web.approval.ApprovalModule;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
+import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,14 +28,17 @@ public class RequestOrderProcessorController extends OrderModule {
 
     private RequestOrderService requestOrderService;
     private MasterService masterService;
+    private TransactionService transactionService;
     private FastContext context;
 
     @Autowired
     public RequestOrderProcessorController(FastContext context,
                                            RequestOrderService requestOrderService,
+                                           TransactionService transactionService,
                                            MasterService masterService) {
         this.context = context;
         this.requestOrderService = requestOrderService;
+        this.transactionService = transactionService;
         this.masterService = masterService;
     }
 
@@ -101,7 +103,31 @@ public class RequestOrderProcessorController extends OrderModule {
                     requestOrder.get().setStatus(RequestOrderStatus.CANCELED);
                     break;
                 case "approve":
-                    requestOrder.get().setStatus(RequestOrderStatus.APPROVED);
+                    if (requestOrder.get().getStatus()
+                            .equals(RequestOrderStatus.WAITING_APPROVAL)) {
+
+                        requestOrder.get().setStatus(RequestOrderStatus.APPROVED);
+
+                    } else if (requestOrder.get().getStatus()
+                            .equals(RequestOrderStatus.WAITING_SEND_APPROVAL)) {
+
+                        requestOrder.get().setStatus(RequestOrderStatus.SEND_APPROVED);
+
+                        Transaction transaction = new Transaction();
+                        transaction.setCreatedDate(new Date());
+                        transaction.setUpdatedDate(new Date());
+                        transaction.setTransactionType(TransactionType.SEND_APPROVAL);
+                        transaction.setStatus(TransactionStatus.COMPLETE);
+                        transaction.setOrder(requestOrder.get());
+                        transaction.setPic(context.getUser().get().getUserDetail());
+                        transaction.setNote("");
+                        requestOrder.get().getTransactions().add(transaction);
+                        requestOrder.get().getTransactions().stream().
+                                filter(t -> t.getTransactionType().equals(TransactionType.REQ_SEND_APPROVAL))
+                                .findAny().ifPresent(t -> t.setStatus(TransactionStatus.COMPLETE));
+
+                        transactionService.save(transaction);
+                    }
                     page = ApprovalModule.APPROVAL_PATH;
                     break;
                 case "reject":

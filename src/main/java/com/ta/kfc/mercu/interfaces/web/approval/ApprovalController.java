@@ -45,10 +45,17 @@ public class ApprovalController extends ApprovalModule {
                                 ro.getRequester().getDepartment().getName()
                                         .equals(user.getUserDetail().getDepartment().getName()))
                         .collect(Collectors.toList()));
+            case ASSET_MANAGER:
+                model.addAttribute("requests", requestOrderService.findAllRequestOrders()
+                        .stream()
+                        .filter(ro ->
+                                ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                        .collect(Collectors.toList()));
             case ROOT:
                 model.addAttribute("requests", requestOrderService.findAllRequestOrders()
                         .stream()
-                        .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL))
+                        .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
+                                ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
                         .collect(Collectors.toList()));
         }
 
