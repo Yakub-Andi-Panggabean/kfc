@@ -1,7 +1,10 @@
 package com.ta.kfc.mercu.interfaces.web.asset;
 
 import com.ta.kfc.mercu.context.FastContext;
+import com.ta.kfc.mercu.dto.item.AddAssetDto;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
@@ -9,25 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class AssetController {
-
-    public static final String ASSET_PATH = "/asset";
-    public static final String ASSET_VERIFICATION_PATH = ASSET_PATH + "/verification";
-    public static final String ASSET_ADJUSTMENT_PATH = ASSET_PATH + "/adjustment";
-
+public class AssetPageController extends AssetModule {
 
     private AuthorizationService authorizationService;
     private RequestOrderService requestOrderService;
     private FastContext context;
 
     @Autowired
-    public AssetController(AuthorizationService authorizationService,
-                           RequestOrderService requestOrderService,
-                           FastContext context) {
+    public AssetPageController(AuthorizationService authorizationService,
+                               RequestOrderService requestOrderService,
+                               FastContext context) {
         this.authorizationService = authorizationService;
         this.requestOrderService = requestOrderService;
         this.context = context;
@@ -53,5 +54,15 @@ public class AssetController {
         model.addAttribute("template", "asset_adjustment");
 
         return "index";
+    }
+
+    @GetMapping({ASSET_VERIFICATION_PATH + "/{ro_id}"})
+    public String getAssetVerificationModal(
+            @PathVariable(value = "ro_id") Long roId,
+            Model model) {
+
+        model.addAttribute("order", requestOrderService.findRequestOrderById(roId).get());
+
+        return "fragments/asset_verification/modal_item_verification";
     }
 }
