@@ -11,12 +11,31 @@
         <div class="card">
             <div class="card-body">
                 <div class="col-md-6">
-                    <label for="inputTransferFrom">Location</label>
-                    <select id="inputTransferFrom" class="form-control">
-                        <option selected>Outlet A</option>
-                        <option>Outlet A</option>
+                    <label for="assetAdjustmentLocation">Location</label>
+                    <select id="assetAdjustmentLocation" class="form-control">
+                        <option th:each="unit : ${units}" th:value="${unit.id}"
+                                th:attr="data-unit-adjustment=${#httpServletRequest.RequestURL+'?unitId='+unit.id}"
+                                th:inline="text">[[${unit.unitName}]]
+                        </option>
                     </select>
                 </div>
+                <br>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="soID">Stock Opname Id</label>
+                        <input type="text" class="form-control" id="soID" disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="soDate">Stock Opname Date</label>
+                        <input type="text" class="form-control" id="soDate" disabled>
+                    </div>
+                </div>
+                <button class="btn btn-round btn-primary">Create SO</button>
                 <br>
             </div>
         </div>
@@ -48,40 +67,25 @@
                             <th class="text-center">Model</th>
                             <th class="text-center">Brand</th>
                             <th class="text-center">Qty</th>
-                            <th class="text-center">Qty (Adjustment)</th>
                             <th class="text-center">Action</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center">P-xxx-xxxx</td>
-                            <td class="text-center">Mac-Mini-2021-xxx</td>
-                            <td class="text-center">Computer</td>
-                            <td class="text-center">Apple</td>
-                            <td class="text-center">12</td>
-                            <td class="text-center">
-                                <input type="text" class="form-control text-center" placeholder="Adjust">
-                            </td>
-                            <td class="td-actions text-center">
-                                <button class="btn btn-info btn-round">
-                                    <i class="now-ui-icons ui-2_settings-90"></i> Adjust
-                                </button>
-                            </td>
+                        <tr th:if="${!isUnitSelected}">
+                            <td colspan="7" class="text-center"> No Asset Available</td>
                         </tr>
-                        <tr>
-                            <td class="text-center">P-xxx-xxxx</td>
-                            <td class="text-center">Printer-Canon-xxx</td>
-                            <td class="text-center">Printer</td>
-                            <td class="text-center">Canon</td>
-                            <td class="text-center">6</td>
-                            <td class="text-center">
-                                <input type="text" class="form-control text-center" placeholder="Adjust">
-                            </td>
+                        <tr th:each="productMap : ${unit_products}">
+                            <td class="text-center" th:inline="text">[[${productMap.key.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${productMap.key.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${productMap.key.model.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${productMap.key.brand.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${productMap.value.size}]]</td>
                             <td class="td-actions text-center">
-                                <button class="btn btn-info btn-round">
+                                <a class="btn btn-info btn-round"
+                                   th:href="@{/asset/adjustment/{unitId}/{productId}(unitId=${unit_id},productId=${productMap.key.id})}">
                                     <i class="now-ui-icons ui-2_settings-90"></i> Adjust
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         </tbody>

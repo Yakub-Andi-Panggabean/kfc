@@ -58,4 +58,9 @@ public class Brand {
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

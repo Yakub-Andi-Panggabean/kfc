@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="asset_adjustment_detail" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <br>
+        <div class="card">
+            <div class="card-header row">
+                <div class="form-group col-md-8">
+                    <table>
+                        <tr>
+                            <th colspan="text-left">Unit Name</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${unit.unitName}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Product</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${product.name}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Model</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${product.model}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Brand</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${product.brand}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Book Qty</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-left">&nbsp;[[${assets.size}]]</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
+                               placeholder="Search...">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Asset Code</th>
+                            <th class="text-center"></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="asset : ${assets}">
+                            <td class="text-center" th:inline="text">[[${asset.code}]]</td>
+                            <td class="td-actions text-center">
+                                <select id="inputCategory" class="form-control">
+                                    <option th:value="OK">Ok</option>
+                                    <option th:value="NOT_OK">Not Ok</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="col-md-12 text-xl-center">
+                    <br>
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-success">Finalize</button>
+                    <button type="submit" class="btn btn-dark">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

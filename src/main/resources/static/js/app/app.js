@@ -26,8 +26,13 @@ $('#verifyOrderDetail').on('show.bs.modal', function (event) {
 function removeAsset(caller, event) {
     event.preventDefault();
     var action = $(caller).attr("data-action");
-    console.log(action)
     $.post(action, function (data) {
         location.reload();
     });
 }
+
+
+$('#assetAdjustmentLocation').on('change', function () {
+    var path = $('option:selected', this).attr('data-unit-adjustment');
+    location.href = path
+});
