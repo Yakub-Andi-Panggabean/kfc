@@ -113,12 +113,12 @@
                         <td class="td-actions text-center">
                             <a th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&supplierId='+sup.id}"
                                class="btn btn-success btn-round">Edit</a>
-                            <a type="submit" th:if="${unit.isEnable()}"
+                            <a type="submit" th:if="${sup.isEnable()}"
                                th:href="${#httpServletRequest.RequestURL+'/'+sup.id}"
                                class="btn btn-danger btn-round">
                                 Disable
                             </a>
-                            <a type="submit" th:unless="${unit.isEnable()}"
+                            <a type="submit" th:unless="${sup.isEnable()}"
                                th:href="${#httpServletRequest.RequestURL+'/'+sup.id}"
                                class="btn btn-info btn-round">
                                 Enable
