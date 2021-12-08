@@ -8,63 +8,70 @@
 <div th:fragment="master_supplier" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-body">
-            <form>
+            <form th:action="@{/master/supplier}" th:object="${supplier}" method="post">
+                <input type="hidden" th:field="*{id}">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputSupplierName">Supplier Name</label>
-                        <input type="text" class="form-control" id="inputSupplierName" placeholder="Supplier Name">
+                        <input type="text" class="form-control" id="inputSupplierName" th:field="*{name}"
+                               placeholder="Supplier Name">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputSupplierEmail">Email</label>
-                        <input type="text" class="form-control" id="inputSupplierEmail" placeholder="Email">
+                        <input type="text" class="form-control" id="inputSupplierEmail" th:field="*{email}"
+                               placeholder="Email">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputCity">City</label>
-                        <select id="inputCity" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select id="inputCity" class="form-control" th:field="*{city}">
+                            <option value="Palembang">Palembang</option>
+                            <option value="Jakarta">Jakarta</option>
+                            <option value="Medan">Medan</option>
+                            <option value="Bekasi">Bekasi</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPostalCode">Postal Code</label>
-                        <input type="text" class="form-control" id="inputPostalCode" placeholder="Postal Code">
+                        <input type="text" class="form-control" id="inputPostalCode" th:field="*{zipCode}"
+                               placeholder="Postal Code">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputPhone1">Phone 1</label>
-                        <input type="text" class="form-control" id="inputPhone1" placeholder="Phone 1">
+                        <input type="text" class="form-control" id="inputPhone1" th:field="*{phone1}"
+                               placeholder="Phone 1">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputPhone2">Phone 1</label>
-                        <input type="text" class="form-control" id="inputPhone2" placeholder="Phone 2">
+                        <label for="inputPhone2">Phone 2</label>
+                        <input type="text" class="form-control" id="inputPhone2" th:field="*{phone2}"
+                               placeholder="Phone 2">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="inputContactPerson">Contact Person</label>
-                        <input type="text" class="form-control" id="inputContactPerson" placeholder="Phone 1">
-                    </div>
-                    <div class="form-group col-md-6">
                         <label for="inputFax">Fax</label>
-                        <input type="text" class="form-control" id="inputFax" placeholder="Fax">
+                        <input type="text" class="form-control" id="inputFax" th:field="*{fax}" placeholder="Fax">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputAddress1">Address</label>
-                        <input type="text" class="form-control" id="inputAddress1" placeholder="Address 1">
+                        <input type="text" class="form-control" id="inputAddress1" th:field="*{address1}"
+                               placeholder="Address 1">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputAddress2">Address</label>
-                        <input type="text" class="form-control" id="inputAddress2" placeholder="Address 2">
+                        <input type="text" class="form-control" id="inputAddress2" th:field="*{address2}"
+                               placeholder="Address 2">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button th:if="${isUpdate}" type="submit" class="btn btn-primary">Update</button>
+                <button th:unless="${isUpdate}" type="submit" class="btn btn-primary">Add</button>
             </form>
         </div>
 
@@ -76,23 +83,46 @@
                     <tr>
                         <th class="text-center">ID</th>
                         <th class="text-center">Supplier Name</th>
-                        <th class="text-center">City</th>
                         <th class="text-center">Email</th>
-                        <th class="text-center">Phone</th>
+                        <th class="text-center">City</th>
+                        <th class="text-center">Postal Code</th>
+                        <th class="text-center">Phone 1</th>
+                        <th class="text-center">Phone 2</th>
+                        <th class="text-center">Fax</th>
+                        <th class="text-center">Address 1</th>
+                        <th class="text-center">Address 2</th>
                         <th class="text-center">Action</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="text-center">S-xxx</td>
-                        <td class="text-center">Supplier-xxx</td>
-                        <td class="text-center">Batavia</td>
-                        <td class="text-center">supp@ss.com</td>
-                        <td class="text-center">08121348484</td>
+                    <tr th:if="${suppliers.empty}">
+                        <td colspan="11" class="text-center"> No Supplier Available</td>
+                    </tr>
+                    <tr th:each="sup:${suppliers}">
+                        <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.zipCode}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.phone1}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.phone2}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.fax}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                        <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
                         <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">Edit</button>
-                            <button class="btn btn-danger btn-round">Delete</button>
+                            <a th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&supplierId='+sup.id}"
+                               class="btn btn-success btn-round">Edit</a>
+                            <a type="submit" th:if="${unit.isEnable()}"
+                               th:href="${#httpServletRequest.RequestURL+'/'+sup.id}"
+                               class="btn btn-danger btn-round">
+                                Disable
+                            </a>
+                            <a type="submit" th:unless="${unit.isEnable()}"
+                               th:href="${#httpServletRequest.RequestURL+'/'+sup.id}"
+                               class="btn btn-info btn-round">
+                                Enable
+                            </a>
                         </td>
                     </tr>
                     </tbody>

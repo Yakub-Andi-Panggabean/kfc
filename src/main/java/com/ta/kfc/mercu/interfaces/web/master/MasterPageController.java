@@ -1,9 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.*;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.master.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,10 +107,21 @@ public class MasterPageController extends MasterModule {
 
 
     @GetMapping({MASTER_SUPPLIER_PATH})
-    public String getMasterSupplierPage(Model model) {
+    public String getMasterSupplierPage(@RequestParam(value = "isUpdate", required = false) boolean isUpdate,
+                                        @RequestParam(value = "supplierId", required = false) Long supplierID,
+                                        Model model) {
 
         model.addAttribute("template", "master");
         model.addAttribute("master_template", "master_supplier");
+
+        if (supplierID == null) {
+            model.addAttribute("supplier", new Supplier());
+        } else {
+            model.addAttribute("supplier", masterService.findSupplier(supplierID).get());
+        }
+        model.addAttribute("isUpdate", isUpdate);
+
+        model.addAttribute("suppliers", masterService.findAllSuppliers());
 
         return "index";
     }

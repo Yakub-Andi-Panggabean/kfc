@@ -47,5 +47,13 @@ public interface MasterService {
 
     Optional<Department> getDepartment(Long id);
 
+    Optional<Supplier> saveSupplier(Supplier supplier);
+
+    Optional<Supplier> updateSupplier(Supplier supplier);
+
+    Optional<Supplier> findSupplier(Long id);
+
+    List<Supplier> findAllSuppliers();
+
 
 }

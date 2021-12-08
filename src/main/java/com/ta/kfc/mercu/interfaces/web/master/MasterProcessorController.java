@@ -1,9 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.*;
 import com.ta.kfc.mercu.service.master.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -207,6 +204,42 @@ public class MasterProcessorController extends MasterModule {
             attr.addAttribute("error", exception.getMessage());
         }
         return String.format("redirect:%s?", MASTER_DEPARTMENT_PATH);
+    }
+
+
+    @PostMapping({MASTER_SUPPLIER_PATH})
+    public String addNewSupllier(Model modelUi,
+                                 Supplier supplier) {
+
+        if (supplier.getId() == null) {
+            supplier.setCreatedDate(new Date());
+            supplier.setUpdatedDate(new Date());
+            masterService.saveSupplier(supplier);
+        } else {
+            supplier.setUpdatedDate(new Date());
+            masterService.updateSupplier(supplier);
+        }
+
+        return String.format("redirect:%s?", MASTER_SUPPLIER_PATH);
+
+    }
+
+    @GetMapping({MASTER_SUPPLIER_PATH + "/{supplierId}"})
+    public String addNewSupllier(Model modelUi,
+                                 @PathVariable("supplierId") Long supplierId) {
+
+        Optional<Supplier> supplier = masterService.findSupplier(supplierId);
+
+        if (supplier.isPresent()) {
+            if (supplier.get().isEnable()) {
+                supplier.get().setEnable(false);
+            } else {
+                supplier.get().setEnable(true);
+            }
+            masterService.updateSupplier(supplier.get());
+        }
+
+        return String.format("redirect:%s?", MASTER_SUPPLIER_PATH);
     }
 
 }

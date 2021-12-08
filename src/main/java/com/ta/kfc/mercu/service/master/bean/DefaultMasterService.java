@@ -17,18 +17,21 @@ public class DefaultMasterService implements MasterService {
     private ProductRepository productRepository;
     private UnitRepository unitRepository;
     private DepartmentRepository departmentRepository;
+    private SupplierRepository supplierRepository;
 
     @Autowired
     public DefaultMasterService(ModelRepository modelRepository,
                                 BrandRepository brandRepository,
                                 ProductRepository productRepository,
                                 UnitRepository unitRepository,
+                                SupplierRepository supplierRepository,
                                 DepartmentRepository departmentRepository) {
         this.modelRepository = modelRepository;
         this.brandRepository = brandRepository;
         this.productRepository = productRepository;
         this.unitRepository = unitRepository;
         this.departmentRepository = departmentRepository;
+        this.supplierRepository = supplierRepository;
     }
 
     @Override
@@ -140,6 +143,29 @@ public class DefaultMasterService implements MasterService {
     @Override
     public Optional<Department> getDepartment(Long id) {
         return departmentRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Supplier> saveSupplier(Supplier supplier) {
+        return Optional.of(supplierRepository.save(supplier));
+    }
+
+    @Override
+    public Optional<Supplier> updateSupplier(Supplier supplier) {
+        if (supplier.getId() == null) {
+            throw new RuntimeException("supplier id null");
+        }
+        return Optional.of(supplierRepository.save(supplier));
+    }
+
+    @Override
+    public Optional<Supplier> findSupplier(Long id) {
+        return supplierRepository.findById(id);
+    }
+
+    @Override
+    public List<Supplier> findAllSuppliers() {
+        return supplierRepository.findAll();
     }
 
 
