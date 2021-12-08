@@ -79,6 +79,7 @@ public class AssetPageController extends AssetModule {
 
         if (unitId != null) {
             Optional<Unit> unit = masterService.getUnit(unitId);
+            model.addAttribute("complete_sos", stockOpnameService.findByUnit(unit.get()));
 
             UserDetail userDetail = context.getUser().map(User::getUserDetail).get();
             model.addAttribute("unit_id", unitId);

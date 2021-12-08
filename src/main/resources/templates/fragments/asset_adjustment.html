@@ -145,7 +145,34 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">So ID</th>
+                        <th class="text-center">Created By</th>
+                        <th class="text-center">Created Date</th>
+                        <th class="text-center">Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:unless="${isUnitSelected}">
+                        <td colspan="7" class="text-center"> No Asset Available</td>
+                    </tr>
+                    <tr th:if="${isUnitSelected}" th:each="cos : ${complete_sos}">
+                        <td class="text-center" th:inline="text">[[${cos.id}]]</td>
+                        <td class="text-center" th:inline="text">[[${cos.createdBy.firstName}]] [[${cos.createdBy.lastName}]]</td>
+                        <td class="text-center" th:inline="text">[[${cos.createdDate}]]</td>
+                        <td class="text-center" th:inline="text">[[${cos.status}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
-</div>
 </body>
 </html>
