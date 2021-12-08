@@ -22,6 +22,9 @@ public class StockOpname {
     @OneToMany(mappedBy = "stockOpname")
     private List<StockOpnameDetail> details;
 
+    @Enumerated(EnumType.STRING)
+    private SoStatus status;
+
     public Long getId() {
         return id;
     }
@@ -68,5 +71,13 @@ public class StockOpname {
 
     public void setDetails(List<StockOpnameDetail> details) {
         this.details = details;
+    }
+
+    public SoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SoStatus status) {
+        this.status = status;
     }
 }

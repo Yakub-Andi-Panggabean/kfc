@@ -25,18 +25,31 @@
 
         <div class="card">
             <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="soID">Stock Opname Id</label>
-                        <input type="text" class="form-control" id="soID" disabled>
+                <form th:action="@{/asset/adjustment/{unitId}(unitId=${unit_id})}" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="soID">Stock Opname Id</label>
+
+                            <input th:if="${isUnitSelected && isSoExist}" th:value="${so.id}" type="text"
+                                   class="form-control"
+                                   id="soID" disabled>
+                            <input th:unless="${isUnitSelected && isSoExist}" type="text" class="form-control" id="soID"
+                                   disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="soDate">Stock Opname Date</label>
+                            <input th:if="${isUnitSelected && isSoExist}" type="text" th:value="${so.createdDate}"
+                                   class="form-control" id="soDate" disabled>
+                            <input th:unless="${isUnitSelected && isSoExist}" type="text" class="form-control"
+                                   id="soDate" disabled>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="soDate">Stock Opname Date</label>
-                        <input type="text" class="form-control" id="soDate" disabled>
-                    </div>
-                </div>
-                <button class="btn btn-round btn-primary">Create SO</button>
-                <br>
+                    <button th:if="${isUnitSelected && so==null}" class="btn btn-round btn-primary">Create SO</button>
+                    <button th:unless="${isUnitSelected && so==null}" class="btn btn-round btn-dark" disabled>Create
+                        SO
+                    </button>
+                    <br>
+                </form>
             </div>
         </div>
 
@@ -72,24 +85,63 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:if="${!isUnitSelected}">
+                        <tr th:unless="${isUnitSelected}">
                             <td colspan="7" class="text-center"> No Asset Available</td>
                         </tr>
-                        <tr th:each="productMap : ${unit_products}">
-                            <td class="text-center" th:inline="text">[[${productMap.key.id}]]</td>
-                            <td class="text-center" th:inline="text">[[${productMap.key.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${productMap.key.model.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${productMap.key.brand.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${productMap.value.size}]]</td>
-                            <td class="td-actions text-center">
-                                <a class="btn btn-info btn-round"
-                                   th:href="@{/asset/adjustment/{unitId}/{productId}(unitId=${unit_id},productId=${productMap.key.id})}">
-                                    <i class="now-ui-icons ui-2_settings-90"></i> Adjust
-                                </a>
-                            </td>
-                        </tr>
+                        <div th:if="${isSoExist}">
+                            <tr th:if="${isUnitSelected}" th:each="detail : ${so.details}">
+                                <td class="text-center" th:inline="text">[[${detail.product.id}]]</td>
+                                <td class="text-center" th:inline="text">[[${detail.product.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${detail.product.model.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${detail.product.brand.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${detail.qty}]]</td>
+                                <td th:unless="${detail.isComplete}" class="td-actions text-center">
+                                    <a class="btn btn-info btn-round"
+                                       th:href="@{/asset/adjustment/{unitId}/{productId}(so_id=${so.id},unitId=${unit_id},productId=${detail.product.id})}">
+                                        <i class="now-ui-icons ui-2_settings-90"></i> Adjust
+                                    </a>
+                                </td>
+                                <td th:if="${detail.isComplete}" class="td-actions text-center">
+                                    <a class="btn btn-info btn-round"
+                                       th:href="@{/asset/adjustment/{unitId}/{productId}(so_id=${so.id},unitId=${unit_id},productId=${detail.product.id})}">
+                                        <i class="now-ui-icons ui-2_settings-90"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:unless="${isSoExist}">
+                            <tr th:if="${isUnitSelected}" th:each="productMap : ${unit_products}">
+                                <td class="text-center" th:inline="text">[[${productMap.key.id}]]</td>
+                                <td class="text-center" th:inline="text">[[${productMap.key.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${productMap.key.model.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${productMap.key.brand.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${productMap.value.size}]]</td>
+                                <td class="td-actions text-center">
+                                    <a th:if="${isSoExist}" class="btn btn-info btn-round"
+                                       th:href="@{/asset/adjustment/{unitId}/{productId}(so_id=${so.id},unitId=${unit_id},productId=${productMap.key.id})}">
+                                        <i class="now-ui-icons ui-2_settings-90"></i> Adjust
+                                    </a>
+                                    <a th:unless="${isSoExist}" class="btn btn-dark btn-round" disabled="">
+                                        <i class="now-ui-icons ui-2_settings-90"></i> Adjust
+                                    </a>
+                                </td>
+                            </tr>
+                        </div>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <br>
+                <br>
+                <br>
+                <div th:if="${isSoAbleToComplete}" class="col-md-12 text-xl-center">
+                    <form method="post" th:action="@{/asset/adjustment/complete(soId=${so.id})}">
+                        <button type="submit" class="btn btn-round btn-primary">Complete SO</button>
+                    </form>
+                </div>
+                <div th:unless="${isSoAbleToComplete}" class="col-md-12 text-xl-center">
+                    <button type="submit" class="btn btn-round btn-dark" disabled>Complete SO</button>
                 </div>
             </div>
         </div>

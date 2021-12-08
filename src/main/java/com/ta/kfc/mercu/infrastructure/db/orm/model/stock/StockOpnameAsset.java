@@ -1,7 +1,6 @@
 package com.ta.kfc.mercu.infrastructure.db.orm.model.stock;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
-import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 
 import javax.persistence.*;
 
@@ -19,7 +18,7 @@ public class StockOpnameAsset {
     private Asset asset;
 
     @Enumerated(EnumType.STRING)
-    private SoStatus status;
+    private SOAssetStatus status;
 
     public Long getId() {
         return id;
@@ -45,11 +44,11 @@ public class StockOpnameAsset {
         this.asset = asset;
     }
 
-    public SoStatus getStatus() {
+    public SOAssetStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SoStatus status) {
+    public void setStatus(SOAssetStatus status) {
         this.status = status;
     }
 }

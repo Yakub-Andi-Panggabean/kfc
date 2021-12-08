@@ -21,6 +21,7 @@ public class StockOpnameDetail {
     private Long qtyAdjustment;
     @OneToMany(mappedBy = "stockOpnameDetail")
     private List<StockOpnameAsset> assets;
+    private boolean isComplete;
 
     public Long getId() {
         return id;
@@ -68,5 +69,13 @@ public class StockOpnameDetail {
 
     public void setAssets(List<StockOpnameAsset> assets) {
         this.assets = assets;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
     }
 }
