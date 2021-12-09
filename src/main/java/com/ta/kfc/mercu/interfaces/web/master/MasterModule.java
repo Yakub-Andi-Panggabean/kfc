@@ -9,6 +9,8 @@ public class MasterModule {
     public static final String MASTER_USER_PATH = MASTER_PATH + "/user";
     public static final String MASTER_UNIT_PATH = MASTER_PATH + "/unit";
     public static final String MASTER_DEPARTMENT_PATH = MASTER_PATH + "/department";
+    public static final String MASTER_MAPPING_PRODUCT_PATH = MASTER_PATH + "/mapping/product";
+
 
     public static final String MASTER_MODEL_STATUS_PATH = MASTER_MODEL_PATH + "/{id}";
     public static final String MASTER_BRAND_STATUS_PATH = MASTER_BRAND_PATH + "/{id}";

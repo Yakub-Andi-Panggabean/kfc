@@ -1,5 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
+import com.ta.kfc.mercu.dto.master.ProductSupplierMapping;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.*;
 import com.ta.kfc.mercu.service.master.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,7 +240,19 @@ public class MasterProcessorController extends MasterModule {
             masterService.updateSupplier(supplier.get());
         }
 
-        return String.format("redirect:%s?", MASTER_SUPPLIER_PATH);
+        return String.format("redirect:%s", MASTER_SUPPLIER_PATH);
+    }
+
+
+    @PostMapping({MASTER_MAPPING_PRODUCT_PATH})
+    public String addProductSupllierMapping(Model modelUi,
+                                            ProductSupplierMapping req) {
+
+        req.getProduct().getSuppliers().add(req.getSupplier());
+        masterService.updateProduct(req.getProduct());
+
+        return String.format("redirect:%s?isProductSelected=true&productId=%d", MASTER_MAPPING_PRODUCT_PATH, req.getProduct().getId());
+
     }
 
 }

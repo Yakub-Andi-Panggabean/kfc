@@ -1,5 +1,6 @@
 package com.ta.kfc.mercu.interfaces.web.master;
 
+import com.ta.kfc.mercu.dto.master.ProductSupplierMapping;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.*;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.master.MasterService;
@@ -177,6 +178,39 @@ public class MasterPageController extends MasterModule {
         } else {
             model.addAttribute("department", new Department());
         }
+
+        return "index";
+    }
+
+
+    @GetMapping({MASTER_MAPPING_PRODUCT_PATH})
+    public String getMasterMappingProductPage(@RequestParam(value = "isSupplierSelected", required = false) boolean isSupplierSelected,
+                                              @RequestParam(value = "isProductSelected", required = false) boolean isProductSelected,
+                                              @RequestParam(value = "supplierId", required = false) Long supplierID,
+                                              @RequestParam(value = "productId", required = false) Long productID,
+                                              Model model) {
+
+        model.addAttribute("template", "master");
+        model.addAttribute("master_template", "mapping_product");
+        model.addAttribute("suppliers", masterService.findAllSuppliers());
+        model.addAttribute("isProductSelected", isProductSelected);
+        model.addAttribute("isSupplierSelected", isSupplierSelected);
+        ProductSupplierMapping reqModel = new ProductSupplierMapping();
+        if (productID != null) {
+            Product product = masterService.getProduct(productID).get();
+            reqModel.setProduct(product);
+            model.addAttribute("selectedProduct", product);
+        }
+        if (isSupplierSelected) {
+            Optional<Supplier> supplier = masterService.findSupplier(supplierID);
+            if (supplier.isPresent()) {
+                model.addAttribute("selectedSupplier", supplier.get());
+                reqModel.setSupplier(supplier.get());
+            }
+        }
+        model.addAttribute("reqModel", reqModel);
+        model.addAttribute("products", masterService.getAllProducts());
+
 
         return "index";
     }

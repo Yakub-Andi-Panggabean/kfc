@@ -11,40 +11,11 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <div class="input-group no-border">
-                            <input type="text" id="inputRequestOrderID" value="" class="form-control"
-                                   placeholder="Search RO..." data-toggle="modal" data-target="#exampleModal">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="picDepartment">User ID</label>
-                        <input type="text" class="form-control" id="picDepartment" value="U-xxx-xxx" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputUserRole">User Name</label>
-                        <input type="text" class="form-control" id="inputUserRole" value="Ms. Nahira" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputRequestOrderCategory">User Role</label>
-                        <input type="text" class="form-control" id="inputRequestOrderCategory"
-                               value="Asset Admin" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
                         <label for="inputSupplier">Supplier</label>
                         <select id="inputSupplier" class="form-control">
-                            <option selected>Supplier 1</option>
-                            <option>Supplier 2</option>
+                            <option th:each="supplier:${suppliers}" th:value="${supplier.id}" th:inline="text">
+                                [[${supplier.name}]]
+                            </option>
                         </select>
                     </div>
                 </div>

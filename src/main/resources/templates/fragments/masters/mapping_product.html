@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="mapping_product" class="row">
+    <div class="card col-md-10 ml-auto mr-auto">
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputRequestOrderID" value="" class="form-control"
+                               placeholder="Choose Products..." data-toggle="modal"
+                               data-target="#productList">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${isProductSelected}" class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputProductName">Product Name</label>
+                    <input type="text" class="form-control" id="inputProductName" th:value="${selectedProduct.name}"
+                           disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputProductBrand">Product Brand</label>
+                    <input type="text" class="form-control" id="inputProductBrand" th:value="${selectedProduct.brand}"
+                           disabled>
+                </div>
+            </div>
+
+            <div th:if="${isProductSelected}" class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputProductModel">Product Model</label>
+                    <input type="text" class="form-control" id="inputProductModel" th:value="${selectedProduct.model}"
+                           disabled>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+
+            <div th:if="${isProductSelected}" class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputSupplierId" value="" class="form-control"
+                               placeholder="Choose Supplier..." data-toggle="modal"
+                               data-target="#supplierList">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${isSupplierSelected}" class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputProductName">Supplier Name</label>
+                    <input type="text" class="form-control" id="inputSupplierName" th:value="${selectedSupplier.name}"
+                           disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputProductBrand">Supplier City</label>
+                    <input type="text" class="form-control" id="inputProductBrand" th:value="${selectedSupplier.city}"
+                           disabled>
+                </div>
+            </div>
+
+            <div th:if="${isSupplierSelected}" class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputProductModel">Supplier Email</label>
+                    <input type="text" class="form-control" id="inputProductModel" th:value="${selectedSupplier.email}"
+                           disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputProductModel">Supplier Address</label>
+                    <input type="text" class="form-control" id="inputProductModel"
+                           th:value="${selectedSupplier.address1}"
+                           disabled>
+                </div>
+            </div>
+
+            <div th:if="${isProductSelected && isSupplierSelected}">
+                <form th:action="@{/master/mapping/product}" th:object="${reqModel}" method="post">
+                    <input type="hidden" th:field="*{product}">
+                    <input type="hidden" th:field="*{supplier}">
+                    <button type="submit" class="btn btn-round btn-primary">Add Mapping</button>
+                </form>
+            </div>
+            <br>
+            <br>
+            <br>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Supplier ID</th>
+                            <th class="text-center">Supplier Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">City</th>
+                            <th class="text-center">Address 1</th>
+                            <th class="text-center">Address 2</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody th:if="${isProductSelected}">
+                        <tr th:if="${selectedProduct.suppliers.empty}">
+                            <td colspan="7">No supplier mapped</td>
+                        </tr>
+                        <tr th:each="sup : ${selectedProduct.suppliers}">
+                            <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                            <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                            <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                            <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="productList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-bs" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Product List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Brand</th>
+                                        <th class="text-center">Model</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Action</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${products.empty}">
+                                        <td colspan="6" class="text-center"> No Products Available</td>
+                                    </tr>
+                                    <tr th:each="product : ${products}">
+                                        <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-primary btn-round"
+                                               th:href="${#httpServletRequest.RequestURL+'?isProductSelected=true&productId='+product.id}">Choose</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div th:if="${isProductSelected}" class="modal fade" id="supplierList" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-bs" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Supplier List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Supplier ID</th>
+                                        <th class="text-center">Supplier Name</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">City</th>
+                                        <th class="text-center">Address</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${suppliers.empty}">
+                                        <td colspan="6" class="text-center"> No Products Available</td>
+                                    </tr>
+                                    <tr th:each="sup : ${suppliers}">
+                                        <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-primary btn-round"
+                                               th:href="@{/master/mapping/product(isSupplierSelected=true
+                                               ,isProductSelected=true
+                                               ,supplierId=${sup.id}
+                                               ,productId=${selectedProduct.id})}">
+                                                Choose</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
