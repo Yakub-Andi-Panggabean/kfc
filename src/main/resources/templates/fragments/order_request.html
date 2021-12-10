@@ -63,36 +63,38 @@
             </div>
 
             <div class="card">
-                <div class="table-responsive">
-                    <table class="table table-shopping">
-                        <thead>
-                        <tr>
-                            <th class="text-center">Product ID</th>
-                            <th class="text-center">Brand</th>
-                            <th class="text-center">Model</th>
-                            <th class="text-center">Product Name</th>
-                            <th class="text-center">Action</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:if="${requested_products.empty}">
-                            <td colspan="6" class="text-center"> No Products Picked</td>
-                        </tr>
-                        <tr th:each="product : ${requested_products}">
-                            <td class="text-center" th:inline="text">[[${product.id}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.name}]]</td>
-                            <td class="td-actions text-center">
-                                <a class="btn btn-info btn-round"
-                                   th:href="@{/order/request/product/remove/{productId}(productId=${product.id})}">
-                                    Remove
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-shopping">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Product ID</th>
+                                <th class="text-center">Brand</th>
+                                <th class="text-center">Model</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${requested_products.empty}">
+                                <td colspan="6" class="text-center"> No Products Picked</td>
+                            </tr>
+                            <tr th:each="product : ${requested_products}">
+                                <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                <td class="td-actions text-center">
+                                    <a class="btn btn-info btn-round"
+                                       th:href="@{/order/request/product/remove/{productId}(productId=${product.id})}">
+                                        Remove
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -107,40 +109,42 @@
     </div>
 
     <div class="card col-md-10 ml-auto mr-auto">
-        <div class="table-responsive">
-            <table class="table table-shopping">
-                <thead>
-                <tr>
-                    <th class="text-center">Request ID</th>
-                    <th class="text-center">Submitted Date</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Description</th>
-                    <th class="text-center">Action</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${orders.empty}">
-                    <td colspan="5" class="text-center"> No Orders</td>
-                </tr>
-                <tr th:each="order : ${orders}">
-                    <td class="text-center" th:inline="text">[[${order.id}]]</td>
-                    <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
-                    <td class="text-center" th:inline="text">[[${order.status}]]</td>
-                    <td class="text-center" th:inline="text">[[${order.description}]]</td>
-                    <td class="td-actions text-center">
-                        <a th:unless=${#strings.equals(order.status,'CANCELED')} class="btn btn-danger btn-round"
-                           th:href="@{/order/request/cancel/{roId}(roId=${order.id})}">
-                            Cancel
-                        </a>
-                        <a th:if=${#strings.equals(order.status,'CANCELED')} class="btn btn-dark btn-round">
-                            Cancel
-                        </a>
-                        <button class="btn btn-info btn-round">Print</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="card-header"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Request ID</th>
+                        <th class="text-center">Submitted Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${orders.empty}">
+                        <td colspan="5" class="text-center"> No Orders</td>
+                    </tr>
+                    <tr th:each="order : ${orders}">
+                        <td class="text-center" th:inline="text">[[${order.id}]]</td>
+                        <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                        <td class="text-center" th:inline="text">[[${order.status}]]</td>
+                        <td class="text-center" th:inline="text">[[${order.description}]]</td>
+                        <td class="td-actions text-center">
+                            <a th:unless=${#strings.equals(order.status,'CANCELED')} class="btn btn-danger btn-round"
+                               th:href="@{/order/request/cancel/{roId}(roId=${order.id})}">
+                                Cancel
+                            </a>
+                            <a th:if=${#strings.equals(order.status,'CANCELED')} class="btn btn-dark btn-round">
+                                Cancel
+                            </a>
+                            <button class="btn btn-info btn-round">Print</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -158,36 +162,38 @@
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Product ID</th>
-                                    <th class="text-center">Brand</th>
-                                    <th class="text-center">Model</th>
-                                    <th class="text-center">Product Name</th>
-                                    <th class="text-center">Action</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:if="${products.empty}">
-                                    <td colspan="6" class="text-center"> No Products Available</td>
-                                </tr>
-                                <tr th:each="product : ${products}">
-                                    <td class="text-center" th:inline="text">[[${product.id}]]</td>
-                                    <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
-                                    <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
-                                    <td class="text-center" th:inline="text">[[${product.name}]]</td>
-                                    <td class="td-actions text-center">
-                                        <a class="btn btn-info btn-round"
-                                           th:href="@{/order/request/product/add/{productId}(productId=${product.id})}">
-                                            Add
-                                        </a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Brand</th>
+                                        <th class="text-center">Model</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${products.empty}">
+                                        <td colspan="6" class="text-center"> No Products Available</td>
+                                    </tr>
+                                    <tr th:each="product : ${products}">
+                                        <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-info btn-round"
+                                               th:href="@{/order/request/product/add/{productId}(productId=${product.id})}">
+                                                Add
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

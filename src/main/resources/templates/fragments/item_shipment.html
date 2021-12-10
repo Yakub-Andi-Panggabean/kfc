@@ -46,69 +46,71 @@
                 <br>
                 <br>
                 <div class="card">
-                    <div class="table-responsive">
-                        <table class="table table-shopping">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Brand</th>
-                                <th class="text-center">Model</th>
-                                <th class="text-center">Product Name</th>
-                                <th class="text-center">Asset Code</th>
-                                <th class="text-center">From</th>
-                                <th class="text-center"></th>
-
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:if="${roItems.empty}">
-                                <td colspan="6" class="text-center"> No Products Available</td>
-                            </tr>
-                            <tr th:each="item : ${roItems}">
-                                <td class="text-center" th:inline="text">[[${item.product.brand.name}]]</td>
-                                <td class="text-center" th:inline="text">[[${item.product.model.name}]]</td>
-                                <td class="text-center" th:inline="text">[[${item.product.name}]]</td>
-                                <td th:if="${item.asset==null}" class="text-center" th:inline="text"></td>
-                                <td th:if="${item.asset==null}" class="text-center">
-                                    <div class="form-group">
-                                        <select th:id="${'from_'+item.product.id}" class="form-control">
-                                            <option th:each="unit : ${units}" th:value="${unit.id}"
-                                                    th:inline="text">[[${unit.unitName}]] - [[${unit.city}]] -
-                                                [[${unit.zipCode}]]
-                                            </option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td th:if="${item.asset==null}" class="text-center">
-                                    <div class="input-group no-border">
-                                        <input type="text" id="findAssetId" value=""
-                                               class="form-control"
-                                               placeholder="Search Asset..."
-                                               data-toggle="modal"
-                                               th:attr="data-product-id=${item.product.id}"
-                                               data-target="#assetListModal">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Brand</th>
+                                    <th class="text-center">Model</th>
+                                    <th class="text-center">Product Name</th>
+                                    <th class="text-center">Asset Code</th>
+                                    <th class="text-center">From</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${roItems.empty}">
+                                    <td colspan="6" class="text-center"> No Products Available</td>
+                                </tr>
+                                <tr th:each="item : ${roItems}">
+                                    <td class="text-center" th:inline="text">[[${item.product.brand.name}]]</td>
+                                    <td class="text-center" th:inline="text">[[${item.product.model.name}]]</td>
+                                    <td class="text-center" th:inline="text">[[${item.product.name}]]</td>
+                                    <td th:if="${item.asset==null}" class="text-center" th:inline="text"></td>
+                                    <td th:if="${item.asset==null}" class="text-center">
+                                        <div class="form-group">
+                                            <select th:id="${'from_'+item.product.id}" class="form-control">
+                                                <option th:each="unit : ${units}" th:value="${unit.id}"
+                                                        th:inline="text">[[${unit.unitName}]] - [[${unit.city}]] -
+                                                    [[${unit.zipCode}]]
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td th:if="${item.asset==null}" class="text-center">
+                                        <div class="input-group no-border">
+                                            <input type="text" id="findAssetId" value=""
+                                                   class="form-control"
+                                                   placeholder="Search Asset..."
+                                                   data-toggle="modal"
+                                                   th:attr="data-product-id=${item.product.id}"
+                                                   data-target="#assetListModal">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
-                                    [[${item.asset.code}]]
-                                </td>
-                                <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
-                                    [[${item.asset.unit}]]
-                                </td>
-                                <td th:unless="${item.asset==null}" class="text-center">
-                                    <button th:unless="${isRoApproved}" th:attr="data-action=@{/item/shipment/asset/remove/{roId}/{assetId} (roId=${ro_id},assetId=${item.asset.id})}"
-                                            class="btn btn-danger btn-round"
-                                            onclick="removeAsset(this,event)">Remove
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </td>
+                                    <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
+                                        [[${item.asset.code}]]
+                                    </td>
+                                    <td th:unless="${item.asset==null}" class="text-center" th:inline="text">
+                                        [[${item.asset.unit}]]
+                                    </td>
+                                    <td th:unless="${item.asset==null}" class="text-center">
+                                        <button th:unless="${isRoApproved}"
+                                                th:attr="data-action=@{/item/shipment/asset/remove/{roId}/{assetId} (roId=${ro_id},assetId=${item.asset.id})}"
+                                                class="btn btn-danger btn-round"
+                                                onclick="removeAsset(this,event)">Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -135,37 +137,39 @@
         </div>
 
         <div class="card">
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Request Order</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">Created By</th>
-                        <th class="text-center">Recipient</th>
-                        <th class="text-center">Destination</th>
-                        <th class="text-center">Submitted Date</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Note</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${transactions.empty}">
-                        <td colspan="8" class="text-center"></td>
-                    </tr>
-                    <tr th:each="trx : ${transactions}">
-                        <td class="text-center" th:inline="text">[[${trx.order.id}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.transactionType}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.pic}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.order.requester}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.order.from.unitName}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.createdDate}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.status}]]</td>
-                        <td class="text-center" th:inline="text">[[${trx.note}]]</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Request Order</th>
+                            <th class="text-center">Type</th>
+                            <th class="text-center">Created By</th>
+                            <th class="text-center">Recipient</th>
+                            <th class="text-center">Destination</th>
+                            <th class="text-center">Submitted Date</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Note</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${transactions.empty}">
+                            <td colspan="8" class="text-center"></td>
+                        </tr>
+                        <tr th:each="trx : ${transactions}">
+                            <td class="text-center" th:inline="text">[[${trx.order.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.transactionType}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.pic}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.order.requester}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.order.from.unitName}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.createdDate}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.status}]]</td>
+                            <td class="text-center" th:inline="text">[[${trx.note}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -183,36 +187,38 @@
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Request ID</th>
-                                    <th class="text-center">Submitted Date</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Approved By</th>
-                                    <th class="text-center">Description</th>
-                                    <th class="text-center">Action</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:if="${orders.empty}">
-                                    <td colspan="5" class="text-center"> No Orders</td>
-                                </tr>
-                                <tr th:each="order : ${orders}">
-                                    <td class="text-center" th:inline="text">[[${order.id}]]</td>
-                                    <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
-                                    <td class="text-center" th:inline="text">[[${order.status}]]</td>
-                                    <td class="text-center" th:inline="text">[[${order.approver.firstName}]]</td>
-                                    <td class="text-center" th:inline="text">[[${order.description}]]</td>
-                                    <td class="td-actions text-center">
-                                        <a class="btn btn-info btn-round"
-                                           th:href="${#httpServletRequest.RequestURL+'?ro_id='+order.id}">Select</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Request ID</th>
+                                        <th class="text-center">Submitted Date</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Approved By</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${orders.empty}">
+                                        <td colspan="5" class="text-center"> No Orders</td>
+                                    </tr>
+                                    <tr th:each="order : ${orders}">
+                                        <td class="text-center" th:inline="text">[[${order.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.status}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.approver.firstName}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.description}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-info btn-round"
+                                               th:href="${#httpServletRequest.RequestURL+'?ro_id='+order.id}">Select</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

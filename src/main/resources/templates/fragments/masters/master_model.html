@@ -30,41 +30,43 @@
         </div>
 
         <div class="card">
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Model</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${models.empty}">
-                        <td colspan="3"> No Models Available</td>
-                    </tr>
-                    <tr th:each="model : ${models}">
-                        <td class="text-center" th:inline="text">[[${model.id}]]</td>
-                        <td class="text-center" th:inline="text">[[${model.name}]]</td>
-                        <td class="td-actions text-center">
-                            <a class="btn btn-success btn-round"
-                               th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+model.id}">Edit</a>
-                            <a type="submit" th:if="${model.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+model.id}"
-                               class="btn btn-danger btn-round">
-                                Disable
-                            </a>
-                            <a type="submit" th:unless="${model.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+model.id}"
-                               class="btn btn-info btn-round">
-                                Enable
-                            </a>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Model</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${models.empty}">
+                            <td colspan="3"> No Models Available</td>
+                        </tr>
+                        <tr th:each="model : ${models}">
+                            <td class="text-center" th:inline="text">[[${model.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${model.name}]]</td>
+                            <td class="td-actions text-center">
+                                <a class="btn btn-success btn-round"
+                                   th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+model.id}">Edit</a>
+                                <a type="submit" th:if="${model.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+model.id}"
+                                   class="btn btn-danger btn-round">
+                                    Disable
+                                </a>
+                                <a type="submit" th:unless="${model.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+model.id}"
+                                   class="btn btn-info btn-round">
+                                    Enable
+                                </a>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

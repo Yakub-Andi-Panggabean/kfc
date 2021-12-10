@@ -52,6 +52,8 @@ public class ItemPageController extends ItemModule {
     public String getItemReceiptPage(Model model) {
 
         model.addAttribute("template", "item_receipt");
+        model.addAttribute("suppliers", masterService.findAllSuppliers());
+
         return "index";
     }
 

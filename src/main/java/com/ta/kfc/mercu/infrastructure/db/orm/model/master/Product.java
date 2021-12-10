@@ -3,6 +3,7 @@ package com.ta.kfc.mercu.infrastructure.db.orm.model.master;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -25,8 +26,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductType productType;
 
-    @ManyToMany
-    private List<Supplier> suppliers;
+    @ManyToMany(mappedBy = "products")
+    private Set<Supplier> suppliers;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -74,14 +75,6 @@ public class Product {
         this.name = name;
     }
 
-    public List<Supplier> getSuppliers() {
-        return suppliers;
-    }
-
-    public void setSuppliers(List<Supplier> suppliers) {
-        this.suppliers = suppliers;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -104,5 +97,13 @@ public class Product {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public void setSuppliers(Set<Supplier> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public Set<Supplier> getSuppliers() {
+        return suppliers;
     }
 }

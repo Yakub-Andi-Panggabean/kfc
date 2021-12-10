@@ -2,6 +2,8 @@ package com.ta.kfc.mercu.infrastructure.db.orm.model.master;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "supplier")
@@ -20,6 +22,9 @@ public class Supplier {
     private String address1;
     private String address2;
     private String fax;
+
+    @ManyToMany
+    private Set<Product> products;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -129,5 +134,13 @@ public class Supplier {
 
     public void setEnable(boolean enable) {
         isEnable = enable;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

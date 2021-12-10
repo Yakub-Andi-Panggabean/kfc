@@ -102,33 +102,35 @@
             <br>
 
             <div class="card">
-                <div class="table-responsive">
-                    <table class="table table-shopping">
-                        <thead>
-                        <tr>
-                            <th class="text-center">Supplier ID</th>
-                            <th class="text-center">Supplier Name</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">City</th>
-                            <th class="text-center">Address 1</th>
-                            <th class="text-center">Address 2</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody th:if="${isProductSelected}">
-                        <tr th:if="${selectedProduct.suppliers.empty}">
-                            <td colspan="7">No supplier mapped</td>
-                        </tr>
-                        <tr th:each="sup : ${selectedProduct.suppliers}">
-                            <td class="text-center" th:inline="text">[[${sup.id}]]</td>
-                            <td class="text-center" th:inline="text">[[${sup.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${sup.email}]]</td>
-                            <td class="text-center" th:inline="text">[[${sup.city}]]</td>
-                            <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
-                            <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-shopping">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Supplier ID</th>
+                                <th class="text-center">Supplier Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">City</th>
+                                <th class="text-center">Address 1</th>
+                                <th class="text-center">Address 2</th>
+                            </tr>
+                            </thead>
+                            <tbody th:if="${isProductSelected}">
+                            <tr th:if="${selectedProduct.suppliers.empty}">
+                                <td colspan="7">No supplier mapped</td>
+                            </tr>
+                            <tr th:each="sup : ${selectedProduct.suppliers}">
+                                <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                                <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                                <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                                <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                                <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,34 +149,36 @@
                     </div>
                     <div class="modal-body">
                         <div class="card">
-                            <div class="table-responsive">
-                                <table class="table table-shopping">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">Product ID</th>
-                                        <th class="text-center">Brand</th>
-                                        <th class="text-center">Model</th>
-                                        <th class="text-center">Product Name</th>
-                                        <th class="text-center">Action</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:if="${products.empty}">
-                                        <td colspan="6" class="text-center"> No Products Available</td>
-                                    </tr>
-                                    <tr th:each="product : ${products}">
-                                        <td class="text-center" th:inline="text">[[${product.id}]]</td>
-                                        <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
-                                        <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
-                                        <td class="text-center" th:inline="text">[[${product.name}]]</td>
-                                        <td class="td-actions text-center">
-                                            <a class="btn btn-primary btn-round"
-                                               th:href="${#httpServletRequest.RequestURL+'?isProductSelected=true&productId='+product.id}">Choose</a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-shopping">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Product ID</th>
+                                            <th class="text-center">Brand</th>
+                                            <th class="text-center">Model</th>
+                                            <th class="text-center">Product Name</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${products.empty}">
+                                            <td colspan="6" class="text-center"> No Products Available</td>
+                                        </tr>
+                                        <tr th:each="product : ${products}">
+                                            <td class="text-center" th:inline="text">[[${product.id}]]</td>
+                                            <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
+                                            <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
+                                            <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                            <td class="td-actions text-center">
+                                                <a class="btn btn-primary btn-round"
+                                                   th:href="${#httpServletRequest.RequestURL+'?isProductSelected=true&productId='+product.id}">Choose</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,39 +203,42 @@
                     </div>
                     <div class="modal-body">
                         <div class="card">
-                            <div class="table-responsive">
-                                <table class="table table-shopping">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">Supplier ID</th>
-                                        <th class="text-center">Supplier Name</th>
-                                        <th class="text-center">Email</th>
-                                        <th class="text-center">City</th>
-                                        <th class="text-center">Address</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:if="${suppliers.empty}">
-                                        <td colspan="6" class="text-center"> No Products Available</td>
-                                    </tr>
-                                    <tr th:each="sup : ${suppliers}">
-                                        <td class="text-center" th:inline="text">[[${sup.id}]]</td>
-                                        <td class="text-center" th:inline="text">[[${sup.name}]]</td>
-                                        <td class="text-center" th:inline="text">[[${sup.email}]]</td>
-                                        <td class="text-center" th:inline="text">[[${sup.city}]]</td>
-                                        <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
-                                        <td class="td-actions text-center">
-                                            <a class="btn btn-primary btn-round"
-                                               th:href="@{/master/mapping/product(isSupplierSelected=true
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-shopping">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Supplier ID</th>
+                                            <th class="text-center">Supplier Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">City</th>
+                                            <th class="text-center">Address</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${suppliers.empty}">
+                                            <td colspan="6" class="text-center"> No Products Available</td>
+                                        </tr>
+                                        <tr th:each="sup : ${suppliers}">
+                                            <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                                            <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                                            <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                                            <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                                            <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                                            <td class="td-actions text-center">
+                                                <a class="btn btn-primary btn-round"
+                                                   th:href="@{/master/mapping/product(isSupplierSelected=true
                                                ,isProductSelected=true
                                                ,supplierId=${sup.id}
                                                ,productId=${selectedProduct.id})}">
-                                                Choose</a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                                    Choose</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

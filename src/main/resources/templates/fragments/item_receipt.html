@@ -6,54 +6,63 @@
 </head>
 <body>
 <div th:fragment="item_receipt" class="row">
+
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-body">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputReceivedBy">Received By</label>
-                        <input type="text" class="form-control" id="inputReceivedBy" value="Ms. Nurmala sari" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputUserRole">User Role</label>
-                        <input type="text" class="form-control" id="inputUserRole" value="Admin Asset" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="input-group no-border">
-                            <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
-                                   placeholder="Search Purchase Order..." data-toggle="modal"
-                                   data-target="#purchaseOrderListModal">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
-                                </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputPoSupplier" value="" class="form-control"
+                               placeholder="Search Supplier..." data-toggle="modal"
+                               data-target="#supplierList">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputInvoice">Invoice</label>
-                        <input type="text" class="form-control" id="inputInvoice" value="Invoice ...">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="input-group no-border">
+                        <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
+                               placeholder="Search Request Order..." data-toggle="modal"
+                               data-target="#purchaseOrderListModal">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control text-center" id="inputPONumber"
+                           placeholder="PO number">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-round btn-primary">Submit</button>
         </div>
 
         <div class="card">
-
-            <div class="table-responsive">
-                <table class="table table-shopping">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <span class="card-title">PO Item</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table display">
                     <thead>
                     <tr>
-                        <th class="text-center">Invoice</th>
-                        <th class="text-center">PO</th>
-                        <th class="text-center">Received By</th>
-                        <th class="text-center">Submitted Date</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Model</th>
+                        <th class="text-center">Brand</th>
+                        <th class="text-center">Asset Code</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -63,31 +72,13 @@
                         <td class="text-center">PO-2021-xxxxx</td>
                         <td class="text-center">John Lennon</td>
                         <td class="text-center">2021-12-12 14:00:00</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">INV-xxx-xxxx</td>
-                        <td class="text-center">PO-2021-xxxxx</td>
-                        <td class="text-center">John Lennon</td>
                         <td class="text-center">2021-12-12 14:00:00</td>
                         <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
+                            <button class="btn btn-info btn-round">
+                                <i class="now-ui-icons ui-1_settings-gear-63"></i> Edit
                             </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">INV-xxx-xxxx</td>
-                        <td class="text-center">PO-2021-xxxxx</td>
-                        <td class="text-center">John Lennon</td>
-                        <td class="text-center">2021-12-12 14:00:00</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
+                            <button class="btn btn-danger btn-round">
+                                <i class="now-ui-icons ui-1_simple-remove"></i> Remove
                             </button>
                         </td>
                     </tr>
@@ -97,72 +88,58 @@
         </div>
     </div>
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="purchaseOrderListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- supplier list -->
+    <div class="modal fade" id="supplierList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-bs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Purchase Order List</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Select Supplier</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Purchase ID</th>
-                                    <th class="text-center">Submitted Date</th>
-                                    <th class="text-center">Requested By</th>
-                                    <th class="text-center">Supplier</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Action</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="text-center">PO-2021-1234</td>
-                                    <td class="text-center">2021-11-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Supplier 1</td>
-                                    <th class="text-center">OPEN</th>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-success btn-round">
-                                            <i class="now-ui-icons ui-1_simple-add"></i> Add
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">PO-2021-123</td>
-                                    <td class="text-center">2021-09-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Supplier 2</td>
-                                    <th class="text-center">OPEN</th>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-success btn-round">
-                                            <i class="now-ui-icons ui-1_simple-add"></i> Add
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">PO-2020-1234</td>
-                                    <td class="text-center">2020-10-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Supplier 3</td>
-                                    <th class="text-center">OPEN</th>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-success btn-round">
-                                            <i class="now-ui-icons ui-1_simple-add"></i> Add
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-header">
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Supplier ID</th>
+                                        <th class="text-center">Supplier Name</th>
+                                        <th class="text-center">City</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Address1</th>
+                                        <th class="text-center">Address2</th>
+                                        <th class="text-center">Phone1</th>
+                                        <th class="text-center">Phone2</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${suppliers.empty}">
+                                        <td colspan="9" class="text-center"> No Orders</td>
+                                    </tr>
+                                    <tr th:each="sup : ${suppliers}">
+                                        <td class="text-center" th:inline="text">[[${sup.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.city}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.email}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.phone1}]]</td>
+                                        <td class="text-center" th:inline="text">[[${sup.phone2}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-info btn-round"
+                                               th:href="${#httpServletRequest.RequestURL+'?isSupplierSelected=true&supplierId='+sup.id}">Select</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

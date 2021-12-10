@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    $('.table').DataTable({
+        "ordering": false,
+    });
+});
+
 $('#assetListModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var productID = $(button).attr("data-product-id");

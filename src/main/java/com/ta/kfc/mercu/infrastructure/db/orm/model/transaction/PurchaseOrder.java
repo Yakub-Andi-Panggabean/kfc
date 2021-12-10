@@ -6,6 +6,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Supplier;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,9 +33,6 @@ public class PurchaseOrder {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-    @OneToMany
-    private Set<Product> products;
-
     @Enumerated(EnumType.STRING)
     private PurchaseOrderStatus status;
 
@@ -42,6 +40,9 @@ public class PurchaseOrder {
     private Date createdDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+
+    @OneToMany(mappedBy = "purchaseOrder")
+    private Set<PurchaseOrderItem> items;
 
     public Long getId() {
         return id;
@@ -83,14 +84,6 @@ public class PurchaseOrder {
         this.supplier = supplier;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
     public PurchaseOrderStatus getStatus() {
         return status;
     }
@@ -114,4 +107,13 @@ public class PurchaseOrder {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
+
+    public Set<PurchaseOrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<PurchaseOrderItem> items) {
+        this.items = items;
+    }
+
 }

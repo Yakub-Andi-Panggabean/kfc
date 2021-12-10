@@ -18,38 +18,41 @@
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <div class="table-responsive">
-                        <table class="table table-shopping">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Asset ID</th>
-                                <th class="text-center">Asset Code</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Created Date</th>
-                                <th class="text-center">Action</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:if="${assets.empty}">
-                                <td colspan="5" class="text-center"> No Asset Available</td>
-                            </tr>
-                            <tr th:each="asset : ${assets}">
-                                <td class="text-center" th:inline="text">[[${asset.id}]]</td>
-                                <td class="text-center" th:inline="text">[[${asset.code}]]</td>
-                                <td class="text-center" th:inline="text">[[${asset.assetStatus}]]</td>
-                                <td class="text-center" th:inline="text">[[${asset.createdDate}]]</td>
-                                <td class="td-actions text-center">
-                                    <form th:action="@{/item/shipment/asset/add/{roId}/{assetId} (roId=${ro_id},assetId=${asset.id})}"
-                                          th:object="${addAssetDto}" method="post">
-                                        <input type="hidden" th:field="*{roId}" th:value="${ro_id}">
-                                        <input type="hidden" th:field="*{assetId}" th:value="${asset.id}">
-                                        <button type="submit" class="btn btn-danger btn-round">Select</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Asset ID</th>
+                                    <th class="text-center">Asset Code</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Created Date</th>
+                                    <th class="text-center">Action</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${assets.empty}">
+                                    <td colspan="5" class="text-center"> No Asset Available</td>
+                                </tr>
+                                <tr th:each="asset : ${assets}">
+                                    <td class="text-center" th:inline="text">[[${asset.id}]]</td>
+                                    <td class="text-center" th:inline="text">[[${asset.code}]]</td>
+                                    <td class="text-center" th:inline="text">[[${asset.assetStatus}]]</td>
+                                    <td class="text-center" th:inline="text">[[${asset.createdDate}]]</td>
+                                    <td class="td-actions text-center">
+                                        <form th:action="@{/item/shipment/asset/add/{roId}/{assetId} (roId=${ro_id},assetId=${asset.id})}"
+                                              th:object="${addAssetDto}" method="post">
+                                            <input type="hidden" th:field="*{roId}" th:value="${ro_id}">
+                                            <input type="hidden" th:field="*{assetId}" th:value="${asset.id}">
+                                            <button type="submit" class="btn btn-danger btn-round">Select</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

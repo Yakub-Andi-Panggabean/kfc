@@ -249,7 +249,9 @@ public class MasterProcessorController extends MasterModule {
                                             ProductSupplierMapping req) {
 
         req.getProduct().getSuppliers().add(req.getSupplier());
+        req.getSupplier().getProducts().add(req.getProduct());
         masterService.updateProduct(req.getProduct());
+        masterService.updateSupplier(req.getSupplier());
 
         return String.format("redirect:%s?isProductSelected=true&productId=%d", MASTER_MAPPING_PRODUCT_PATH, req.getProduct().getId());
 

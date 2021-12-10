@@ -30,40 +30,42 @@
         </div>
 
         <div class="card">
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${brands.empty}">
-                        <td colspan="3"> No Brand Available</td>
-                    </tr>
-                    <tr th:each="brand : ${brands}">
-                        <td class="text-center" th:inline="text">[[${brand.id}]]</td>
-                        <td class="text-center" th:inline="text">[[${brand.name}]]</td>
-                        <td class="td-actions text-center">
-                            <a class="btn btn-success btn-round"
-                               th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+brand.id}">Edit</a>
-                            <a type="submit" th:if="${brand.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+brand.id}"
-                               class="btn btn-danger btn-round">
-                                Disable
-                            </a>
-                            <a type="submit" th:unless="${brand.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+brand.id}"
-                               class="btn btn-info btn-round">
-                                Enable
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${brands.empty}">
+                            <td colspan="3"> No Brand Available</td>
+                        </tr>
+                        <tr th:each="brand : ${brands}">
+                            <td class="text-center" th:inline="text">[[${brand.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${brand.name}]]</td>
+                            <td class="td-actions text-center">
+                                <a class="btn btn-success btn-round"
+                                   th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+brand.id}">Edit</a>
+                                <a type="submit" th:if="${brand.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+brand.id}"
+                                   class="btn btn-danger btn-round">
+                                    Disable
+                                </a>
+                                <a type="submit" th:unless="${brand.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+brand.id}"
+                                   class="btn btn-info btn-round">
+                                    Enable
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

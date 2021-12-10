@@ -42,14 +42,16 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="inputUnitAddress" >Address</label>
-                        <input type="text" class="form-control" th:field="*{address}" id="inputUnitAddress" placeholder="Outlet Address">
+                        <label for="inputUnitAddress">Address</label>
+                        <input type="text" class="form-control" th:field="*{address}" id="inputUnitAddress"
+                               placeholder="Outlet Address">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputUnitZipCode">Zip Code</label>
-                        <input type="text" class="form-control" th:field="*{zipCode}" id="inputUnitZipCode" placeholder="Outlet Zip Code">
+                        <input type="text" class="form-control" th:field="*{zipCode}" id="inputUnitZipCode"
+                               placeholder="Outlet Zip Code">
                     </div>
                 </div>
                 <button th:if="${isUpdate}" type="submit" class="btn btn-info">Update</button>
@@ -59,48 +61,50 @@
 
         <div class="card">
 
-            <div class="table-responsive">
-                <table class="table table-shopping">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Unit Code</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">City</th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Address</th>
-                        <th class="text-center">Zip Code</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${units.empty}">
-                        <td colspan="7" class="text-center"> No Unit Available</td>
-                    </tr>
-                    <tr th:each="unit : ${units}">
-                        <td class="text-center" th:inline="text">[[${unit.id}]]</td>
-                        <td class="text-center" th:inline="text">[[${unit.unitType}]]</td>
-                        <td class="text-center" th:inline="text">[[${unit.city}]]</td>
-                        <td class="text-center" th:inline="text">[[${unit.unitName}]]</td>
-                        <td class="text-center" th:inline="text">[[${unit.address}]]</td>
-                        <td class="text-center" th:inline="text">[[${unit.zipCode}]]</td>
-                        <td class="td-actions text-center">
-                            <a class="btn btn-success btn-round"
-                               th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+unit.id}">Edit</a>
-                            <a type="submit" th:if="${unit.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+unit.id}"
-                               class="btn btn-danger btn-round">
-                                Disable
-                            </a>
-                            <a type="submit" th:unless="${unit.isEnable()}"
-                               th:href="${#httpServletRequest.RequestURL+'/'+unit.id}"
-                               class="btn btn-info btn-round">
-                                Enable
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Unit Code</th>
+                            <th class="text-center">Type</th>
+                            <th class="text-center">City</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Address</th>
+                            <th class="text-center">Zip Code</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${units.empty}">
+                            <td colspan="7" class="text-center"> No Unit Available</td>
+                        </tr>
+                        <tr th:each="unit : ${units}">
+                            <td class="text-center" th:inline="text">[[${unit.id}]]</td>
+                            <td class="text-center" th:inline="text">[[${unit.unitType}]]</td>
+                            <td class="text-center" th:inline="text">[[${unit.city}]]</td>
+                            <td class="text-center" th:inline="text">[[${unit.unitName}]]</td>
+                            <td class="text-center" th:inline="text">[[${unit.address}]]</td>
+                            <td class="text-center" th:inline="text">[[${unit.zipCode}]]</td>
+                            <td class="td-actions text-center">
+                                <a class="btn btn-success btn-round"
+                                   th:href="${#httpServletRequest.RequestURL+'?isUpdate=true&id='+unit.id}">Edit</a>
+                                <a type="submit" th:if="${unit.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+unit.id}"
+                                   class="btn btn-danger btn-round">
+                                    Disable
+                                </a>
+                                <a type="submit" th:unless="${unit.isEnable()}"
+                                   th:href="${#httpServletRequest.RequestURL+'/'+unit.id}"
+                                   class="btn btn-info btn-round">
+                                    Enable
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
