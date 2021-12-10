@@ -49,18 +49,8 @@
                         </tr>
                     </table>
                 </div>
-                <div class="form-group col-md-4">
-                    <div class="input-group no-border">
-                        <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
-                               placeholder="Search...">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
+            <div class="card-header"></div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-shopping">
@@ -69,7 +59,6 @@
                             <th class="text-center">Asset Code</th>
                             <th class="text-center">Asset Status</th>
                             <th th:unless="${soDetail.isComplete}" class="text-center"></th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>

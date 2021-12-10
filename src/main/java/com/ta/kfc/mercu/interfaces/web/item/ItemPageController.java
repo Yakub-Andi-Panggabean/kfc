@@ -53,6 +53,9 @@ public class ItemPageController extends ItemModule {
 
         model.addAttribute("template", "item_receipt");
         model.addAttribute("suppliers", masterService.findAllSuppliers());
+        model.addAttribute("orders", requestOrderService.findAllRequestOrders()
+                .stream().filter(o -> o.getStatus() == RequestOrderStatus.APPROVED)
+                .collect(Collectors.toList()));
 
         return "index";
     }

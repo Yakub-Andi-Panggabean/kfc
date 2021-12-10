@@ -28,7 +28,7 @@
                     <div class="input-group no-border">
                         <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
                                placeholder="Search Request Order..." data-toggle="modal"
-                               data-target="#purchaseOrderListModal">
+                               data-target="#requestOrderList">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <i class="now-ui-icons ui-1_zoom-bold"></i>
@@ -116,7 +116,7 @@
                                         <th class="text-center">Address2</th>
                                         <th class="text-center">Phone1</th>
                                         <th class="text-center">Phone2</th>
-                                        <th></th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -135,6 +135,60 @@
                                         <td class="td-actions text-center">
                                             <a class="btn btn-info btn-round"
                                                th:href="${#httpServletRequest.RequestURL+'?isSupplierSelected=true&supplierId='+sup.id}">Select</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="requestOrderList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-bs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Request Order List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Request ID</th>
+                                        <th class="text-center">Submitted Date</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Approved By</th>
+                                        <th class="text-center">Description</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${orders.empty}">
+                                        <td colspan="5" class="text-center"> No Orders</td>
+                                    </tr>
+                                    <tr th:each="order : ${orders}">
+                                        <td class="text-center" th:inline="text">[[${order.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.status}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.approver.firstName}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.description}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-info btn-round"
+                                               th:href="${#httpServletRequest.RequestURL+'?ro_id='+order.id}">Select</a>
                                         </td>
                                     </tr>
                                     </tbody>
