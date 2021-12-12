@@ -1,9 +1,12 @@
 package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
+import com.ta.kfc.mercu.dto.item.AddItemReceipt;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceiptStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
@@ -11,13 +14,10 @@ import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -105,6 +105,22 @@ public class ItemProcessorController extends ItemModule {
             }
         }
         return String.format("redirect:%s?ro_id=%d", ITEM_SHIPMENT_PATH, roId);
+    }
+
+
+    @PostMapping({ITEM_RECEIPT_PATH})
+    public String addItemReceipt(
+            AddItemReceipt addItemReceipt, Model model) {
+
+        ItemReceipt itemReceipt = new ItemReceipt();
+        itemReceipt.setReceiver(context.getUser().get().getUserDetail());
+        itemReceipt.setPurchaseOrder(addItemReceipt.getPoNumber());
+        itemReceipt.setRequestOrder(addItemReceipt.getRequestOrder());
+        itemReceipt.setStatus(ItemReceiptStatus.NEW);
+
+        assetService.saveItemReceipt(itemReceipt);
+
+        return String.format("redirect:%s", ITEM_RECEIPT_PATH);
     }
 
 

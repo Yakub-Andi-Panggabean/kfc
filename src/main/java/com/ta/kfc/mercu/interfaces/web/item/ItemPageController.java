@@ -2,10 +2,12 @@ package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.dto.item.AddAssetDto;
+import com.ta.kfc.mercu.dto.item.AddItemReceipt;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
 import com.ta.kfc.mercu.dto.item.RoProductAsset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Supplier;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.UnitType;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
@@ -49,13 +51,47 @@ public class ItemPageController extends ItemModule {
 
 
     @GetMapping({ITEM_RECEIPT_PATH})
-    public String getItemReceiptPage(Model model) {
+    public String getItemReceiptPage(@RequestParam(value = "isSupplierSelected", required = false) boolean isSupplierSelected,
+                                     @RequestParam(value = "supplierId", required = false) Long supplierId,
+                                     @RequestParam(value = "isRoSelected", required = false) boolean isRoSelected,
+                                     @RequestParam(value = "roId", required = false) Long roId,
+                                     Model model) {
 
         model.addAttribute("template", "item_receipt");
+
         model.addAttribute("suppliers", masterService.findAllSuppliers());
         model.addAttribute("orders", requestOrderService.findAllRequestOrders()
                 .stream().filter(o -> o.getStatus() == RequestOrderStatus.APPROVED)
                 .collect(Collectors.toList()));
+
+        model.addAttribute("isSupplierSelected", isSupplierSelected);
+        model.addAttribute("isRoSelected", isRoSelected);
+        model.addAttribute("roId", roId);
+        model.addAttribute("supplierId", supplierId);
+        model.addAttribute("products", Collections.emptyList());
+
+        AddItemReceipt addItemReceipt = new AddItemReceipt();
+
+        if (isSupplierSelected) {
+
+            Optional<Supplier> supplier = masterService.findSupplier(supplierId);
+            if (supplier.isPresent()) {
+                addItemReceipt.setSupplier(supplier.get());
+                model.addAttribute("supplier", supplier.get());
+                model.addAttribute("products", supplier.get().getProducts());
+
+                if (isRoSelected) {
+                    Optional<RequestOrder> requestOrder = requestOrderService.findRequestOrderById(roId);
+                    if (requestOrder.isPresent()) {
+                        addItemReceipt.setRequestOrder(requestOrder.get());
+                        model.addAttribute("requestOrder", requestOrder.get());
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("addItemReceiptModel", addItemReceipt);
+
 
         return "index";
     }

@@ -22,13 +22,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-row">
+
                 <div class="form-group col-md-6">
                     <div class="input-group no-border">
-                        <input type="text" id="inputPurchaseOrderID" value="" class="form-control"
+                        <input th:if="${isSupplierSelected}" type="text" id="inputPurchaseOrderID" value=""
+                               class="form-control"
                                placeholder="Search Request Order..." data-toggle="modal"
                                data-target="#requestOrderList">
+                        <input th:unless="${isSupplierSelected}" type="text" id="inputPurchaseOrderID"
+                               placeholder="Search Request Order..."
+                               class="form-control" disabled>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <i class="now-ui-icons ui-1_zoom-bold"></i>
@@ -37,13 +40,80 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row">
+            <br>
+            <div th:if="${isSupplierSelected}" class="card">
+                <div class="card-header">
+                    <span class="card-title">Supplier Detail</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="displaySupplierName">Supplier Name</label>
+                            <input type="text" class="form-control text-center" id="displaySupplierName"
+                                   th:value="${supplier.name}" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="displaySupplierPhone1">Supplier Phone 1</label>
+                            <input type="text" class="form-control text-center" id="displaySupplierPhone1"
+                                   th:value="${supplier.phone1}" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="displaySupplierPhone2">Supplier Phone 1</label>
+                            <input type="text" class="form-control text-center" id="displaySupplierPhone2"
+                                   th:value="${supplier.phone2}" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${isRoSelected}" class="card">
+                <div class="card-header">
+                    <span class="card-title" th:inline="text">RO ID : [[${ro.id}]]</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="displaySupplierPhone1">Requested By</label>
+                            <input type="text" class="form-control text-center" id="displayRoRequestedBy"
+                                   th:value="${ro.requester.firstName}" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="displaySupplierPhone2">Approved By</label>
+                            <input type="text" class="form-control text-center" id="displayRoApproverBy"
+                                   th:value="${ro.approver.firstName}" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form th:if="${isSupplierSelected && isRoSelected}" th:action="@{/item/receipt}"
+                  th:object="${addItemReceiptModel}" method="post">
+                <input type="hidden" th:field="*{supplier}">
+                <input type="hidden" th:field="*{requestOrder}">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control text-center" id="inputPONumber"
+                               th:field="*{poNumber}" placeholder="PO number">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-round btn-primary">
+                    Submit
+                </button>
+            </form>
+
+            <div th:unless="${isSupplierSelected && isRoSelected}" class="form-row">
                 <div class="form-group col-md-6">
                     <input type="text" class="form-control text-center" id="inputPONumber"
                            placeholder="PO number">
                 </div>
             </div>
-            <button type="submit" class="btn btn-round btn-primary">Submit</button>
+
+            <button th:unless="${isSupplierSelected && isRoSelected}" type="submit" class="btn btn-round btn-dark">
+                Submit
+            </button>
+
         </div>
 
         <div class="card">
@@ -51,6 +121,16 @@
                 <div class="row">
                     <div class="col-md-8">
                         <span class="card-title">PO Item</span>
+                    </div>
+                    <div class="col-md-4">
+                        <button th:if="${isSupplierSelected}" class="pull-right btn btn-round btn-info"
+                                data-toggle="modal"
+                                data-target="#productList">
+                            Add Item
+                        </button>
+                        <button th:unless="${isSupplierSelected}" class="pull-right btn btn-round btn-dark" disabled>
+                            Add Item
+                        </button>
                     </div>
                 </div>
             </div>
@@ -63,7 +143,7 @@
                         <th class="text-center">Model</th>
                         <th class="text-center">Brand</th>
                         <th class="text-center">Asset Code</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -149,7 +229,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- RO Modal -->
     <div class="modal fade" id="requestOrderList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-bs" role="document">
@@ -169,10 +249,11 @@
                                     <thead>
                                     <tr>
                                         <th class="text-center">Request ID</th>
-                                        <th class="text-center">Submitted Date</th>
+                                        <th class="text-center">Requested By</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Approved By</th>
                                         <th class="text-center">Description</th>
+                                        <th class="text-center">Submitted Date</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     </thead>
@@ -182,13 +263,74 @@
                                     </tr>
                                     <tr th:each="order : ${orders}">
                                         <td class="text-center" th:inline="text">[[${order.id}]]</td>
-                                        <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                                        <td class="text-center" th:inline="text">[[${order.requester.firstName}]]</td>
                                         <td class="text-center" th:inline="text">[[${order.status}]]</td>
                                         <td class="text-center" th:inline="text">[[${order.approver.firstName}]]</td>
                                         <td class="text-center" th:inline="text">[[${order.description}]]</td>
-                                        <td class="td-actions text-center">
+                                        <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
+                                        <td th:if="${isSupplierSelected}" class="td-actions text-center">
                                             <a class="btn btn-info btn-round"
-                                               th:href="${#httpServletRequest.RequestURL+'?ro_id='+order.id}">Select</a>
+                                               th:href="@{${#httpServletRequest.RequestURL}(isSupplierSelected=true,supplierId=${supplier.id},isRoSelected=true,roId=${order.id})}">
+                                                Select
+                                            </a>
+                                        </td>
+                                        <td th:unless="${isSupplierSelected}" class="td-actions text-center">
+                                            <a class="btn btn-info btn-round">
+                                                Select
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-bs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Product List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Type</th>
+                                        <th class="text-center">Model</th>
+                                        <th class="text-center">Brand</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${products.empty}">
+                                        <td colspan="6" class="text-center">No Products for this supplier</td>
+                                    </tr>
+                                    <tr th:each="p : ${products}">
+                                        <td class="text-center" th:inline="text">[[${p.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${p.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${p.productType}]]</td>
+                                        <td class="text-center" th:inline="text">[[${p.brand.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${p.model.name}]]</td>
+                                        <td class="td-actions text-center">
+                                            <a class="btn btn-info btn-round">Select</a>
                                         </td>
                                     </tr>
                                     </tbody>
