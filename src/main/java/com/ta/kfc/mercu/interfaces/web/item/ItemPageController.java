@@ -1,16 +1,17 @@
 package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
-import com.ta.kfc.mercu.dto.item.AddAssetDto;
-import com.ta.kfc.mercu.dto.item.AddItemReceipt;
-import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
-import com.ta.kfc.mercu.dto.item.RoProductAsset;
+import com.ta.kfc.mercu.dto.item.*;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceiptStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Supplier;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.UnitType;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
+import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
@@ -36,9 +37,12 @@ public class ItemPageController extends ItemModule {
     private MasterService masterService;
     private FastContext context;
     private TransactionService transactionService;
+    private AssetService assetService;
 
     @Autowired
-    public ItemPageController(FastContext context, AuthorizationService authorizationService,
+    public ItemPageController(FastContext context,
+                              AssetService assetService,
+                              AuthorizationService authorizationService,
                               RequestOrderService requestOrderService,
                               MasterService masterService,
                               TransactionService transactionService) {
@@ -46,6 +50,7 @@ public class ItemPageController extends ItemModule {
         this.requestOrderService = requestOrderService;
         this.masterService = masterService;
         this.transactionService = transactionService;
+        this.assetService = assetService;
         this.context = context;
     }
 
@@ -63,12 +68,34 @@ public class ItemPageController extends ItemModule {
         model.addAttribute("orders", requestOrderService.findAllRequestOrders()
                 .stream().filter(o -> o.getStatus() == RequestOrderStatus.APPROVED)
                 .collect(Collectors.toList()));
+        model.addAttribute("units", masterService.getAllUnit().stream()
+                .filter(unit -> unit.getUnitType() == UnitType.WAREHOUSE)
+                .collect(Collectors.toList()));
+
+
+        List<ItemReceipt> existingItemReceipt =
+                assetService.getItemReceiptByUser(context.getUser().get().getUserDetail());
+
+        Optional<ItemReceipt> itemReceipt = existingItemReceipt
+                .stream()
+                .filter(item -> item.getStatus() == ItemReceiptStatus.NEW || item.getStatus() == ItemReceiptStatus.PROCESSING)
+                .findAny();
+
+        model.addAttribute("isReceiptExist", itemReceipt.isPresent());
+        model.addAttribute("itemReceiptProductModel", new ItemReceiptProduct());
+
+        if (itemReceipt.isPresent()) {
+            model.addAttribute("existingItemReceipt", itemReceipt.get());
+            model.addAttribute("products", itemReceipt.get().getSupplier().getProducts());
+            model.addAttribute("isItemContainAsset", itemReceipt.get().getAssets().size() > 0);
+        } else {
+            model.addAttribute("products", Collections.emptyList());
+        }
 
         model.addAttribute("isSupplierSelected", isSupplierSelected);
         model.addAttribute("isRoSelected", isRoSelected);
         model.addAttribute("roId", roId);
         model.addAttribute("supplierId", supplierId);
-        model.addAttribute("products", Collections.emptyList());
 
         AddItemReceipt addItemReceipt = new AddItemReceipt();
 
@@ -78,13 +105,12 @@ public class ItemPageController extends ItemModule {
             if (supplier.isPresent()) {
                 addItemReceipt.setSupplier(supplier.get());
                 model.addAttribute("supplier", supplier.get());
-                model.addAttribute("products", supplier.get().getProducts());
 
                 if (isRoSelected) {
                     Optional<RequestOrder> requestOrder = requestOrderService.findRequestOrderById(roId);
                     if (requestOrder.isPresent()) {
                         addItemReceipt.setRequestOrder(requestOrder.get());
-                        model.addAttribute("requestOrder", requestOrder.get());
+                        model.addAttribute("ro", requestOrder.get());
                     }
                 }
             }

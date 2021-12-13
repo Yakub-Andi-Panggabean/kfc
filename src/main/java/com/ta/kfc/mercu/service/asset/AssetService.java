@@ -14,6 +14,10 @@ public interface AssetService {
 
     Optional<Asset> update(Asset asset);
 
+    void delete(Asset asset);
+
+    Optional<Asset> findById(Long id);
+
     List<ItemReceipt> getAllItemReceipt();
 
     List<ItemReceipt> getItemReceiptByUser(UserDetail userDetail);
@@ -21,4 +25,6 @@ public interface AssetService {
     Optional<ItemReceipt> saveItemReceipt(ItemReceipt itemReceipt);
 
     Optional<ItemReceipt> updateItemReceipt(ItemReceipt itemReceipt);
+
+    Optional<ItemReceipt> findItemReceiptById(Long id);
 }

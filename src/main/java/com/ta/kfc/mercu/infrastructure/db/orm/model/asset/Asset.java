@@ -6,6 +6,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "asset")
@@ -84,5 +85,19 @@ public class Asset {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asset asset = (Asset) o;
+        return Objects.equals(id, asset.id) && Objects.equals(product, asset.product) && Objects.equals(unit, asset.unit) && Objects.equals(code, asset.code) && Objects.equals(createdDate, asset.createdDate) && Objects.equals(updatedDate, asset.updatedDate) && assetStatus == asset.assetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, product, unit, code, createdDate, updatedDate, assetStatus);
     }
 }

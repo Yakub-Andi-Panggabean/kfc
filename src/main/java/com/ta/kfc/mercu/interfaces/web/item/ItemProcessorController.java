@@ -2,13 +2,16 @@ package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.dto.item.AddItemReceipt;
+import com.ta.kfc.mercu.dto.item.ItemReceiptProduct;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceiptStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.service.asset.AssetService;
+import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ItemProcessorController extends ItemModule {
@@ -28,16 +30,19 @@ public class ItemProcessorController extends ItemModule {
     private TransactionService transactionService;
     private RequestOrderService requestOrderService;
     private AssetService assetService;
+    private MasterService masterService;
 
     @Autowired
     public ItemProcessorController(FastContext context,
                                    TransactionService transactionService,
+                                   MasterService masterService,
                                    RequestOrderService requestOrderService,
                                    AssetService assetService) {
         this.context = context;
         this.transactionService = transactionService;
         this.requestOrderService = requestOrderService;
         this.assetService = assetService;
+        this.masterService = masterService;
     }
 
     @PostMapping({ITEM_SHIPMENT_PATH})
@@ -117,8 +122,77 @@ public class ItemProcessorController extends ItemModule {
         itemReceipt.setPurchaseOrder(addItemReceipt.getPoNumber());
         itemReceipt.setRequestOrder(addItemReceipt.getRequestOrder());
         itemReceipt.setStatus(ItemReceiptStatus.NEW);
+        itemReceipt.setSupplier(addItemReceipt.getSupplier());
+        itemReceipt.setLocation(addItemReceipt.getUnit());
 
         assetService.saveItemReceipt(itemReceipt);
+
+        return String.format("redirect:%s", ITEM_RECEIPT_PATH);
+    }
+
+    @PostMapping({ITEM_RECEIPT_PATH + "/add"})
+    public String addItemReceiptAsset(
+            ItemReceiptProduct itemReceiptProduct, Model model) {
+
+        Optional<ItemReceipt> itemReceipt = assetService.findItemReceiptById(itemReceiptProduct.getItemReceipt());
+        if (itemReceipt.isPresent()) {
+
+            Optional<Product> product = masterService.getProduct(itemReceiptProduct.getProduct());
+
+            Asset asset = new Asset();
+            asset.setUpdatedDate(new Date());
+            asset.setCreatedDate(new Date());
+            asset.setUnit(itemReceipt.get().getRequestOrder().getTo());
+            asset.setProduct(product.get());
+            asset.setAssetStatus(AssetStatus.AVAILABLE);
+            asset.setCode(UUID.randomUUID().toString());
+            Optional<Asset> savedAsset = assetService.save(asset);
+            itemReceipt.get().getAssets().add(savedAsset.get());
+
+            assetService.updateItemReceipt(itemReceipt.get());
+        }
+
+        return String.format("redirect:%s", ITEM_RECEIPT_PATH);
+    }
+
+
+    @PostMapping({ITEM_RECEIPT_PATH + "/remove"})
+    public String addItemReceiptAsset(
+            @RequestParam(name = "receiptId")
+                    Long receiptId, @RequestParam(name = "assetId") Long assetId) {
+
+        Optional<ItemReceipt> itemReceipt = assetService.findItemReceiptById(receiptId);
+        if (itemReceipt.isPresent()) {
+
+            Optional<Asset> asset = assetService.findById(assetId);
+
+            if (asset.isPresent()) {
+                itemReceipt.get().getAssets().removeIf(as -> as.getId() == asset.get().getId());
+                assetService.updateItemReceipt(itemReceipt.get());
+                assetService.delete(asset.get());
+            }
+
+        }
+
+        return String.format("redirect:%s", ITEM_RECEIPT_PATH);
+    }
+
+    @PostMapping({ITEM_RECEIPT_PATH + "/{state}/{id}"})
+    public String addItemReceiptAsset(@PathVariable(name = "state") String state,
+                                      @PathVariable(name = "id") Long receiptId) {
+
+        Optional<ItemReceipt> itemReceipt = assetService.findItemReceiptById(receiptId);
+
+        if (itemReceipt.isPresent()) {
+
+            switch (state) {
+                case "done": {
+                    itemReceipt.get().setStatus(ItemReceiptStatus.VERIFIED);
+                }
+            }
+
+            assetService.updateItemReceipt(itemReceipt.get());
+        }
 
         return String.format("redirect:%s", ITEM_RECEIPT_PATH);
     }

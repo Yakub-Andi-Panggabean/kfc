@@ -45,23 +45,41 @@ public class DefaultAssetService implements AssetService {
     }
 
     @Override
+    public void delete(Asset asset) {
+        assetRepository.delete(asset);
+    }
+
+    @Override
+    public Optional<Asset> findById(Long id) {
+        return assetRepository.findById(id);
+    }
+
+    @Override
     public List<ItemReceipt> getAllItemReceipt() {
-        return null;
+        return itemReceiptRepository.findAll();
     }
 
     @Override
     public List<ItemReceipt> getItemReceiptByUser(UserDetail userDetail) {
-        return null;
+        return itemReceiptRepository.findAllByReceiver(userDetail);
     }
 
     @Override
     public Optional<ItemReceipt> saveItemReceipt(ItemReceipt itemReceipt) {
-        return Optional.empty();
+        return Optional.of(itemReceiptRepository.save(itemReceipt));
     }
 
     @Override
     public Optional<ItemReceipt> updateItemReceipt(ItemReceipt itemReceipt) {
-        return Optional.empty();
+        if (itemReceipt.getId() == null) {
+            throw new RuntimeException("null item receipt id");
+        }
+        return Optional.of(itemReceiptRepository.save(itemReceipt));
+    }
+
+    @Override
+    public Optional<ItemReceipt> findItemReceiptById(Long id) {
+        return itemReceiptRepository.findById(id);
     }
 
 

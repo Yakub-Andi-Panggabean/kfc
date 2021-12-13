@@ -2,6 +2,7 @@ package com.ta.kfc.mercu.infrastructure.db.orm.model.asset;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Supplier;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 
 import javax.persistence.*;
@@ -27,7 +28,10 @@ public class ItemReceipt {
     private UserDetail receiver;
     @OneToMany
     private List<Asset> assets;
+    @Enumerated(EnumType.STRING)
     private ItemReceiptStatus status;
+    @OneToOne
+    private Unit location;
 
 
     public Long getId() {
@@ -84,5 +88,13 @@ public class ItemReceipt {
 
     public void setStatus(ItemReceiptStatus status) {
         this.status = status;
+    }
+
+    public Unit getLocation() {
+        return location;
+    }
+
+    public void setLocation(Unit location) {
+        this.location = location;
     }
 }
