@@ -10,6 +10,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceiptStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
+import com.ta.kfc.mercu.interfaces.web.order.OrderModule;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
@@ -183,18 +184,23 @@ public class ItemProcessorController extends ItemModule {
 
         Optional<ItemReceipt> itemReceipt = assetService.findItemReceiptById(receiptId);
 
+        String page = ITEM_RECEIPT_PATH;
         if (itemReceipt.isPresent()) {
 
             switch (state) {
-                case "done": {
+                case "done":
                     itemReceipt.get().setStatus(ItemReceiptStatus.VERIFIED);
-                }
+                    break;
+                case "complete":
+                    itemReceipt.get().setStatus(ItemReceiptStatus.COMPLETED);
+                    page = OrderModule.ORDER_PURCHASE_PATH;
+                    break;
             }
 
             assetService.updateItemReceipt(itemReceipt.get());
         }
 
-        return String.format("redirect:%s", ITEM_RECEIPT_PATH);
+        return String.format("redirect:%s", page);
     }
 
 

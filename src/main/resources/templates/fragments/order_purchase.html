@@ -7,313 +7,100 @@
 <body>
 <div th:fragment="order_purchase" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
-        <div class="card-body">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <div class="input-group no-border">
-                        <input type="text" id="inputSupplierID" value="" class="form-control"
-                               placeholder="Search Supplier..." data-toggle="modal"
-                               data-target="#supplierList">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="inputPOID">Purchase Order ID</label>
-                    <input type="text" class="form-control" id="inputPOID" disabled>
-                </div>
-            </div>
-            <form th:action="@{/purchase/order}" method="post">
-                <button type="submit" class="btn btn-round btn-primary">Create</button>
-            </form>
-
-            <br/>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-shopping">
-                        <thead>
-                        <tr>
-                            <th class="text-center">Product ID</th>
-                            <th class="text-center">Brand</th>
-                            <th class="text-center">Model</th>
-                            <th class="text-center">Product Name</th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center">Action</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody th:unless="${isSupplierSelected}">
-                        <td colspan="6" class="text-center"> No Products Available</td>
-                        </tbody>
-                        <tbody th:if="${isSupplierSelected}">
-                        <tr th:if="${selectedSupplier.products.empty}">
-                            <td colspan="6" class="text-center"> No Products Available</td>
-                        </tr>
-                        <tr th:each="product : ${selectedSupplier.products}">
-                            <td class="text-center" th:inline="text">[[${product.id}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
-                            <td class="text-center" th:inline="text">[[${product.name}]]</td>
-                            <td class="text-center">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <input type="text" class="form-control text-center" id="inputPoPrice"
-                                               placeholder="Price">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <input type="text" class="form-control text-center" id="inputPoQty"
-                                               placeholder="Qty">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="td-actions text-center">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <form>
-                                            <button type="submit" class="btn btn-round btn-primary">Add</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-header">
-            <span class="card-title">PO Items</span>
+            <span class="card-title">Verified PO</span>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-shopping">
                     <thead>
                     <tr>
-                        <th class="text-center">Product ID</th>
-                        <th class="text-center">Brand</th>
-                        <th class="text-center">Model</th>
-                        <th class="text-center">Product Name</th>
-                        <th class="text-center">Qty</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Total Price</th>
-                        <th class="text-center">Action</th>
-                        <th></th>
+                        <th class="text-center">Purchase Order</th>
+                        <th class="text-center">Unit</th>
+                        <th class="text-center">Recipient</th>
+                        <th class="text-center">Supplier</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="text-center">PO-2021-1234</td>
-                        <td class="text-center">Brand1</td>
-                        <td class="text-center">Model1</td>
-                        <td class="text-center">Product2</td>
-                        <td class="text-center">10</td>
-                        <td class="text-center">9000</td>
-                        <td class="text-center">90000</td>
-                        <td class="td-actions text-center">
-                            <button class="btn btn-success btn-round">Remove
+                    <tr th:each=" r:${receipts} ">
+                        <td class="text-center" th:inline="text">[[${r.purchaseOrder}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.location.unitName}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.receiver.firstName}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.supplier.name}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.status}]]</td>
+                        <td class="text-center pull-left">
+                            <form th:action="@{/item/receipt/complete/{id}(id=${r.id})}" method="post">
+                                <button th:if="${#strings.equals(r.status,'VERIFIED')}" th:inline="text"
+                                        class="btn btn-round btn-primary">Complete
+                                </button>
+                                <button th:unless="${#strings.equals(r.status,'VERIFIED')}"
+                                        class="btn btn-round btn-dark" disabled>
+                                    Complete
+                                </button>
+                            </form>
+                        </td>
+                        <td class="pull-left">
+                            <button th:attr="data-receipt-id=${r.id}"
+                                    data-toggle="modal"
+                                    data-target="#assetPOListModal"
+                                    class="btn btn-round btn-success">View
                             </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-round btn-info">Complete</button>
+            <div class="card-footer">
             </div>
         </div>
     </div>
 
-
-    <!--    po table-->
     <div class="card col-md-10 ml-auto mr-auto">
-        <div class="table-responsive">
-            <table class="table table-shopping">
-                <thead>
-                <tr>
-                    <th class="text-center">Purchase ID</th>
-                    <th class="text-center">Submitted Date</th>
-                    <th class="text-center">Requested By</th>
-                    <th class="text-center">Supplier</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Action</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="text-center">PO-2021-1234</td>
-                    <td class="text-center">2021-11-13 10:00:00</td>
-                    <td class="text-center">IT support 1</td>
-                    <td class="text-center">Supplier 1</td>
-                    <th class="text-center">OPEN</th>
-                    <td class="td-actions text-center">
-                        <button class="btn btn-success btn-round">
-                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center">PO-2021-123</td>
-                    <td class="text-center">2021-09-13 10:00:00</td>
-                    <td class="text-center">IT support 1</td>
-                    <td class="text-center">Supplier 2</td>
-                    <th class="text-center">DONE</th>
-                    <td class="td-actions text-center">
-                        <button class="btn btn-success btn-round">
-                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center">PO-2020-1234</td>
-                    <td class="text-center">2020-10-13 10:00:00</td>
-                    <td class="text-center">IT support 1</td>
-                    <td class="text-center">Supplier 3</td>
-                    <th class="text-center">OPEN</th>
-                    <td class="td-actions text-center">
-                        <button class="btn btn-success btn-round">
-                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="card-header">
+            <span class="card-title">Completed PO</span>
         </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-bs" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Request Order List</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Request ID</th>
-                                    <th class="text-center">Request Category</th>
-                                    <th class="text-center">Submitted Date</th>
-                                    <th class="text-center">Requested By</th>
-                                    <th class="text-center">Approved By</th>
-                                    <th class="text-center">Action</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="text-center">RO-2021-1234</td>
-                                    <td class="text-center">RAM-Request-NewGate-18GB</td>
-                                    <td class="text-center">2021-11-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">RO-2021-123</td>
-                                    <td class="text-center">Laptop-Request-AlienWare-2021</td>
-                                    <td class="text-center">2021-09-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">RO-2020-1234</td>
-                                    <td class="text-center">Laptop-Request-Asus-ROG-zxv</td>
-                                    <td class="text-center">2020-10-13 10:00:00</td>
-                                    <td class="text-center">IT support 1</td>
-                                    <td class="text-center">Asset Manager 1</td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Purchase Order</th>
+                        <th class="text-center">Unit</th>
+                        <th class="text-center">Recipient</th>
+                        <th class="text-center">Supplier</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each=" r:${completedReceipts} ">
+                        <td class="text-center" th:inline="text">[[${r.purchaseOrder}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.location.unitName}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.receiver.firstName}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.supplier.name}]]</td>
+                        <td class="text-center" th:inline="text">[[${r.status}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="supplierList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="assetPOListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-bs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Request Order List</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Asset List</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Supplier ID</th>
-                                    <th class="text-center">Supplier Name</th>
-                                    <th class="text-center">City</th>
-                                    <th class="text-center">Email</th>
-                                    <th class="text-center">Address1</th>
-                                    <th class="text-center">Address2</th>
-                                    <th class="text-center">Phone1</th>
-                                    <th class="text-center">Phone2</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:if="${suppliers.empty}">
-                                    <td colspan="9" class="text-center"> No Orders</td>
-                                </tr>
-                                <tr th:each="sup : ${suppliers}">
-                                    <td class="text-center" th:inline="text">[[${sup.id}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.name}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.city}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.email}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.address1}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.address2}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.phone1}]]</td>
-                                    <td class="text-center" th:inline="text">[[${sup.phone2}]]</td>
-                                    <td class="td-actions text-center">
-                                        <a class="btn btn-info btn-round"
-                                           th:href="${#httpServletRequest.RequestURL+'?isSupplierSelected=true&supplierId='+sup.id}">Select</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                 </div>
