@@ -205,7 +205,10 @@ public class ItemPageController extends ItemModule {
                 .filter(o -> o.getStatus() == RequestOrderStatus.NEW)
                 .findAny();
 
+        boolean isAbleToSubmit = false;
+
         CreateTransferOrder createTransferOrder = new CreateTransferOrder();
+        SubmitTransferOrder submitTransferOrder = new SubmitTransferOrder();
         model.addAttribute("isOrderExist", order.isPresent());
         if (order.isPresent()) {
             model.addAttribute("existingOrder", order.get());
@@ -217,8 +220,13 @@ public class ItemPageController extends ItemModule {
                     .collect(Collectors.toList()));
             createTransferOrder.setTo(order.get().getTo());
             createTransferOrder.setFrom(order.get().getFrom());
+            submitTransferOrder.setStatus(RequestOrderStatus.WAITING_APPROVAL);
+            submitTransferOrder.setRequestOrder(order.get());
+            isAbleToSubmit = order.get().getAssets().size() > 0;
         }
         model.addAttribute("createTransferModel", createTransferOrder);
+        model.addAttribute("submitTransferModel", submitTransferOrder);
+        model.addAttribute("isAbleToSubmit", isAbleToSubmit);
 
         return "index";
     }

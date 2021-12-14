@@ -1,10 +1,7 @@
 package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
-import com.ta.kfc.mercu.dto.item.AddItemReceipt;
-import com.ta.kfc.mercu.dto.item.CreateTransferOrder;
-import com.ta.kfc.mercu.dto.item.ItemReceiptProduct;
-import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
+import com.ta.kfc.mercu.dto.item.*;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
@@ -249,5 +246,16 @@ public class ItemProcessorController extends ItemModule {
         return String.format("redirect:%s", ITEM_TRANSFER_PATH);
     }
 
+    @PostMapping({"/submit/transfer/request"})
+    public String submitTransferRequest(SubmitTransferOrder req) {
+
+        RequestOrder order = req.getRequestOrder();
+        order.setDescription(req.getNote());
+        order.setStatus(req.getStatus());
+        order.setUpdatedDate(new Date());
+        requestOrderService.updateRequestOrder(order);
+
+        return String.format("redirect:%s", ITEM_TRANSFER_PATH);
+    }
 
 }
