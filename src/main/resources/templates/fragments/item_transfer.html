@@ -7,132 +7,136 @@
 <body>
 <div th:fragment="item_transfer" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
-        <div class="card-body">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputRecipient">Requester</label>
-                        <input type="text" class="form-control" id="inputRecipient" value="Ms. Nurmala sari" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputTransferFrom">Transfer From</label>
-                        <select id="inputTransferFrom" class="form-control">
-                            <option selected>Outlet A</option>
-                            <option>Outlet A</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputTransferTo">Transfer To</label>
-                        <select id="inputTransferTo" class="form-control">
-                            <option selected>Outlet A</option>
-                            <option>Outlet A</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="input-group no-border">
-                            <input type="text" id="inputAssetTransfer" value="" class="form-control"
-                                   placeholder="Search Asset..." data-toggle="modal"
-                                   data-target="#outletAssetList">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <i class="now-ui-icons ui-1_zoom-bold"></i>
-                                </div>
-                            </div>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="displayOrderID">Transfer Order</label>
+                            <input type="text" class="form-control" id="displayOrderID" disabled>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputTransferFrom">Transfer From</label>
+                            <select id="inputTransferFrom" class="form-control">
+                                <option selected>Outlet A</option>
+                                <option>Outlet A</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputTransferTo">Transfer To</label>
+                            <select id="inputTransferTo" class="form-control">
+                                <option selected>Outlet A</option>
+                                <option>Outlet A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-round btn-primary">
+                        Create Transfer
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <h6 class="card-title">Transfer Item List</h6>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <button class="btn btn-round btn-info pull-right"
+                                data-toggle="modal"
+                                data-target="#outletAssetList">Add Item
+                        </button>
+                    </div>
                 </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Product ID</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Type</th>
+                            <th class="text-center">Brand</th>
+                            <th class="text-center">Model</th>
+                            <th class="text-center">Qty Transfer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">A-2021-1234</td>
+                            <td class="text-center">MAC-Mini-2021-1211</td>
+                            <td class="text-center">PC</td>
+                            <td class="text-center">Apple</td>
+                            <td class="text-center">Mac Mini</td>
+                            <td class="text-center">10</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">A-2021-1334</td>
+                            <td class="text-center">Cashier-Machine-2021-1211</td>
+                            <td class="text-center">Cashier</td>
+                            <td class="text-center">Moka</td>
+                            <td class="text-center">Moka-x</td>
+                            <td class="text-center">5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="inputSendNote">Note</label>
-                        <input type="text" class="form-control" id="inputSendNote"
-                               placeholder="Note something here ...">
+                        <textarea class="form-control"
+                                  id="inputSendNote" rows="3"></textarea>
                     </div>
                 </div>
-                <br/>
-                <br/>
-                <div class="card">
-
-                    <div class="table-responsive">
-                        <table class="table table-shopping">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Product ID</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Type</th>
-                                <th class="text-center">Brand</th>
-                                <th class="text-center">Model</th>
-                                <th class="text-center">Qty Transfer</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="text-center">A-2021-1234</td>
-                                <td class="text-center">MAC-Mini-2021-1211</td>
-                                <td class="text-center">PC</td>
-                                <td class="text-center">Apple</td>
-                                <td class="text-center">Mac Mini</td>
-                                <td class="text-center">10</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">A-2021-1334</td>
-                                <td class="text-center">Cashier-Machine-2021-1211</td>
-                                <td class="text-center">Cashier</td>
-                                <td class="text-center">Moka</td>
-                                <td class="text-center">Moka-x</td>
-                                <td class="text-center">5</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                <br>
+                <button type="submit" class="btn btn-round btn-primary">Submit</button>
+            </div>
         </div>
 
-
-        <div class="table-responsive">
-            <table class="table table-shopping">
-                <thead>
-                <tr>
-                    <th class="text-center">Transfer ID</th>
-                    <th class="text-center">PIC</th>
-                    <th class="text-center">From</th>
-                    <th class="text-center">To</th>
-                    <th class="text-center">Status</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="text-center">TF-xxx-xxxx</td>
-                    <td class="text-center">MR. Adam Lambert</td>
-                    <td class="text-center">Outlet Kemang</td>
-                    <td class="text-center">Outlet Semanggi</td>
-                    <td class="text-center">DONE</td>
-                    <td class="td-actions text-center">
-                        <button class="btn btn-info btn-round" >
-                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center">TF-xxx-xxxx</td>
-                    <td class="text-center">MR. Adam Lambert</td>
-                    <td class="text-center">Outlet Kemang</td>
-                    <td class="text-center">Outlet Semanggi</td>
-                    <td class="text-center">WAITING_APPROVAL</td>
-                    <td class="td-actions text-center">
-                        <button class="btn btn-info btn-round" >
-                            <i class="now-ui-icons ui-1_zoom-bold"></i> Detail
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <br/>
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title">Transfer Request List</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-shopping">
+                        <thead>
+                        <tr>
+                            <th class="text-center">Transfer ID</th>
+                            <th class="text-center">PIC</th>
+                            <th class="text-center">From</th>
+                            <th class="text-center">To</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">TF-xxx-xxxx</td>
+                            <td class="text-center">MR. Adam Lambert</td>
+                            <td class="text-center">Outlet Kemang</td>
+                            <td class="text-center">Outlet Semanggi</td>
+                            <td class="text-center">DONE</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">TF-xxx-xxxx</td>
+                            <td class="text-center">MR. Adam Lambert</td>
+                            <td class="text-center">Outlet Kemang</td>
+                            <td class="text-center">Outlet Semanggi</td>
+                            <td class="text-center">WAITING_APPROVAL</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -149,58 +153,42 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Product ID</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">Type</th>
-                                    <th class="text-center">Brand</th>
-                                    <th class="text-center">Model</th>
-                                    <th class="text-center">Available Qty</th>
-                                    <th class="text-center">Qty Transfer</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="text-center">A-2021-1234</td>
-                                    <td class="text-center">MAC-Mini-2021-1211</td>
-                                    <td class="text-center">PC</td>
-                                    <td class="text-center">Apple</td>
-                                    <td class="text-center">Mac Mini</td>
-                                    <td class="text-center">10</td>
-                                    <td class="td-actions text-center">
-                                        <input type="text" class="form-control" id="inputQty"
-                                               placeholder="Transfer Quantity ...">
-                                    </td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">A-2021-1334</td>
-                                    <td class="text-center">Cashier-Machine-2021-1211</td>
-                                    <td class="text-center">Cashier</td>
-                                    <td class="text-center">Moka</td>
-                                    <td class="text-center">Moka-x</td>
-                                    <td class="text-center">5</td>
-                                    <td class="td-actions text-center">
-                                        <input type="text" class="form-control" id="inputQty"
-                                               placeholder="Transfer Quantity ...">
-                                    </td>
-                                    <td class="td-actions text-center">
-                                        <button class="btn btn-info btn-round">Add</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-shopping">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Product ID</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Brand</th>
+                                <th class="text-center">Model</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">A-2021-1234</td>
+                                <td class="text-center">MAC-Mini-2021-1211</td>
+                                <td class="text-center">PC</td>
+                                <td class="text-center">Apple</td>
+                                <td class="text-center">Mac Mini</td>
+                                <td class="td-actions text-center">
+                                    <button class="btn btn-info btn-round">Add</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">A-2021-1334</td>
+                                <td class="text-center">Cashier-Machine-2021-1211</td>
+                                <td class="text-center">Cashier</td>
+                                <td class="text-center">Moka</td>
+                                <td class="text-center">Moka-x</td>
+                                <td class="td-actions text-center">
+                                    <button class="btn btn-info btn-round">Add</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <div class="modal-footer">
                 </div>
             </div>
         </div>
