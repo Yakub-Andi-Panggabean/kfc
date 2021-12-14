@@ -19,7 +19,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="request : ${requests}">
+                        <tr th:if="${isRoVisible}" th:each="request : ${requests}">
                             <td>
                                 <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
                                     <div class="card card-plain">
@@ -37,8 +37,6 @@
                                              aria-labelledby="headingOne">
                                             <div class="card text-center">
                                                 <div class="card-body">
-                                                    <p class="card-title" th:inline="text">
-                                                        [[${request.status}]]</p>
                                                     <p class="card-title" th:inline="text">Description :
                                                         [[${request.description}]]</p>
                                                     <p class="card-title" th:inline="text">Requested By :
@@ -89,11 +87,84 @@
                                         </div>
                                     </div>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${isToVisible}" th:each="request : ${transferRequests}">
+                            <td>
+                                <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                                    <div class="card card-plain">
+                                        <div class="card-header" role="tab" id="headingOne">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               th:attr="href=${'#collapse'+request.id}"
+                                               aria-expanded="true" th:attrappend="aria-controls=${request.id}"
+                                               th:inline="text">
+                                                [[${request.type}]] : TF-[[${request.id}]]
+                                                <i class="now-ui-icons arrows-1_minimal-down"></i>
+                                            </a>
+                                        </div>
 
+                                        <div th:id="${'collapse'+request.id}" class="collapse show" role="tabpanel"
+                                             aria-labelledby="headingOne">
+                                            <div class="card text-center">
+                                                <div class="card-header">
+                                                    <p class="card-title" th:inline="text">
+                                                        From [[${request.from}]] To [[${request.to}]]</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="card-title" th:inline="text">Description :
+                                                        [[${request.description}]]</p>
+                                                    <p class="card-title" th:inline="text">Requested By :
+                                                        [[${request.requester.firstName}]]</p>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-shopping">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center">Asset Code</th>
+                                                                <th class="text-center">Product</th>
+                                                                <th class="text-center">Brand</th>
+                                                                <th class="text-center">Model</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="asset : ${request.assets}">
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${asset.code}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${asset.product.name}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${asset.product.brand}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${asset.product.model}]]
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="col-md-12">
+                                                        <a class="btn btn-success btn-round"
+                                                           th:href="@{/order/request/approve/{roId}(roId=${request.id})}">
+                                                            Approve
+                                                        </a>
+                                                        <a class="btn btn-danger btn-round"
+                                                           th:href="@{/order/request/reject/{roId}(roId=${request.id})}">
+                                                            Reject
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                </td>
-                </tr>
                 </tbody>
             </div>
         </div>

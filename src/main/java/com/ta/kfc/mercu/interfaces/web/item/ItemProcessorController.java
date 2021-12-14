@@ -250,13 +250,24 @@ public class ItemProcessorController extends ItemModule {
     public String submitTransferRequest(SubmitTransferOrder req) {
 
         RequestOrder order = req.getRequestOrder();
-        order.setDescription(req.getNote());
         order.setStatus(req.getStatus());
         order.setUpdatedDate(new Date());
 
         Transaction transaction = new Transaction();
-        transaction.setStatus(TransactionStatus.IN_PROGRESS);
-        transaction.setTransactionType(TransactionType.REQ_TRANSFER_APPROVAL);
+        if (req.getStatus() == RequestOrderStatus.WAITING_APPROVAL) {
+            order.setDescription(req.getNote());
+            transaction.setStatus(TransactionStatus.IN_PROGRESS);
+            transaction.setTransactionType(TransactionType.REQ_TRANSFER_APPROVAL);
+        } else {
+            transaction.setStatus(TransactionStatus.COMPLETE);
+            transaction.setTransactionType(TransactionType.TRANSFER_ITEM);
+            order.setStatus(RequestOrderStatus.COMPLETED);
+            order.getAssets().forEach(asset -> {
+                asset.setUnit(order.getFrom());
+                asset.setUpdatedDate(new Date());
+                assetService.save(asset);
+            });
+        }
         transaction.setOrder(order);
         transaction.setNote(req.getNote());
         transaction.setPic(context.getUser().get().getUserDetail());

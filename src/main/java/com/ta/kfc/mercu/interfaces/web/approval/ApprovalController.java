@@ -5,6 +5,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.Position;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType;
 import com.ta.kfc.mercu.interfaces.web.approval.ApprovalModule;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,28 +37,42 @@ public class ApprovalController extends ApprovalModule {
         User user = fastContext.getUser().get();
 
         Position position = user.getUserDetail().getPosition();
+        boolean isRoVisible = false;
+        boolean isToVisible = false;
+
+        model.addAttribute("requests", requestOrderService.findAllRequestOrders()
+                .stream()
+                .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
+                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
+                        ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                .collect(Collectors.toList()));
+
+        model.addAttribute("transferRequests", requestOrderService.findAllRequestOrders()
+                .stream()
+                .filter(ro -> ro.getType() == RequestOrderType.TRANSFER_ORDER)
+                .filter(ro ->
+                        ro.getStatus().equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL))
+                .collect(Collectors.toList()));
 
         switch (position) {
             case HEAD:
+                isRoVisible = true;
+                isToVisible = true;
+                break;
             case MANAGER:
-                model.addAttribute("requests", requestOrderService.findAllRequestOrders().stream()
-                        .filter(ro ->
-                                ro.getRequester().getDepartment().getName()
-                                        .equals(user.getUserDetail().getDepartment().getName()))
-                        .collect(Collectors.toList()));
+                isRoVisible = true;
+                break;
             case ASSET_MANAGER:
-                model.addAttribute("requests", requestOrderService.findAllRequestOrders()
-                        .stream()
-                        .filter(ro ->
-                                ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
-                        .collect(Collectors.toList()));
+                isToVisible = true;
+                break;
             case ROOT:
-                model.addAttribute("requests", requestOrderService.findAllRequestOrders()
-                        .stream()
-                        .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
-                                ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
-                        .collect(Collectors.toList()));
+                isRoVisible = true;
+                isToVisible = true;
+                break;
         }
+
+        model.addAttribute("isRoVisible", isRoVisible);
+        model.addAttribute("isToVisible", isToVisible);
 
         return "index";
     }

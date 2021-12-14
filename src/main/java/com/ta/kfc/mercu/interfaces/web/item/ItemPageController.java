@@ -208,7 +208,7 @@ public class ItemPageController extends ItemModule {
                 .findRequestOrderPerUser(context.getUser().get().getUserDetail())
                 .stream()
                 .filter(o -> o.getType() == RequestOrderType.TRANSFER_ORDER)
-                .filter(o -> o.getStatus() == RequestOrderStatus.NEW)
+                .filter(o -> o.getStatus() == RequestOrderStatus.NEW || o.getStatus() == RequestOrderStatus.TRANSFER_APPROVED)
                 .findAny();
 
         boolean isAbleToSubmit = false;
@@ -226,7 +226,8 @@ public class ItemPageController extends ItemModule {
                     .collect(Collectors.toList()));
             createTransferOrder.setTo(order.get().getTo());
             createTransferOrder.setFrom(order.get().getFrom());
-            submitTransferOrder.setStatus(RequestOrderStatus.WAITING_APPROVAL);
+            submitTransferOrder.setStatus(order.get().getStatus() == RequestOrderStatus.NEW ?
+                    RequestOrderStatus.WAITING_TRANSFER_APPROVAL : RequestOrderStatus.TRANSFER);
             submitTransferOrder.setRequestOrder(order.get());
             isAbleToSubmit = order.get().getAssets().size() > 0;
         }

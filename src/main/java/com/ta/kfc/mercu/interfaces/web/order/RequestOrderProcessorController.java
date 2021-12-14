@@ -127,7 +127,27 @@ public class RequestOrderProcessorController extends OrderModule {
                                 .findAny().ifPresent(t -> t.setStatus(TransactionStatus.COMPLETE));
 
                         transactionService.save(transaction);
+                    } else if (requestOrder.get().getStatus()
+                            .equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL)) {
+                        requestOrder.get().setStatus(RequestOrderStatus.TRANSFER_APPROVED);
+
+                        Transaction transaction = new Transaction();
+                        transaction.setCreatedDate(new Date());
+                        transaction.setUpdatedDate(new Date());
+                        transaction.setTransactionType(TransactionType.TRANSFER_APPROVAL);
+                        transaction.setStatus(TransactionStatus.COMPLETE);
+                        transaction.setOrder(requestOrder.get());
+                        transaction.setPic(context.getUser().get().getUserDetail());
+                        transaction.setNote("");
+                        requestOrder.get().getTransactions().add(transaction);
+                        requestOrder.get().getTransactions().stream().
+                                filter(t -> t.getTransactionType().equals(TransactionType.REQ_TRANSFER_APPROVAL))
+                                .findAny().ifPresent(t -> t.setStatus(TransactionStatus.COMPLETE));
+
+                        transactionService.save(transaction);
+
                     }
+
                     page = ApprovalModule.APPROVAL_PATH;
                     break;
                 case "reject":

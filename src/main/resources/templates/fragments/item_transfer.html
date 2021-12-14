@@ -93,7 +93,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card-footer">
+            <div th:if="${#strings.equals(existingOrder.status,'NEW')}" class="card-footer">
                 <form method="post" th:action="@{/submit/transfer/request}" th:object="${submitTransferModel}">
                     <div class="form-row">
                         <div class="form-group col-md-12">
@@ -105,8 +105,28 @@
                     <br>
                     <input type="hidden" th:field="*{requestOrder}">
                     <input type="hidden" th:field="*{status}">
-                    <button th:if="${isAbleToSubmit}" type="submit" class="btn btn-round btn-primary">Submit</button>
-                    <button th:unless="${isAbleToSubmit}" class="btn btn-round btn-dark" disabled>Submit</button>
+                    <button th:if="${isAbleToSubmit}" type="submit" class="btn btn-round btn-primary">Request Approval
+                    </button>
+                    <button th:unless="${isAbleToSubmit}" class="btn btn-round btn-dark" disabled>Request Approval
+                    </button>
+                </form>
+            </div>
+            <div th:if="${#strings.equals(existingOrder.status,'TRANSFER_APPROVED')}" class="card-footer">
+                <form method="post" th:action="@{/submit/transfer/request}" th:object="${submitTransferModel}">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="inputSendNote">Note</label>
+                            <textarea th:field="*{note}" class="form-control"
+                                      id="inputSendNote" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <input type="hidden" th:field="*{requestOrder}">
+                    <input type="hidden" th:field="*{status}">
+                    <button th:if="${isAbleToSubmit}" type="submit" class="btn btn-round btn-primary">Transfer
+                    </button>
+                    <button th:unless="${isAbleToSubmit}" class="btn btn-round btn-dark" disabled>Transfer
+                    </button>
                 </form>
             </div>
         </div>
