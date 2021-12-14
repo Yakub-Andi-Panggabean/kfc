@@ -197,6 +197,12 @@ public class ItemPageController extends ItemModule {
 
         model.addAttribute("template", "item_transfer");
         model.addAttribute("units", masterService.getAllUnit());
+        model.addAttribute("inProgressOrders", requestOrderService
+                .findRequestOrderPerUser(context.getUser().get().getUserDetail())
+                .stream()
+                .filter(o -> o.getType() == RequestOrderType.TRANSFER_ORDER)
+                .filter(o -> o.getStatus() != RequestOrderStatus.NEW)
+                .collect(Collectors.toList()));
 
         Optional<RequestOrder> order = requestOrderService
                 .findRequestOrderPerUser(context.getUser().get().getUserDetail())
@@ -254,6 +260,20 @@ public class ItemPageController extends ItemModule {
         }
 
         return "fragments/item_shipment/modal_asset";
+    }
+
+    @GetMapping({"/modal/item/transfer/{transferId}"})
+    public String getItemTransferModal(@PathVariable("transferId") Long transferID, Model model) {
+
+        Optional<RequestOrder> ro = requestOrderService.findRequestOrderById(transferID);
+
+        if (ro.isPresent()) {
+            model.addAttribute("transactions", ro.get().getTransactions());
+        } else {
+            model.addAttribute("transactions", Collections.emptyList());
+        }
+
+        return "fragments/item_transfer/modal_transfer_detail";
     }
 
 }

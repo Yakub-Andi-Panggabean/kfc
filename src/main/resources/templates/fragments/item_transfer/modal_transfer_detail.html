@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="modal_transfer_detail" class="modal fade" id="requestOrderList" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-bs" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Transfer Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Transaction</th>
+                                    <th class="text-center">PIC</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Note</th>
+                                    <th class="text-center">Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="t : ${transactions}">
+                                    <td class="text-center" th:inline="text">[[${t.transactionType}]]</td>
+                                    <td class="text-center" th:inline="text">[[${t.pic}]]</td>
+                                    <td class="text-center" th:inline="text">[[${t.status}]]</td>
+                                    <td class="text-center" th:inline="text">[[${t.note}]]</td>
+                                    <td class="text-center" th:inline="text">[[${t.createdDate}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

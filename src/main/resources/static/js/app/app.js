@@ -26,6 +26,16 @@ $('#assetPOListModal').on('show.bs.modal', function (event) {
     )
 });
 
+$('#assetTransferDetail').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var receiptID = $(button).attr("data-transfer-id");
+    $.get("/modal/item/transfer/" + receiptID, function (data) {
+            var content = $($.parseHTML(data)).find(".modal-body").html();
+            $('#assetTransferDetail').find('.modal-body').html(content);
+        }
+    )
+});
+
 $('#verifyOrderDetail').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var roID = $(button).attr("data-verify-order-id");

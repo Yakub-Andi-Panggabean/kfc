@@ -253,8 +253,22 @@ public class ItemProcessorController extends ItemModule {
         order.setDescription(req.getNote());
         order.setStatus(req.getStatus());
         order.setUpdatedDate(new Date());
-        requestOrderService.updateRequestOrder(order);
 
+        Transaction transaction = new Transaction();
+        transaction.setStatus(TransactionStatus.IN_PROGRESS);
+        transaction.setTransactionType(TransactionType.REQ_TRANSFER_APPROVAL);
+        transaction.setOrder(order);
+        transaction.setNote(req.getNote());
+        transaction.setPic(context.getUser().get().getUserDetail());
+        transaction.setCreatedDate(new Date());
+        transaction.setUpdatedDate(new Date());
+
+        Optional<Transaction> trx = transactionService.save(transaction);
+
+        if (trx.isPresent()) {
+            order.getTransactions().add(trx.get());
+            requestOrderService.updateRequestOrder(order);
+        }
         return String.format("redirect:%s", ITEM_TRANSFER_PATH);
     }
 
