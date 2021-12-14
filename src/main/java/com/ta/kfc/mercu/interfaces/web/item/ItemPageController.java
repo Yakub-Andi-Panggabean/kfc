@@ -196,6 +196,30 @@ public class ItemPageController extends ItemModule {
     public String getItemTransferPage(Model model) {
 
         model.addAttribute("template", "item_transfer");
+        model.addAttribute("units", masterService.getAllUnit());
+
+        Optional<RequestOrder> order = requestOrderService
+                .findRequestOrderPerUser(context.getUser().get().getUserDetail())
+                .stream()
+                .filter(o -> o.getType() == RequestOrderType.TRANSFER_ORDER)
+                .filter(o -> o.getStatus() == RequestOrderStatus.NEW)
+                .findAny();
+
+        CreateTransferOrder createTransferOrder = new CreateTransferOrder();
+        model.addAttribute("isOrderExist", order.isPresent());
+        if (order.isPresent()) {
+            model.addAttribute("existingOrder", order.get());
+            model.addAttribute("assets", order.get()
+                    .getFrom()
+                    .getAssets()
+                    .stream().filter(a -> a.getAssetStatus() == AssetStatus.AVAILABLE || a.getAssetStatus() == AssetStatus.IN_USED)
+                    .filter(a -> !order.get().getAssets().contains(a))
+                    .collect(Collectors.toList()));
+            createTransferOrder.setTo(order.get().getTo());
+            createTransferOrder.setFrom(order.get().getFrom());
+        }
+        model.addAttribute("createTransferModel", createTransferOrder);
+
         return "index";
     }
 

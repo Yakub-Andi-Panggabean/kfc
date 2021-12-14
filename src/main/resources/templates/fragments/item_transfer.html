@@ -10,37 +10,45 @@
         <br>
         <div class="card">
             <div class="card-body">
-                <form>
-                    <div class="form-row">
+                <form th:action="@{/item/transfer}" method="post" th:object="${createTransferModel}">
+                    <div th:if="${isOrderExist}" class="form-row">
                         <div class="form-group col-md-6">
                             <label for="displayOrderID">Transfer Order</label>
-                            <input type="text" class="form-control" id="displayOrderID" disabled>
+                            <input type="text" class="form-control" id="displayOrderID" th:value="${existingOrder.id}"
+                                   disabled>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputTransferFrom">Transfer From</label>
-                            <select id="inputTransferFrom" class="form-control">
-                                <option selected>Outlet A</option>
-                                <option>Outlet A</option>
+                            <select id="inputTransferFrom" class="form-control" th:field="*{from}">
+                                <option th:each="u,i:${units}" th:value="${u.id}" th:selected="${i==0}"
+                                        th:inline="text">
+                                    [[${u.unitName}]]
+                                </option>
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputTransferTo">Transfer To</label>
-                            <select id="inputTransferTo" class="form-control">
-                                <option selected>Outlet A</option>
-                                <option>Outlet A</option>
+                            <select id="inputTransferTo" class="form-control" th:field="*{to}">
+                                <option th:each="u,i:${units}" th:value="${u.id}" th:selected="${i==0}"
+                                        th:inline="text">
+                                    [[${u.unitName}]]
+                                </option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-round btn-primary">
+                    <button th:if="${isOrderExist}" type="submit" class="btn btn-round btn-dark" disabled>
+                        Create Transfer
+                    </button>
+                    <button th:unless="${isOrderExist}" type="submit" class="btn btn-round btn-primary">
                         Create Transfer
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="card">
+        <div th:if="${isOrderExist}" class="card">
             <div class="card-header">
                 <div class="form-row">
                     <div class="col-md-6">
@@ -59,30 +67,27 @@
                     <table class="table table-shopping">
                         <thead>
                         <tr>
-                            <th class="text-center">Product ID</th>
+                            <th class="text-center">Asset Code</th>
                             <th class="text-center">Name</th>
                             <th class="text-center">Type</th>
                             <th class="text-center">Brand</th>
                             <th class="text-center">Model</th>
-                            <th class="text-center">Qty Transfer</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center">A-2021-1234</td>
-                            <td class="text-center">MAC-Mini-2021-1211</td>
-                            <td class="text-center">PC</td>
-                            <td class="text-center">Apple</td>
-                            <td class="text-center">Mac Mini</td>
-                            <td class="text-center">10</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">A-2021-1334</td>
-                            <td class="text-center">Cashier-Machine-2021-1211</td>
-                            <td class="text-center">Cashier</td>
-                            <td class="text-center">Moka</td>
-                            <td class="text-center">Moka-x</td>
-                            <td class="text-center">5</td>
+                        <tr th:each="a:${existingOrder.assets}">
+                            <td class="text-center" th:inline="text">[[${a.code}]]</td>
+                            <td class="text-center" th:inline="text">[[${a.product.name}]]</td>
+                            <td class="text-center" th:inline="text">[[${a.product.productType}]]</td>
+                            <td class="text-center" th:inline="text">[[${a.product.brand}]]</td>
+                            <td class="text-center" th:inline="text">[[${a.product.model}]]</td>
+                            <td class="td-actions text-center">
+                                <form method="post"
+                                      th:action="@{/item/transfer/remove/{orderId}/{assetId}(orderId=${existingOrder.id},assetId=${a.id})}">
+                                    <button class="btn btn-danger btn-round">Remove</button>
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -142,7 +147,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="outletAssetList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div th:if="${isOrderExist}" class="modal fade" id="outletAssetList" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-bs" role="document">
             <div class="modal-content">
@@ -157,7 +163,7 @@
                         <table class="table table-shopping">
                             <thead>
                             <tr>
-                                <th class="text-center">Product ID</th>
+                                <th class="text-center">Asset Code</th>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Type</th>
                                 <th class="text-center">Brand</th>
@@ -166,24 +172,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="text-center">A-2021-1234</td>
-                                <td class="text-center">MAC-Mini-2021-1211</td>
-                                <td class="text-center">PC</td>
-                                <td class="text-center">Apple</td>
-                                <td class="text-center">Mac Mini</td>
+                            <tr th:each="a:${assets}">
+                                <td class="text-center" th:inline="text">[[${a.code}]]</td>
+                                <td class="text-center" th:inline="text">[[${a.product.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${a.product.productType}]]</td>
+                                <td class="text-center" th:inline="text">[[${a.product.brand}]]</td>
+                                <td class="text-center" th:inline="text">[[${a.product.model}]]</td>
                                 <td class="td-actions text-center">
-                                    <button class="btn btn-info btn-round">Add</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">A-2021-1334</td>
-                                <td class="text-center">Cashier-Machine-2021-1211</td>
-                                <td class="text-center">Cashier</td>
-                                <td class="text-center">Moka</td>
-                                <td class="text-center">Moka-x</td>
-                                <td class="td-actions text-center">
-                                    <button class="btn btn-info btn-round">Add</button>
+                                    <form method="post"
+                                          th:action="@{/item/transfer/add/{orderId}/{assetId}(orderId=${existingOrder.id},assetId=${a.id})}">
+                                        <button class="btn btn-info btn-round">Add</button>
+                                    </form>
                                 </td>
                             </tr>
                             </tbody>

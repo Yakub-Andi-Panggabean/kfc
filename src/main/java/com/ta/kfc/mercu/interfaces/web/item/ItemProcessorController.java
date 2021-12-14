@@ -2,6 +2,7 @@ package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.dto.item.AddItemReceipt;
+import com.ta.kfc.mercu.dto.item.CreateTransferOrder;
 import com.ta.kfc.mercu.dto.item.ItemReceiptProduct;
 import com.ta.kfc.mercu.dto.item.ItemShipmentDto;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
@@ -201,6 +202,51 @@ public class ItemProcessorController extends ItemModule {
         }
 
         return String.format("redirect:%s", page);
+    }
+
+
+    @PostMapping({ITEM_TRANSFER_PATH})
+    public String createTransferOrder(CreateTransferOrder req) {
+
+        RequestOrder order = new RequestOrder();
+        order.setFrom(req.getFrom());
+        order.setTo(req.getTo());
+        order.setStatus(RequestOrderStatus.NEW);
+        order.setRequester(context.getUser().get().getUserDetail());
+        order.setType(RequestOrderType.TRANSFER_ORDER);
+        order.setUpdatedDate(new Date());
+        order.setCreatedDate(new Date());
+
+        requestOrderService.saveRequestOrder(order);
+
+        return String.format("redirect:%s", ITEM_TRANSFER_PATH);
+    }
+
+    @PostMapping({ITEM_TRANSFER_PATH + "/{action}/{toId}/{assetId}"})
+    public String addTransferOrderItem(@PathVariable("action") String action,
+                                       @PathVariable("toId") Long transferOrderId,
+                                       @PathVariable("assetId") Long assetId) {
+
+        Optional<RequestOrder> order = requestOrderService.findRequestOrderById(transferOrderId);
+
+        if (order.isPresent()) {
+
+            Optional<Asset> asset = assetService.findById(assetId);
+
+            if (asset.isPresent()) {
+                switch (action) {
+                    case "add":
+                        order.get().getAssets().add(asset.get());
+                        break;
+                    case "remove":
+                        order.get().getAssets().removeIf(a -> asset.get().getId() == a.getId());
+                        break;
+                }
+                requestOrderService.saveRequestOrder(order.get());
+            }
+        }
+
+        return String.format("redirect:%s", ITEM_TRANSFER_PATH);
     }
 
 
