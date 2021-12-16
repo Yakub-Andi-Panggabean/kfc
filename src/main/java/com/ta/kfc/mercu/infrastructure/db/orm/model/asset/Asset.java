@@ -100,4 +100,9 @@ public class Asset {
     public int hashCode() {
         return Objects.hash(id, product, unit, code, createdDate, updatedDate, assetStatus);
     }
+
+    @Override
+    public String toString() {
+        return code;
+    }
 }

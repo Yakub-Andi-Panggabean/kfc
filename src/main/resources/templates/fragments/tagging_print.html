@@ -15,147 +15,32 @@
                 <table class="table table-shopping">
                     <thead>
                     <tr>
-                        <th class="text-left">
-                            <button class="btn btn-info btn-round" data-toggle="modal" data-target="#exampleModal">Add
-                            </button>
-                        </th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center">
-                            <div class="input-group no-border">
-                                <input type="text" id="inputRequestOrderID" value="" class="form-control"
-                                       placeholder="Search By Product...">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <i class="now-ui-icons ui-1_zoom-bold"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </th>
+                        <th class="text-center" th:each="i: ${#numbers.sequence(1, columnNumber)}"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card col-10">
-                                <div class="card-image">
-                                    <img src="https://iconape.com/wp-content/files/uy/155753/png/qr-code-logo.png">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-title">Product-xxxx</p>
-                                    <p class="card-text">ID-xxxxxxxx</p>
-                                    <button class="btn btn-secondary btn-sm">Print</button>
+                    <tr th:each="i,idxi: ${#numbers.sequence(1, rowNumber)}">
+                        <td class="text-center" th:each="i,idxy: ${#numbers.sequence(1, columnNumber)}"
+                            th:inline="text">
+                            <div th:if="${(idxy.index+idxi.index*idxy.size) < #lists.size(assets)}"
+                                 class="col-10">
+                                <div class="card">
+                                    <img class="card-img-top"
+                                         th:src="@{/qrcode/{id}(id=${assets[idxy.index+idxi.index*idxy.size]})}">
+                                    <div class="card-body">
+                                        <p class="card-title" th:inline="text">
+                                            [[${assets[idxy.index+idxi.index*idxy.size].product.name}]]-
+                                            [[${assets[idxy.index+idxi.index*idxy.size].product.brand}]]-
+                                            [[${assets[idxy.index+idxi.index*idxy.size].product.model}]]
+                                        </p>
+                                        <p class="card-text">[[${assets[idxy.index+idxi.index*idxy.size].code}]]</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a th:href="@{/download/qrcode/{id}(id=${assets[idxy.index+idxi.index*idxy.size]})}"
+                                           class="btn btn-info btn-round" target="_blank">
+                                            Print
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </td>

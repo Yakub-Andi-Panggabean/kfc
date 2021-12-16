@@ -82,5 +82,8 @@ public class DefaultAssetService implements AssetService {
         return itemReceiptRepository.findById(id);
     }
 
-
+    @Override
+    public List<Asset> getAllAsset() {
+        return assetRepository.findAll();
+    }
 }
