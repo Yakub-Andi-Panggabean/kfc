@@ -16,4 +16,12 @@ public interface AuthorizationService {
 
     Optional<Menu> updateMenu(Menu menu);
 
+    List<Role> getAllRoles();
+
+    Optional<Role> addNewRole(Role role);
+
+    Optional<Role> findRoleById(Long id);
+
+    Optional<Role> update(Role role);
+
 }

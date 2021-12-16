@@ -59,4 +59,24 @@ public class DefaultAuthorizationService implements AuthorizationService {
     public Optional<Menu> updateMenu(Menu menu) {
         return Optional.of(menuRepository.save(menu));
     }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public Optional<Role> addNewRole(Role role) {
+        return Optional.of(roleRepository.save(role));
+    }
+
+    @Override
+    public Optional<Role> findRoleById(Long id) {
+        return roleRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Role> update(Role role) {
+        return Optional.of(roleRepository.save(role));
+    }
 }

@@ -18,7 +18,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_menus",
             joinColumns = {@JoinColumn(name = "roles_id")},
             inverseJoinColumns = {@JoinColumn(name = "menus_id")})
