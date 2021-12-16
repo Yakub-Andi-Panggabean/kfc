@@ -10,10 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,9 +36,27 @@ public class DefaultAuthorizationService implements AuthorizationService {
         Set<Menu> menus = authorities.stream().map(SimpleGrantedAuthority::getAuthority)
                 .map(roleRepository::findByName).collect(Collectors.toList())
                 .stream()
-                .map(Role::getMenus).findAny().orElse(Collections.emptySet());
+                .map(Role::getMenus)
+                .findAny().orElse(Collections.emptySet())
+                .stream().filter(m -> m.isEnable()).collect(Collectors.toSet());
 
         return menus.stream().sorted(Comparator.comparing(Menu::getId)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<Menu> getAllMenus() {
+        return menuRepository.findAll();
+    }
+
+    @Override
+    public Optional<Menu> findMenuById(Long id) {
+        return menuRepository.findById(id);
+    }
+
+
+    @Override
+    public Optional<Menu> updateMenu(Menu menu) {
+        return Optional.of(menuRepository.save(menu));
     }
 }

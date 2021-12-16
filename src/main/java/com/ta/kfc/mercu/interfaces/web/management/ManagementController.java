@@ -1,4 +1,4 @@
-package com.ta.kfc.mercu.interfaces.web.page.management;
+package com.ta.kfc.mercu.interfaces.web.management;
 
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,14 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class ManagementController {
+import java.util.stream.Collectors;
 
-    public static final String MANAGEMENT_PATH = "/management";
-    public static final String MANAGEMENT_USER_PATH = MANAGEMENT_PATH + "/user";
-    public static final String MANAGEMENT_ROLE_PATH = MANAGEMENT_PATH + "/role";
-    public static final String MANAGEMENT_SUPPORT_PATH = MANAGEMENT_PATH + "/support";
-    public static final String MANAGEMENT_MENU_PATH = MANAGEMENT_PATH + "/menu";
+@Controller
+public class ManagementController extends ManagementModule {
 
 
     private AuthorizationService authorizationService;
@@ -62,6 +58,10 @@ public class ManagementController {
 
         model.addAttribute("template", "management");
         model.addAttribute("management_template", "menu_management");
+        model.addAttribute("availableMenus", authorizationService.getAllMenus()
+                .stream().filter(m -> !m.getPath().equals(MANAGEMENT_MENU_PATH))
+                .collect(Collectors.toList()));
+
         return "index";
     }
 

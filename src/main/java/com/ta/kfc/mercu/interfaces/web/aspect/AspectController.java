@@ -55,17 +55,21 @@ public class AspectController {
 
                 List<Menu> subMenus = authorizationService.getAuthorizedMenu().stream()
                         .map(menu -> menu.getChildren())
-                        .flatMap(Collection::stream).collect(Collectors.toList());
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
 
                 List<Menu> menus = authorizationService.getAuthorizedMenu().stream()
                         .filter(menu -> !subMenus.contains(menu)).collect(Collectors.toList());
 
                 Optional<Menu> currentMenu = menus.stream().
                         filter(menu -> menu.getPath().
-                                equals(request.getServletPath())).findAny();
+                                equals(request.getServletPath())).filter(m -> m.isEnable())
+                        .findAny();
 
                 List<Menu> currentSubMenus = currentMenu.map(menu -> menu.getChildren())
-                        .orElse(Collections.emptyList());
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .filter(m -> m.isEnable()).collect(Collectors.toList());
 
                 List<Menu> siblings = menus.stream()
                         .filter(menu -> menu.getChildren()
@@ -74,6 +78,7 @@ public class AspectController {
                         )
                         .map(menu -> menu.getChildren())
                         .flatMap(Collection::stream)
+                        .filter(m -> m.isEnable())
                         .collect(Collectors.toList());
 
                 Optional<Menu> parent = menus.stream().filter(p ->

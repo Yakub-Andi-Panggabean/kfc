@@ -8,53 +8,29 @@
 <div th:fragment="menu_management" class="row">
     <div class="col-md-10 ml-auto mr-auto">
         <div class="card">
-            <div class="card-header"><h4>&nbsp;&nbsp;Menu Management</h4></div>
+            <div class="card-header"><h4 class="card-title">&nbsp;&nbsp;Menu Management</h4></div>
             <div class="card-body">
-                <div class="card-title col-md-4">
-                    <br>
-                    <div class="input-group no-border">
-                        <input type="text" id="inputRequestOrderID" value="" class="form-control"
-                               placeholder="Search By ID...">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="now-ui-icons ui-1_zoom-bold"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th class="text-center">#</th>
                             <th>Menu</th>
                             <th>Path</th>
                             <th class="text-right"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>User Management</td>
-                            <td>/management/user</td>
+                        <tr th:each="m:${availableMenus}">
+                            <td th:inline="text">[[${m.label}]]</td>
+                            <td th:inline="text">[[${m.path}]]</td>
                             <td class="td-actions text-right">
-                                <button type="button" class="btn btn-default">Enable</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Role Management</td>
-                            <td>/management/role</td>
-                            <td class="td-actions text-right">
-                                <button type="button" class="btn btn-danger">Disable</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Master Data</td>
-                            <td>/master</td>
-                            <td class="td-actions text-right">
-                                <button type="button" class="btn btn-danger">Disable</button>
+                                <form th:action="@{/management/menu/status/{id}(id=${m.id})}" method="post">
+                                    <button th:if="${m.enable}" type="submit" class="btn btn-round btn-danger">Disable
+                                    </button>
+                                    <button th:unless="${m.enable}" type="submit" class="btn btn-round btn-success">
+                                        Enable
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>
