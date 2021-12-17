@@ -1,23 +1,30 @@
 package com.ta.kfc.mercu.interfaces.web.management;
 
+import com.ta.kfc.mercu.dto.management.UserRegistration;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.Role;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.security.Menu;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ManagementProcessorController extends ManagementModule {
 
     private AuthorizationService authorizationService;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public ManagementProcessorController(AuthorizationService authorizationService) {
+    public ManagementProcessorController(AuthorizationService authorizationService,
+                                         AuthenticationService authenticationService) {
         this.authorizationService = authorizationService;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping(MANAGEMENT_MENU_PATH + "/{action}/{menuid}")
@@ -77,6 +84,32 @@ public class ManagementProcessorController extends ManagementModule {
         }
 
         return String.format("redirect:%s?isUpdate=true&roleId=%d", MANAGEMENT_ROLE_PATH, roleId);
+    }
+
+
+    @PostMapping(MANAGEMENT_USER_PATH)
+    public String registerUser(UserRegistration req) {
+
+        UserDetail detail = new UserDetail();
+        detail.setBirthDate(new Date());
+        detail.setCreatedDate(new Date());
+        detail.setCode(req.getEmployeeId());
+        detail.setDepartment(req.getDepartment());
+        detail.setFirstName(req.getFirstName());
+        detail.setLastName(req.getLastName());
+        detail.setUnit(req.getUnit());
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(req.getRole());
+
+        User user = new User();
+        user.setUserDetail(detail);
+        user.setRoles(roles);
+        user.setUsername(req.getEmployeeId());
+        user.setPassword(req.getEmployeeId());
+
+        authenticationService.addNewUser(user);
+        return String.format("redirect:%s", MANAGEMENT_USER_PATH);
     }
 
 }

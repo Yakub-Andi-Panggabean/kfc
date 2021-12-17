@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,13 +24,16 @@ public class DefaultAuthenticationService implements AuthenticationService {
     private UserDetailsService userDetailsService;
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public DefaultAuthenticationService(UserDetailsService userDetailsService,
-                                        AuthenticationManager authenticationManager, UserRepository userRepository) {
+                                        AuthenticationManager authenticationManager,
+                                        UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -62,5 +66,25 @@ public class DefaultAuthenticationService implements AuthenticationService {
     @Override
     public Optional<User> findUserByUserName(String username) {
         return Optional.of(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public Optional<User> addNewUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return Optional.of(userRepository.save(user));
+    }
+
+    @Override
+    public Optional<User> updateUser(User user) {
+        if (user.getId() == null) {
+            throw new RuntimeException("empty user id");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return Optional.of(userRepository.save(user));
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

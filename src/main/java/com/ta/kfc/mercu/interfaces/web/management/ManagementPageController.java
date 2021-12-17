@@ -1,7 +1,12 @@
 package com.ta.kfc.mercu.interfaces.web.management;
 
+import com.ta.kfc.mercu.dto.management.UserRegistration;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.Role;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.security.Menu;
+import com.ta.kfc.mercu.service.master.MasterService;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,18 +22,22 @@ public class ManagementPageController extends ManagementModule {
 
 
     private AuthorizationService authorizationService;
+    private MasterService masterService;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    public ManagementPageController(AuthorizationService authorizationService) {
+    public ManagementPageController(AuthorizationService authorizationService,
+                                    MasterService masterService,
+                                    AuthenticationService authenticationService) {
         this.authorizationService = authorizationService;
+        this.masterService = masterService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping({MANAGEMENT_PATH})
     public String getManagementPage(Model model) {
 
-        model.addAttribute("template", "management");
-        model.addAttribute("management_template", "user_management");
-        return "index";
+        return getManagementUserPage(model);
     }
 
 
@@ -37,6 +46,20 @@ public class ManagementPageController extends ManagementModule {
 
         model.addAttribute("template", "management");
         model.addAttribute("management_template", "user_management");
+        model.addAttribute("availableRoles", authorizationService.getAllRoles().stream()
+                .filter(r -> !r.getName().equals("ROLE_ROOT"))
+                .collect(Collectors.toList()));
+        model.addAttribute("availableDepartments", masterService.getAllDepartments()
+                .stream()
+                .filter(Department::isEnable)
+                .collect(Collectors.toList()));
+        model.addAttribute("availableUnits", masterService.getAllUnit()
+                .stream()
+                .filter(Unit::isEnable)
+                .collect(Collectors.toList()));
+        model.addAttribute("userModel", new UserRegistration());
+        model.addAttribute("users", authenticationService.findAll());
+
         return "index";
     }
 

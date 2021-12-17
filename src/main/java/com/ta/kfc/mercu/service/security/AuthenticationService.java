@@ -14,5 +14,11 @@ public interface AuthenticationService {
 
     Optional<User> findUserByUserName(String username);
 
+    Optional<User> addNewUser(User user);
+
+    Optional<User> updateUser(User user);
+
+    List<User> findAll();
+
 
 }

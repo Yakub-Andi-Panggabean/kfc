@@ -55,4 +55,9 @@ public class Role {
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
     }
+
+    @Override
+    public String toString() {
+        return name.replace("ROLE_", "");
+    }
 }
