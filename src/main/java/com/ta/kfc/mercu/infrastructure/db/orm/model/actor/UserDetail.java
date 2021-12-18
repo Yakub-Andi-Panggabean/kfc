@@ -3,9 +3,11 @@ package com.ta.kfc.mercu.infrastructure.db.orm.model.actor;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Department;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.notification.Notification;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user_detail")
@@ -37,6 +39,9 @@ public class UserDetail {
 
     @OneToOne(mappedBy = "userDetail")
     private User user;
+
+    @OneToMany(mappedBy = "userDetail")
+    private List<Notification> notifications;
 
     public Long getId() {
         return id;
@@ -140,6 +145,14 @@ public class UserDetail {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     @Override

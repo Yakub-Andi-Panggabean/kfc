@@ -8,7 +8,8 @@
 <div th:fragment="notification" class="row">
 
     <div class="col-md-8 ml-auto mr-auto">
-        <div class="card">
+
+        <div th:unless="${isDetail}" class="card">
             <div class="card-header"></div>
             <div class="card-body">
                 <table class="table">
@@ -19,75 +20,36 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th class="text-left">RO-xxx-xxx - est qui dolorem ipsum quia dolor sit amet,
-                            consectetur,
-                            adipisci velit...
+                    <tr th:each="n:${notifications}">
+                        <th class="text-left" th:inline="text">
+                            [[${n.message}]]
                         </th>
-                        <td class="td-actions text-right">
-                            <button class="btn btn-default btn-icon btn-round" data-toggle="modal"
-                                    data-target="#notificationDetail">
-                                <i class="now-ui-icons ui-1_email-85"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">RO-xxx-xxx - qui dolorem ipsum quia dolor sit amet,
-                            consectetur,
-                            adipisci velit...
-                        </td>
-                        <td class="td-actions text-right">
-                            <button class="btn btn-default btn-icon btn-round" data-toggle="modal"
-                                    data-target="#notificationDetail">
+                        <td th:if="${n.alreadyRead}" class="td-actions text-right">
+                            <a th:href="@{/notification/{notificationId}(notificationId=${n.id})}"
+                               class="btn btn-default btn-icon btn-round" data-toggle="modal"
+                               th:attr="data-notification-id=${n.id}" data-target="#notificationDetail">
                                 <i class="now-ui-icons education_glasses"></i>
-                            </button>
+                            </a>
                         </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">RO-xxx-xxx - qui dolorem ipsum quia dolor sit amet,
-                            consectetur,
-                            adipisci velit...
-                        </td>
-                        <td class="td-actions text-right">
-                            <button class="btn btn-default btn-icon btn-round" data-toggle="modal"
-                                    data-target="#notificationDetail">
-                                <i class="now-ui-icons education_glasses"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-left">RO-xxx-xxx - qui dolorem ipsum quia dolor sit amet,
-                            consectetur,
-                            adipisci velit...
-                        </th>
-                        <td class="td-actions text-right">
-                            <button class="btn btn-default btn-icon btn-round" data-toggle="modal"
-                                    data-target="#notificationDetail">
+                        <td th:unless="${n.alreadyRead}" class="td-actions text-right">
+                            <a th:href="@{/notification/{notificationId}(notificationId=${n.id})}"
+                               class="btn btn-default btn-icon btn-round" data-toggle="modal"
+                               th:attr="data-notification-id=${n.id}" data-target="#notificationDetail">
                                 <i class="now-ui-icons ui-1_email-85"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-left">RO-xxx-xxx - qui dolorem ipsum quia dolor sit amet,
-                            consectetur,
-                            adipisci velit...
-                        </th>
-                        <td class="td-actions text-right">
-                            <button class="btn btn-default btn-icon btn-round" data-toggle="modal"
-                                    data-target="#notificationDetail">
-                                <i class="now-ui-icons ui-1_email-85"></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
     </div>
 
 
     <!-- modal-->
-    <div class="modal fade" id="notificationDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="notificationDetail" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -98,36 +60,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table table-shopping">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th class="text-left">Request ID</th>
-                                    <td class="text-left">RO-xxx-xxx</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Request Category</th>
-                                    <td class="text-left">RAM-Request-NewGate-18GB</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Note</th>
-                                    <td class="text-left">Ram buat upgrade laptop engineer baru</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Status</th>
-                                    <td class="text-left">Approved</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Approved By</th>
-                                    <td class="text-left">Mr. John</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                 </div>

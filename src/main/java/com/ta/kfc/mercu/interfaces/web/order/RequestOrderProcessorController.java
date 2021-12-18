@@ -4,9 +4,11 @@ import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Brand;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.notification.Notification;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.interfaces.web.approval.ApprovalModule;
 import com.ta.kfc.mercu.service.master.MasterService;
+import com.ta.kfc.mercu.service.notification.NotificationService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,16 +33,21 @@ public class RequestOrderProcessorController extends OrderModule {
     private MasterService masterService;
     private TransactionService transactionService;
     private FastContext context;
+    private NotificationService notificationService;
+    public static final String RO_NOTIFICATION = "request order created on %s with request id %s";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
     @Autowired
     public RequestOrderProcessorController(FastContext context,
                                            RequestOrderService requestOrderService,
                                            TransactionService transactionService,
-                                           MasterService masterService) {
+                                           MasterService masterService,
+                                           NotificationService notificationService) {
         this.context = context;
         this.requestOrderService = requestOrderService;
         this.transactionService = transactionService;
         this.masterService = masterService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping(REQUEST_ORDER_PATH)
@@ -56,8 +64,18 @@ public class RequestOrderProcessorController extends OrderModule {
         requestOrder.setFrom(user.getUserDetail().getUnit());
         requestOrder.setStatus(RequestOrderStatus.NEW);
         requestOrder.setType(RequestOrderType.REQUEST_ORDER);
-        requestOrderService.saveRequestOrder(requestOrder);
 
+        Optional<RequestOrder> savedReqOrder = requestOrderService.saveRequestOrder(requestOrder);
+
+        Notification notification = new Notification();
+        notification.setCreatedDate(new Date());
+        notification.setMessage(String.format(RO_NOTIFICATION,
+                new SimpleDateFormat(DATE_FORMAT).format(savedReqOrder.get().getCreatedDate()),
+                savedReqOrder.get().getId()));
+        notification.setUserDetail(savedReqOrder.get().getRequester());
+        notification.setOrder(requestOrder);
+
+        Optional<Notification> savedNotification = notificationService.save(notification);
         return String.format("redirect:%s?", REQUEST_ORDER_PATH);
     }
 

@@ -48,6 +48,18 @@ $('#verifyOrderDetail').on('show.bs.modal', function (event) {
     )
 });
 
+$('#notificationDetail').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var roID = $(button).attr("data-notification-id");
+    $.get("/notification/" + roID, function (data) {
+            var body = $($.parseHTML(data)).find(".modal-body").html();
+            var footer = $($.parseHTML(data)).find(".modal-footer").html();
+            $('#notificationDetail').find('.modal-body').html(body);
+            $('#notificationDetail').find('.modal-footer').html(footer);
+        }
+    )
+});
+
 
 function removeAsset(caller, event) {
     event.preventDefault();

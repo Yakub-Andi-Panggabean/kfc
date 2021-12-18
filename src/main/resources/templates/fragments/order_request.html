@@ -123,9 +123,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${orders.empty}">
-                        <td colspan="5" class="text-center"> No Orders</td>
-                    </tr>
                     <tr th:each="order : ${orders}">
                         <td class="text-center" th:inline="text">[[${order.id}]]</td>
                         <td class="text-center" th:inline="text">[[${order.updatedDate}]]</td>
@@ -176,9 +173,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:if="${products.empty}">
-                                        <td colspan="6" class="text-center"> No Products Available</td>
-                                    </tr>
                                     <tr th:each="product : ${products}">
                                         <td class="text-center" th:inline="text">[[${product.id}]]</td>
                                         <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>

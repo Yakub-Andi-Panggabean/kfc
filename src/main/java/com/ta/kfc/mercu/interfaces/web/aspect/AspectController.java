@@ -1,7 +1,9 @@
 package com.ta.kfc.mercu.interfaces.web.aspect;
 
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.notification.Notification;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.security.Menu;
+import com.ta.kfc.mercu.service.notification.NotificationService;
 import com.ta.kfc.mercu.service.security.AuthenticationService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import org.aspectj.lang.JoinPoint;
@@ -29,12 +31,15 @@ public class AspectController {
 
     private AuthorizationService authorizationService;
     private AuthenticationService authenticationService;
+    private NotificationService notificationService;
 
     @Autowired
     public AspectController(AuthorizationService authorizationService,
-                            AuthenticationService authenticationService) {
+                            AuthenticationService authenticationService,
+                            NotificationService notificationService) {
         this.authorizationService = authorizationService;
         this.authenticationService = authenticationService;
+        this.notificationService = notificationService;
     }
 
     @Pointcut("execution(* com.ta.kfc.mercu.interfaces.web..*(..,org.springframework.ui.Model))")
@@ -106,6 +111,11 @@ public class AspectController {
                     Optional<User> user = authenticationService.findUserByUserName(username);
                     if (user.isPresent()) {
                         ((Model) arg).addAttribute("user", user.get());
+                        List<Notification> notifications = notificationService.findByUserDetail(user.get());
+                        ((Model) arg).addAttribute("unreadNotificationCount", notifications
+                                .stream()
+                                .filter(n -> !n.isAlreadyRead()).count());
+
                     }
                 }
             }

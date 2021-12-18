@@ -24,7 +24,7 @@
                         <a class="nav-link" th:href="@{/notification}" id="navbarNotification" aria-haspopup="true"
                            aria-expanded="false">
                             <i class="now-ui-icons ui-1_bell-53"></i>
-                            <p>1</p>
+                            <p th:inline="text">[[${unreadNotificationCount}]]</p>
                         </a>
                     </li>
                 </ul>
