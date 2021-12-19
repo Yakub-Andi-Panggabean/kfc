@@ -21,8 +21,16 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputTransferFrom">Transfer From</label>
-                            <select id="inputTransferFrom" class="form-control" th:field="*{from}">
-                                <option th:each="u,i:${units}" th:value="${u.id}" th:selected="${i==0}"
+                            <select th:if="${isOrderExist}" id="inputTransferFrom" class="form-control"
+                                    th:field="*{from}" disabled>
+                                <option th:each="u,i:${fromUnits}" th:value="${u.id}" th:selected="${i==0}"
+                                        th:inline="text">
+                                    [[${u.unitName}]]
+                                </option>
+                            </select>
+                            <select th:unless="${isOrderExist}" id="inputTransferFrom" class="form-control"
+                                    th:field="*{from}">
+                                <option th:each="u,i:${fromUnits}" th:value="${u.id}" th:selected="${i==0}"
                                         th:inline="text">
                                     [[${u.unitName}]]
                                 </option>
@@ -30,8 +38,14 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputTransferTo">Transfer To</label>
-                            <select id="inputTransferTo" class="form-control" th:field="*{to}">
-                                <option th:each="u,i:${units}" th:value="${u.id}" th:selected="${i==0}"
+                            <select th:if="${isOrderExist}" id="inputTransferTo" class="form-control" th:field="*{to}" disabled>
+                                <option th:each="u,i:${toUnits}" th:value="${u.id}" th:selected="${i==0}"
+                                        th:inline="text">
+                                    [[${u.unitName}]]
+                                </option>
+                            </select>
+                            <select th:unless="${isOrderExist}" id="inputTransferTo" class="form-control" th:field="*{to}">
+                                <option th:each="u,i:${toUnits}" th:value="${u.id}" th:selected="${i==0}"
                                         th:inline="text">
                                     [[${u.unitName}]]
                                 </option>

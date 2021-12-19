@@ -196,7 +196,10 @@ public class ItemPageController extends ItemModule {
     public String getItemTransferPage(Model model) {
 
         model.addAttribute("template", "item_transfer");
-        model.addAttribute("units", masterService.getAllUnit());
+        model.addAttribute("fromUnits", masterService.getAllUnit().stream()
+                .filter(u -> u.getAssets().size() > 0)
+                .collect(Collectors.toList()));
+        model.addAttribute("toUnits", masterService.getAllUnit());
         model.addAttribute("inProgressOrders", requestOrderService
                 .findRequestOrderPerUser(context.getUser().get().getUserDetail())
                 .stream()

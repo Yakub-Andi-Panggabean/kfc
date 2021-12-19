@@ -34,7 +34,7 @@ public class ItemProcessorController extends ItemModule {
     private static final String ITEM_RECEIPT_NOTIFICATION = "item receipt for request id %s is being verified by %s";
     private static final String ITEM_RECEIPT_COMPLETE = "item receipt verification for request id %s is completed by %s";
     private static final String ITEM_TRANSFER_WAITING_APPROVAL = "item transfer for request id %s asking for your approval";
-    private static final String ITEM_TRANSFER_APPROVED = "item transfer for request id %s asking has been approved by %s";
+    private static final String ITEM_TRANSFER_APPROVED = "item transfer for request id %s asking has been send by %s";
 
 
     private FastContext context;
@@ -318,7 +318,7 @@ public class ItemProcessorController extends ItemModule {
             transaction.setTransactionType(TransactionType.TRANSFER_ITEM);
             order.setStatus(RequestOrderStatus.COMPLETED);
             order.getAssets().forEach(asset -> {
-                asset.setUnit(order.getFrom());
+                asset.setUnit(order.getTo());
                 asset.setUpdatedDate(new Date());
                 assetService.save(asset);
             });
