@@ -3,6 +3,7 @@ package com.ta.kfc.mercu.config;
 import com.ta.kfc.mercu.context.DefaultFastContext;
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.service.security.AuthenticationService;
+import com.ta.kfc.mercu.shared.CollectionHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +17,11 @@ public class AppConfig {
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.INTERFACES)
     public FastContext getContext() {
         return new DefaultFastContext();
+    }
+
+    @Bean
+    public CollectionHelper collectionHelper() {
+        return new CollectionHelper();
     }
 
 }

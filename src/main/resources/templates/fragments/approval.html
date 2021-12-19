@@ -49,22 +49,26 @@
                                                                 <th class="text-center">Brand</th>
                                                                 <th class="text-center">Model</th>
                                                                 <th class="text-center">Product Name</th>
+                                                                <th class="text-center">Qty</th>
                                                                 <th></th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="product : ${request.products}">
+                                                            <tr th:each="product : ${@collectionHelper.groupProductCount(request.products)}">
                                                                 <td class="text-center" th:inline="text">
-                                                                    [[${product.id}]]
+                                                                    [[${product.key.id}]]
                                                                 </td>
                                                                 <td class="text-center" th:inline="text">
-                                                                    [[${product.brand.name}]]
+                                                                    [[${product.key.brand.name}]]
                                                                 </td>
                                                                 <td class="text-center" th:inline="text">
-                                                                    [[${product.model.name}]]
+                                                                    [[${product.key.model.name}]]
                                                                 </td>
                                                                 <td class="text-center" th:inline="text">
-                                                                    [[${product.name}]]
+                                                                    [[${product.key.name}]]
+                                                                </td>
+                                                                <td class="text-center" th:inline="text">
+                                                                    [[${product.value}]]
                                                                 </td>
                                                             </tr>
                                                             </tbody>

@@ -73,6 +73,7 @@
                                 <th class="text-center">Brand</th>
                                 <th class="text-center">Model</th>
                                 <th class="text-center">Product Name</th>
+                                <th class="text-center">Qty</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             </thead>
@@ -81,13 +82,14 @@
                                 <td colspan="6" class="text-center"> No Products Picked</td>
                             </tr>
                             <tr th:each="product : ${requested_products}">
-                                <td class="text-center" th:inline="text">[[${product.id}]]</td>
-                                <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
-                                <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
-                                <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.key.id}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.key.brand.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.key.model.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.key.name}]]</td>
+                                <td class="text-center" th:inline="text">[[${product.value}]]</td>
                                 <td class="td-actions text-center">
                                     <a class="btn btn-info btn-round"
-                                       th:href="@{/order/request/product/remove/{productId}(productId=${product.id})}">
+                                       th:href="@{/order/request/product/remove/{productId}(productId=${product.key.id})}">
                                         Remove
                                     </a>
                                 </td>
@@ -169,6 +171,7 @@
                                         <th class="text-center">Brand</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Product Name</th>
+                                        <th class="text-center">Qty</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     </thead>
@@ -178,11 +181,13 @@
                                         <td class="text-center" th:inline="text">[[${product.brand.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${product.model.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${product.name}]]</td>
+                                        <td class="text-center" th:inline="text">
+                                            <input th:id="'qty-'+${product.id}" type="number" class="form-control">
+                                        </td>
                                         <td class="td-actions text-center">
-                                            <a class="btn btn-info btn-round"
-                                               th:href="@{/order/request/product/add/{productId}(productId=${product.id})}">
-                                                Add
-                                            </a>
+                                            <button th:attr="data-product-id=${product.id},data-qty-id=${'#qty-'+product.id}"
+                                                    class="btn btn-round btn-info" onclick="addRoItem(this)">Add
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>

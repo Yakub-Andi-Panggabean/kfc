@@ -78,3 +78,21 @@ $('#assetAdjustmentLocation').on('change', function () {
     var path = $('option:selected', this).attr('data-unit-adjustment');
     location.href = path
 });
+
+
+function addRoItem(caller) {
+
+    var productId = $(caller).attr("data-product-id");
+    var qtyId = $(caller).attr("data-qty-id");
+    var qtyVal = $(qtyId).val();
+
+    if (qtyVal < 1) {
+        alert('invalid qty');
+        return;
+    }
+
+    var action = "/order/request/product/add/" + productId + "?qty=" + qtyVal;
+    $.get(action, function (data) {
+        location.reload();
+    });
+}

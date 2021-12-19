@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class RequestOrderProcessorController extends OrderModule {
@@ -80,7 +81,8 @@ public class RequestOrderProcessorController extends OrderModule {
     }
 
     @GetMapping({REQUEST_ORDER_PATH_PRODUCT + "/{action}" + "/{product_id}"})
-    public String addRequestOrderItem(@PathVariable("product_id") Long productId,
+    public String addRequestOrderItem(@RequestParam(name = "qty", required = false) Long qty,
+                                      @PathVariable("product_id") Long productId,
                                       @PathVariable("action") String action) {
 
         User user = context.getUser().get();
@@ -89,9 +91,18 @@ public class RequestOrderProcessorController extends OrderModule {
         if (requestOrder.isPresent()) {
             masterService.getProduct(productId).ifPresent(p -> {
                 if (action.equals("add")) {
-                    requestOrder.get().getProducts().add(p);
+                    if (qty != null) {
+                        for (int i = 0; i < qty; i++) {
+                            requestOrder.get().getProducts().add(p);
+                        }
+                    }
                 } else {
-                    requestOrder.get().getProducts().remove(p);
+                    requestOrder.get().getProducts()
+                            .removeAll(requestOrder.get().getProducts()
+                                    .stream()
+                                    .filter(t -> t.getId() == p.getId())
+                                    .collect(Collectors.toList())
+                            );
                 }
                 requestOrderService.saveRequestOrder(requestOrder.get());
             });
