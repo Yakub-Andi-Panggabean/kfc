@@ -96,3 +96,26 @@ function addRoItem(caller) {
         location.reload();
     });
 }
+
+
+function addReceiptItem(caller) {
+    var productId = $(caller).attr("data-product-id");
+    var qtyId = $(caller).attr("data-qty-id");
+    var qtyVal = $(qtyId).val();
+
+    if (qtyVal < 1) {
+        alert('invalid qty');
+        return;
+    }
+
+    $(caller).append('<input type="hidden" id="qty" name="qty" value=' + qtyVal + '>');
+
+    $.ajax({
+        type: 'POST',
+        url: $(caller).attr('action'),
+        data: $(caller).serialize(),
+        success: function (data) {
+            location.reload();
+        }
+    });
+}

@@ -6,6 +6,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 public class ItemReceiptProduct {
     private Long itemReceipt;
     private Long product;
+    private Long qty;
 
     public Long getItemReceipt() {
         return itemReceipt;
@@ -21,5 +22,13 @@ public class ItemReceiptProduct {
 
     public void setProduct(Long product) {
         this.product = product;
+    }
+
+    public Long getQty() {
+        return qty;
+    }
+
+    public void setQty(Long qty) {
+        this.qty = qty;
     }
 }

@@ -70,6 +70,7 @@
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Product Name</th>
                                         <th class="text-center">Qty</th>
+                                        <th class="text-center">Destination</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -79,6 +80,7 @@
                                         <td class="text-center" th:inline="text">[[${product.key.model.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${product.key.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${product.value}]]</td>
+                                        <td class="text-center" th:inline="text">[[${existingItemReceipt.requestOrder.from}]]</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -425,27 +427,31 @@
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Model</th>
                                         <th class="text-center">Brand</th>
+                                        <th class="text-center">Qty</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:if="${products.empty}">
-                                        <td colspan="6" class="text-center">No Products for this supplier</td>
-                                    </tr>
                                     <tr th:each="p : ${products}">
                                         <td class="text-center" th:inline="text">[[${p.id}]]</td>
                                         <td class="text-center" th:inline="text">[[${p.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${p.productType}]]</td>
                                         <td class="text-center" th:inline="text">[[${p.brand.name}]]</td>
                                         <td class="text-center" th:inline="text">[[${p.model.name}]]</td>
+                                        <td class="text-center">
+                                            <input type="number" th:id="${'ir-qty-'+p.id}" class="form-control">
+                                        </td>
                                         <td class="td-actions text-center">
                                             <form th:action="@{/item/receipt/add}"
-                                                  th:object="${itemReceiptProductModel}" method="post">
+                                                  th:object="${itemReceiptProductModel}" method="post"
+                                                  th:attr="data-qty-id=${'#ir-qty-'+p.id}"
+                                                  onsubmit="event.preventDefault(); addReceiptItem(this)">
                                                 <input type="hidden" id="product" th:name="product"
                                                        th:value="${p.id}">
                                                 <input type="hidden" id="itemReceipt" th:name="itemReceipt"
                                                        th:value="${existingItemReceipt.id}">
-                                                <button type="submit" class="btn btn-info btn-round">Select</button>
+                                                <button type="submit" class="btn btn-info btn-round">Select
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

@@ -167,15 +167,17 @@ public class ItemProcessorController extends ItemModule {
 
             Optional<Product> product = masterService.getProduct(itemReceiptProduct.getProduct());
 
-            Asset asset = new Asset();
-            asset.setUpdatedDate(new Date());
-            asset.setCreatedDate(new Date());
-            asset.setUnit(itemReceipt.get().getLocation());
-            asset.setProduct(product.get());
-            asset.setAssetStatus(AssetStatus.AVAILABLE);
-            asset.setCode(UUID.randomUUID().toString());
-            Optional<Asset> savedAsset = assetService.save(asset);
-            itemReceipt.get().getAssets().add(savedAsset.get());
+            for (int i = 0; i < itemReceiptProduct.getQty(); i++) {
+                Asset asset = new Asset();
+                asset.setUpdatedDate(new Date());
+                asset.setCreatedDate(new Date());
+                asset.setUnit(itemReceipt.get().getLocation());
+                asset.setProduct(product.get());
+                asset.setAssetStatus(AssetStatus.AVAILABLE);
+                asset.setCode(UUID.randomUUID().toString());
+                Optional<Asset> savedAsset = assetService.save(asset);
+                itemReceipt.get().getAssets().add(savedAsset.get());
+            }
 
             assetService.updateItemReceipt(itemReceipt.get());
         }

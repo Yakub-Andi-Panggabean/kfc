@@ -33,7 +33,12 @@
                                             [[${assets[idxy.index+idxi.index*idxy.size].product.brand}]]-
                                             [[${assets[idxy.index+idxi.index*idxy.size].product.model}]]
                                         </p>
-                                        <p class="card-text">[[${assets[idxy.index+idxi.index*idxy.size].code}]]</p>
+                                        <p class="card-text">Asset Code :</p>
+                                        <p class="card-text">
+                                            [[${assets[idxy.index+idxi.index*idxy.size].code}]]</p>
+                                        <p class="card-text">Unit :</p>
+                                        <p class="card-text">
+                                            [[${assets[idxy.index+idxi.index*idxy.size].unit}]]</p>
                                     </div>
                                     <div class="card-footer">
                                         <a th:href="@{/download/qrcode/{id}(id=${assets[idxy.index+idxi.index*idxy.size]})}"
