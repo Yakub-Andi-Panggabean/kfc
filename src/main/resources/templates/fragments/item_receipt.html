@@ -34,10 +34,17 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">RO Detail</h5><br>
-                    <span class="card-title" th:inline="text">ID : [[${existingItemReceipt.requestOrder.id}]]</span>
+                    <span class="card-title">RO Detail</span>
                 </div>
                 <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="displayRequestedBy">Order ID</label>
+                            <input type="text" id="displayRequestedBy"
+                                   th:value="${existingItemReceipt.requestOrder.id}"
+                                   class="form-control text-center" disabled>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="displayRequestedBy">Requested By</label>
@@ -49,6 +56,33 @@
                             <label for="displaySupplierPhone2">Approved By</label>
                             <input type="text" th:value="${existingItemReceipt.requestOrder.approver.firstName}"
                                    class="form-control text-center" disabled>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Ro Items</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-shopping">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Product ID</th>
+                                        <th class="text-center">Brand</th>
+                                        <th class="text-center">Model</th>
+                                        <th class="text-center">Product Name</th>
+                                        <th class="text-center">Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="product : ${@collectionHelper.groupProductCount(existingItemReceipt.requestOrder.products)}">
+                                        <td class="text-center" th:inline="text">[[${product.key.id}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.key.brand.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.key.model.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.key.name}]]</td>
+                                        <td class="text-center" th:inline="text">[[${product.value}]]</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -367,7 +401,8 @@
     </div>
 
     <!-- Product Modal -->
-    <div th:if="${isReceiptExist}" class="modal fade" id="productList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div th:if="${isReceiptExist}" class="modal fade" id="productList" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-bs" role="document">
             <div class="modal-content">
