@@ -60,6 +60,10 @@ $('#notificationDetail').on('show.bs.modal', function (event) {
     )
 });
 
+$('#notificationDetail').on('hide.bs.modal', function (event) {
+    location.reload();
+});
+
 
 function removeAsset(caller, event) {
     event.preventDefault();

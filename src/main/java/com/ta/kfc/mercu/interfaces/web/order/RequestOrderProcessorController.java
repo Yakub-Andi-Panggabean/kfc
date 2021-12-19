@@ -182,6 +182,18 @@ public class RequestOrderProcessorController extends OrderModule {
                 case "reject":
                     requestOrder.get().setStatus(RequestOrderStatus.REJECTED);
                     page = ApprovalModule.APPROVAL_PATH;
+
+                    Notification notification = new Notification();
+                    notification.setAlreadyRead(false);
+                    notification.setOrder(requestOrder.get());
+                    notification.setMessage(String.format("order with id %d is rejected by %s",
+                            requestOrder.get().getId(),
+                            requestOrder.get().getApprover()));
+                    notification.setCreatedDate(new Date());
+                    notification.setUserDetail(requestOrder.get().getRequester());
+
+                    notificationService.save(notification);
+
                     break;
             }
 

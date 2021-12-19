@@ -45,16 +45,20 @@ public class ApprovalController extends ApprovalModule {
                 .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
                 .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
                         ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
-                .filter(ro -> ro.getRequester().getDepartment() == user.getUserDetail().getDepartment() ||
-                        user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
+                .filter(ro ->
+                        ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId()
+                                || user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
                 .collect(Collectors.toList()));
+
+//                .filter(ro -> ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId() ||
+//                        user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
 
         model.addAttribute("transferRequests", requestOrderService.findAllRequestOrders()
                 .stream()
                 .filter(ro -> ro.getType() == RequestOrderType.TRANSFER_ORDER)
                 .filter(ro ->
                         ro.getStatus().equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL))
-                .filter(ro -> ro.getRequester().getDepartment() == user.getUserDetail().getDepartment() ||
+                .filter(ro -> ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId() ||
                         user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
                 .collect(Collectors.toList()));
 
@@ -66,9 +70,10 @@ public class ApprovalController extends ApprovalModule {
                     break;
                 case MANAGER:
                     if (user.getUserDetail().getDepartment().getName().equalsIgnoreCase("Asset")) {
+                        isToVisible = true;
                         isRoVisible = true;
                     } else {
-                        isToVisible = true;
+                        isRoVisible = true;
                     }
                     break;
                 case ROOT:
