@@ -81,6 +81,17 @@ public class ItemProcessorController extends ItemModule {
                 asset.setUnit(itemShipmentDto.getRo().getFrom());
                 assetService.update(asset);
             });
+
+            Notification notification = new Notification();
+            notification.setAlreadyRead(false);
+            notification.setOrder(itemShipmentDto.getRo());
+            notification.setMessage(String.format("order with RO-id %d has been send by %s",
+                    itemShipmentDto.getRo().getId(),
+                    context.getUser().get().getUserDetail().getFirstName()));
+            notification.setCreatedDate(new Date());
+            notification.setUserDetail(itemShipmentDto.getRo().getRequester());
+
+            notificationService.save(notification);
         }
 
         if (itemShipmentDto.getRo().getTransactions() != null) {

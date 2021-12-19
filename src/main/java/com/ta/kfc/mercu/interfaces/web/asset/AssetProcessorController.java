@@ -2,10 +2,12 @@ package com.ta.kfc.mercu.interfaces.web.asset;
 
 
 import com.ta.kfc.mercu.context.FastContext;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.notification.Notification;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.stock.*;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderStatus;
@@ -13,6 +15,7 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionStatu
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.TransactionType;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.master.MasterService;
+import com.ta.kfc.mercu.service.notification.NotificationService;
 import com.ta.kfc.mercu.service.stock.StockOpnameService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
@@ -22,17 +25,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 public class AssetProcessorController extends AssetModule {
 
+    public static final String VERIFICATION_NOTIFICATION = "send order with id %d has been verified by %s";
+
     private RequestOrderService requestOrderService;
     private TransactionService transactionService;
     private StockOpnameService stockOpnameService;
     private AssetService assetService;
     private MasterService masterService;
+    private NotificationService notificationService;
     private FastContext context;
 
     @Autowired
@@ -41,6 +48,7 @@ public class AssetProcessorController extends AssetModule {
                                     AssetService assetService,
                                     StockOpnameService stockOpnameService,
                                     MasterService masterService,
+                                    NotificationService notificationService,
                                     FastContext context) {
         this.requestOrderService = requestOrderService;
         this.transactionService = transactionService;
@@ -48,6 +56,7 @@ public class AssetProcessorController extends AssetModule {
         this.masterService = masterService;
         this.stockOpnameService = stockOpnameService;
         this.context = context;
+        this.notificationService = notificationService;
     }
 
     @PostMapping({ASSET_VERIFICATION_PATH + "/{roId}"})
@@ -68,6 +77,23 @@ public class AssetProcessorController extends AssetModule {
                 a.setAssetStatus(AssetStatus.IN_USED);
                 assetService.update(a);
             });
+
+            Optional<UserDetail> senderPic = ro.get().getTransactions()
+                    .stream()
+                    .filter(o -> o.getTransactionType() == TransactionType.SEND_ITEM)
+                    .map(o -> o.getPic()).findAny();
+
+            if (senderPic.isPresent()) {
+                Notification notification = new Notification();
+                notification.setCreatedDate(new Date());
+                notification.setMessage(String.format(VERIFICATION_NOTIFICATION,
+                        ro.get().getId(), context.getUser().get().getUserDetail().getFirstName()));
+                notification.setUserDetail(senderPic.get());
+                notification.setOrder(ro.get());
+
+                notificationService.save(notification);
+
+            }
 
             ro.get().setStatus(RequestOrderStatus.COMPLETED);
             requestOrderService.saveRequestOrder(ro.get());

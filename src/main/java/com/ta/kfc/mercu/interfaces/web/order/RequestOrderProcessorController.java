@@ -156,6 +156,18 @@ public class RequestOrderProcessorController extends OrderModule {
                                 .findAny().ifPresent(t -> t.setStatus(TransactionStatus.COMPLETE));
 
                         transactionService.save(transaction);
+
+                        Notification notification = new Notification();
+                        notification.setAlreadyRead(false);
+                        notification.setOrder(requestOrder.get());
+                        notification.setMessage(String.format("order with id %d is approved to be send by %s",
+                                requestOrder.get().getId(),
+                                requestOrder.get().getApprover()));
+                        notification.setCreatedDate(new Date());
+                        notification.setUserDetail(requestOrder.get().getRequester());
+
+                        notificationService.save(notification);
+
                     } else if (requestOrder.get().getStatus()
                             .equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL)) {
                         requestOrder.get().setStatus(RequestOrderStatus.TRANSFER_APPROVED);

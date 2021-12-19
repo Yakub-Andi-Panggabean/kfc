@@ -40,27 +40,23 @@ public class ApprovalController extends ApprovalModule {
         boolean isRoVisible = false;
         boolean isToVisible = false;
 
-        model.addAttribute("requests", requestOrderService.findAllRequestOrders()
+        List<RequestOrder> requestOrders = requestOrderService.findAllRequestOrders()
                 .stream()
                 .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
-                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
-                        ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL))
                 .filter(ro ->
                         ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId()
                                 || user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
-//                .filter(ro -> ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId() ||
-//                        user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
-
-        model.addAttribute("transferRequests", requestOrderService.findAllRequestOrders()
+        List<RequestOrder> transferOrders = requestOrderService.findAllRequestOrders()
                 .stream()
                 .filter(ro -> ro.getType() == RequestOrderType.TRANSFER_ORDER)
                 .filter(ro ->
                         ro.getStatus().equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL))
                 .filter(ro -> ro.getRequester().getDepartment().getId() == user.getUserDetail().getDepartment().getId() ||
                         user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
         if (position != null) {
             switch (position) {
@@ -70,6 +66,11 @@ public class ApprovalController extends ApprovalModule {
                     break;
                 case MANAGER:
                     if (user.getUserDetail().getDepartment().getName().equalsIgnoreCase("Asset")) {
+                        requestOrders.addAll(requestOrderService.findAllRequestOrders()
+                                .stream()
+                                .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
+                                .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                                .collect(Collectors.toList()));
                         isToVisible = true;
                         isRoVisible = true;
                     } else {
@@ -77,6 +78,11 @@ public class ApprovalController extends ApprovalModule {
                     }
                     break;
                 case ROOT:
+                    requestOrders.addAll(requestOrderService.findAllRequestOrders()
+                            .stream()
+                            .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
+                            .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                            .collect(Collectors.toList()));
                     isRoVisible = true;
                     isToVisible = true;
                     break;
@@ -85,6 +91,8 @@ public class ApprovalController extends ApprovalModule {
         }
 
 
+        model.addAttribute("transferRequests", transferOrders);
+        model.addAttribute("requests", requestOrders);
         model.addAttribute("isRoVisible", isRoVisible);
         model.addAttribute("isToVisible", isToVisible);
 
