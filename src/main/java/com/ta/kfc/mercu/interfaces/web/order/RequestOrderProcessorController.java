@@ -187,6 +187,17 @@ public class RequestOrderProcessorController extends OrderModule {
 
                         transactionService.save(transaction);
 
+                        Notification notification = new Notification();
+                        notification.setAlreadyRead(false);
+                        notification.setOrder(requestOrder.get());
+                        notification.setMessage(String.format("transfer request with order with id %d is approved by %s",
+                                requestOrder.get().getId(),
+                                requestOrder.get().getApprover()));
+                        notification.setCreatedDate(new Date());
+                        notification.setUserDetail(requestOrder.get().getRequester());
+
+                        notificationService.save(notification);
+
                     }
 
                     page = ApprovalModule.APPROVAL_PATH;
