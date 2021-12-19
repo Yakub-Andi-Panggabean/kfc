@@ -45,6 +45,8 @@ public class ApprovalController extends ApprovalModule {
                 .filter(ro -> ro.getType() == RequestOrderType.REQUEST_ORDER)
                 .filter(ro -> ro.getStatus().equals(RequestOrderStatus.WAITING_APPROVAL) ||
                         ro.getStatus().equals(RequestOrderStatus.WAITING_SEND_APPROVAL))
+                .filter(ro -> ro.getRequester().getDepartment() == user.getUserDetail().getDepartment() ||
+                        user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
                 .collect(Collectors.toList()));
 
         model.addAttribute("transferRequests", requestOrderService.findAllRequestOrders()
@@ -52,24 +54,31 @@ public class ApprovalController extends ApprovalModule {
                 .filter(ro -> ro.getType() == RequestOrderType.TRANSFER_ORDER)
                 .filter(ro ->
                         ro.getStatus().equals(RequestOrderStatus.WAITING_TRANSFER_APPROVAL))
+                .filter(ro -> ro.getRequester().getDepartment() == user.getUserDetail().getDepartment() ||
+                        user.getUserDetail().getDepartment().getName().equals("ROOT_DEPT"))
                 .collect(Collectors.toList()));
 
-        switch (position) {
-            case HEAD:
-                isRoVisible = true;
-                isToVisible = true;
-                break;
-            case MANAGER:
-                isRoVisible = true;
-                break;
-            case ASSET_MANAGER:
-                isToVisible = true;
-                break;
-            case ROOT:
-                isRoVisible = true;
-                isToVisible = true;
-                break;
+        if (position != null) {
+            switch (position) {
+                case HEAD:
+                    isRoVisible = true;
+                    isToVisible = true;
+                    break;
+                case MANAGER:
+                    if (user.getUserDetail().getDepartment().getName().equalsIgnoreCase("Asset")) {
+                        isRoVisible = true;
+                    } else {
+                        isToVisible = true;
+                    }
+                    break;
+                case ROOT:
+                    isRoVisible = true;
+                    isToVisible = true;
+                    break;
+                default:
+            }
         }
+
 
         model.addAttribute("isRoVisible", isRoVisible);
         model.addAttribute("isToVisible", isToVisible);

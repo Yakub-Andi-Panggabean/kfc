@@ -98,6 +98,7 @@ public class ManagementProcessorController extends ManagementModule {
         detail.setFirstName(req.getFirstName());
         detail.setLastName(req.getLastName());
         detail.setUnit(req.getUnit());
+        detail.setPosition(req.getPosition());
 
         Set<Role> roles = new HashSet<>();
         roles.add(req.getRole());

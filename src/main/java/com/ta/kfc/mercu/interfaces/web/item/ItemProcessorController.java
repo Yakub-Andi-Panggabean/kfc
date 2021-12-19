@@ -7,10 +7,12 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceiptStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.notification.Notification;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.*;
 import com.ta.kfc.mercu.interfaces.web.order.OrderModule;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.master.MasterService;
+import com.ta.kfc.mercu.service.notification.NotificationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +22,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
 public class ItemProcessorController extends ItemModule {
+
+    private static final String ITEM_RECEIPT_NOTIFICATION = "item receipt for request id %s is being verified by %s";
+    private static final String ITEM_RECEIPT_COMPLETE = "item receipt verification for request id %s is completed by %s";
 
     private FastContext context;
     private TransactionService transactionService;
     private RequestOrderService requestOrderService;
     private AssetService assetService;
     private MasterService masterService;
+    private NotificationService notificationService;
 
     @Autowired
     public ItemProcessorController(FastContext context,
                                    TransactionService transactionService,
                                    MasterService masterService,
                                    RequestOrderService requestOrderService,
-                                   AssetService assetService) {
+                                   AssetService assetService,
+                                   NotificationService notificationService) {
         this.context = context;
         this.transactionService = transactionService;
         this.requestOrderService = requestOrderService;
         this.assetService = assetService;
         this.masterService = masterService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping({ITEM_SHIPMENT_PATH})
@@ -141,7 +150,7 @@ public class ItemProcessorController extends ItemModule {
             Asset asset = new Asset();
             asset.setUpdatedDate(new Date());
             asset.setCreatedDate(new Date());
-            asset.setUnit(itemReceipt.get().getRequestOrder().getTo());
+            asset.setUnit(itemReceipt.get().getLocation());
             asset.setProduct(product.get());
             asset.setAssetStatus(AssetStatus.AVAILABLE);
             asset.setCode(UUID.randomUUID().toString());
@@ -185,16 +194,28 @@ public class ItemProcessorController extends ItemModule {
         String page = ITEM_RECEIPT_PATH;
         if (itemReceipt.isPresent()) {
 
+            Notification notification = new Notification();
+            notification.setCreatedDate(new Date());
+            notification.setUserDetail(itemReceipt.get().getRequestOrder().getRequester());
+            notification.setOrder(itemReceipt.get().getRequestOrder());
+
             switch (state) {
                 case "done":
                     itemReceipt.get().setStatus(ItemReceiptStatus.VERIFIED);
+                    notification.setMessage(String.format(ITEM_RECEIPT_NOTIFICATION,
+                            itemReceipt.get().getRequestOrder().getId(),
+                            itemReceipt.get().getReceiver().getFirstName()));
                     break;
                 case "complete":
                     itemReceipt.get().setStatus(ItemReceiptStatus.COMPLETED);
                     page = OrderModule.ORDER_PURCHASE_PATH;
+                    notification.setMessage(String.format(ITEM_RECEIPT_COMPLETE,
+                            itemReceipt.get().getRequestOrder().getId(),
+                            context.getUser().get().getUserDetail()));
                     break;
             }
 
+            notificationService.save(notification);
             assetService.updateItemReceipt(itemReceipt.get());
         }
 

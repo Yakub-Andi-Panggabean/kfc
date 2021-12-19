@@ -22,6 +22,7 @@ public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private static final String CREDENTIAL_PATH = "/credential";
+    private static final String USER_DETAIL_PATH = "/user/detail";
 
     private AuthenticationService authService;
     private FastContext context;
@@ -76,6 +77,14 @@ public class AuthController {
         authService.updateUser(user);
 
         return String.format("redirect:%s", CREDENTIAL_PATH);
+    }
+
+
+    @GetMapping({USER_DETAIL_PATH})
+    public String getUserDetailPage(Model model) {
+        model.addAttribute("template", "user_detail");
+        model.addAttribute("user", context.getUser().get());
+        return "index";
     }
 
 

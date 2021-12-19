@@ -21,7 +21,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="n:${notifications}">
-                        <th class="text-left" th:inline="text">
+                        <td th:if="${n.alreadyRead}" class="text-left" th:inline="text">
+                            [[${n.message}]]
+                        </td>
+                        <th th:unless="${n.alreadyRead}" class="text-left" th:inline="text">
                             [[${n.message}]]
                         </th>
                         <td th:if="${n.alreadyRead}" class="td-actions text-right">

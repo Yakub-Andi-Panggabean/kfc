@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="user_detail" class="row">
+    <div class="col-md-4 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td colspan="3">User Detail</td>
+                    </tr>
+                    <tr>
+                        <td>Employee ID</td>
+                        <td class="pull-left">:</td>
+                        <td class="pull-left" th:inline="text">[[${user.userDetail.code}]]</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td class="pull-left">:</td>
+                        <td class="pull-left" th:inline="text">[[${user.userDetail.firstName}]] [[${user.userDetail.lastName}]]</td>
+                    </tr>
+                    <tr>
+                        <td>Department</td>
+                        <td class="pull-left">:</td>
+                        <td class="pull-left" th:inline="text">[[${user.userDetail.department}]]</td>
+                    </tr>
+                    <tr>
+                        <td>Unit</td>
+                        <td class="pull-left">:</td>
+                        <td class="pull-left" th:inline="text">[[${user.userDetail.unit}]]</td>
+                    </tr>
+                    <tr>
+                        <td>Role</td>
+                        <td class="pull-left">:</td>
+                        <td class="pull-left" th:inline="text">[[${user.roles}]]</td>
+                    </tr>
+                    <tbody>
+                </table>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

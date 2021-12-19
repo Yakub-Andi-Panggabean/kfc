@@ -36,9 +36,13 @@
                             </i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="btn btn-neutral" th:href="@{/credential}" th:text="${username}">
+                            <a class="btn btn-neutral" th:href="@{/user/detail}">
+                                Profile
                             </a>
-                            <form class="dropdown-item" th:action="@{/logout}" method="post">
+                            <a class="btn btn-neutral" th:href="@{/credential}">
+                                Reset Password
+                            </a>
+                            <form th:action="@{/logout}" method="post">
                                 <button class="btn btn-neutral" type="submit" th:text="Logout">
                                 </button>
                             </form>

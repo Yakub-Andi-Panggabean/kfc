@@ -35,6 +35,7 @@
                             <label for="inputUserDepartment">Department</label>
                             <select id="inputUserDepartment" th:field="*{department}" class="form-control">
                                 <option th:each="d,i:${availableDepartments}" th:value="${d.id}"
+                                        th:unless="${#strings.equals(d.name,'ROOT_DEPT')}"
                                         th:selected="${i==1}" th:inline="text">
                                     [[${d.name}]]
                                 </option>
@@ -51,6 +52,17 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputUserPosition">Unit</label>
+                            <select id="inputUserPosition" th:field="*{position}" class="form-control">
+                                <option th:each="position,i : ${T(com.ta.kfc.mercu.infrastructure.db.orm.model.actor.Position).values()}"
+                                        th:unless="${#strings.equals(position,'ROOT')}"
+                                        th:value="${position}"
+                                        th:selected="${i==1}" th:inline="text">
+                                    [[${position}]]
+                                </option>
+                            </select>
+                        </div>
                         <div class="form-group col-md-6">
                             <label for="inputUserUnit">Unit</label>
                             <select id="inputUserUnit" th:field="*{unit}" class="form-control">
@@ -79,6 +91,7 @@
                         <tr>
                             <th class="text-center">Employee ID</th>
                             <th class="text-center">Name</th>
+                            <th class="text-center">Department</th>
                             <th class="text-center">Role</th>
                             <th class="text-right">Actions</th>
                         </tr>
@@ -89,6 +102,7 @@
                             <td class="text-center" th:inline="text">[[${u.userDetail.firstName}]]
                                 [[${u.userDetail.lastName}]]
                             </td>
+                            <th class="text-center" th:inline="text">[[${u.userDetail.department}]]</th>
                             <td class="text-center" th:inline="text">[[${u.roles}]]</td>
                             <td class="td-actions text-right">
                                 <button type="button" rel="tooltip" class="btn btn-info">
