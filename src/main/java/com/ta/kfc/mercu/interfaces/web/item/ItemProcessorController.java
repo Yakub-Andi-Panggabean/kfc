@@ -2,6 +2,7 @@ package com.ta.kfc.mercu.interfaces.web.item;
 
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.dto.item.*;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.AssetStatus;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
@@ -13,6 +14,7 @@ import com.ta.kfc.mercu.interfaces.web.order.OrderModule;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.notification.NotificationService;
+import com.ta.kfc.mercu.service.security.AuthenticationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ItemProcessorController extends ItemModule {
 
     private static final String ITEM_RECEIPT_NOTIFICATION = "item receipt for request id %s is being verified by %s";
     private static final String ITEM_RECEIPT_COMPLETE = "item receipt verification for request id %s is completed by %s";
+    private static final String ITEM_TRANSFER_WAITING_APPROVAL = "item transfer for request id %s asking for your approval";
+    private static final String ITEM_TRANSFER_APPROVED = "item transfer for request id %s asking has been approved by %s";
+
 
     private FastContext context;
     private TransactionService transactionService;
@@ -37,11 +43,13 @@ public class ItemProcessorController extends ItemModule {
     private AssetService assetService;
     private MasterService masterService;
     private NotificationService notificationService;
+    private AuthenticationService authenticationService;
 
     @Autowired
     public ItemProcessorController(FastContext context,
                                    TransactionService transactionService,
                                    MasterService masterService,
+                                   AuthenticationService authenticationService,
                                    RequestOrderService requestOrderService,
                                    AssetService assetService,
                                    NotificationService notificationService) {
@@ -51,6 +59,7 @@ public class ItemProcessorController extends ItemModule {
         this.assetService = assetService;
         this.masterService = masterService;
         this.notificationService = notificationService;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping({ITEM_SHIPMENT_PATH})
@@ -286,10 +295,24 @@ public class ItemProcessorController extends ItemModule {
         order.setUpdatedDate(new Date());
 
         Transaction transaction = new Transaction();
-        if (req.getStatus() == RequestOrderStatus.WAITING_APPROVAL) {
+        if (req.getStatus() == RequestOrderStatus.WAITING_TRANSFER_APPROVAL) {
             order.setDescription(req.getNote());
             transaction.setStatus(TransactionStatus.IN_PROGRESS);
             transaction.setTransactionType(TransactionType.REQ_TRANSFER_APPROVAL);
+
+            List<UserDetail> userDetails = authenticationService.findAll().stream().map(u -> u.getUserDetail())
+                    .filter(u -> u.getDepartment().getName().equalsIgnoreCase("Asset"))
+                    .collect(Collectors.toList());
+
+            Notification notification = new Notification();
+            notification.setCreatedDate(new Date());
+            notification.setOrder(order);
+            for (UserDetail u : userDetails) {
+                notification.setMessage(String.format(ITEM_TRANSFER_WAITING_APPROVAL, order.getId()));
+                notification.setUserDetail(u);
+                notificationService.save(notification);
+            }
+
         } else {
             transaction.setStatus(TransactionStatus.COMPLETE);
             transaction.setTransactionType(TransactionType.TRANSFER_ITEM);
@@ -299,6 +322,14 @@ public class ItemProcessorController extends ItemModule {
                 asset.setUpdatedDate(new Date());
                 assetService.save(asset);
             });
+
+            Notification notification = new Notification();
+            notification.setCreatedDate(new Date());
+            notification.setOrder(order);
+            notification.setMessage(String.format(ITEM_TRANSFER_APPROVED, order.getId(), order.getRequester()));
+            notification.setUserDetail(order.getRequester());
+            notificationService.save(notification);
+
         }
         transaction.setOrder(order);
         transaction.setNote(req.getNote());
