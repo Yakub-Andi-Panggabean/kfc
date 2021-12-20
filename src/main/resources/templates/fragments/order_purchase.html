@@ -72,6 +72,7 @@
                         <th class="text-center">Recipient</th>
                         <th class="text-center">Supplier</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,6 +82,9 @@
                         <td class="text-center" th:inline="text">[[${r.receiver.firstName}]]</td>
                         <td class="text-center" th:inline="text">[[${r.supplier.name}]]</td>
                         <td class="text-center" th:inline="text">[[${r.status}]]</td>
+                        <th class="text-center">
+                            <a th:href=""></a>
+                        </th>
                     </tr>
                     </tbody>
                 </table>

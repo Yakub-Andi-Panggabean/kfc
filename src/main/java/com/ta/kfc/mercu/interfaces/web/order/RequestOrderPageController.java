@@ -1,9 +1,5 @@
 package com.ta.kfc.mercu.interfaces.web.order;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.layout.Document;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.ta.kfc.mercu.context.FastContext;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.auth.User;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Product;
@@ -13,22 +9,12 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrderType
 import com.ta.kfc.mercu.service.master.MasterService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
-import com.ta.kfc.mercu.shared.CollectionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -41,23 +27,16 @@ public class RequestOrderPageController extends OrderModule {
     private MasterService masterService;
     private RequestOrderService requestOrderService;
     private FastContext context;
-    private ServletContext servletContext;
-    private SpringTemplateEngine templateEngine;
-    private CollectionHelper collectionHelper;
 
     @Autowired
-    public RequestOrderPageController(FastContext context, AuthorizationService authorizationService,
-                                      ServletContext servletContext,
-                                      SpringTemplateEngine templateEngine,
-                                      MasterService masterService, RequestOrderService requestOrderService,
-                                      CollectionHelper collectionHelper) {
+    public RequestOrderPageController(FastContext context,
+                                      AuthorizationService authorizationService,
+                                      MasterService masterService,
+                                      RequestOrderService requestOrderService) {
         this.authorizationService = authorizationService;
         this.masterService = masterService;
         this.requestOrderService = requestOrderService;
         this.context = context;
-        this.servletContext = servletContext;
-        this.templateEngine = templateEngine;
-        this.collectionHelper = collectionHelper;
     }
 
     @GetMapping(REQUEST_ORDER_PATH)
@@ -95,51 +74,5 @@ public class RequestOrderPageController extends OrderModule {
         return "index";
     }
 
-
-    @GetMapping(REQUEST_ORDER_PATH + "/detail/{orderId}")
-    public String getRequestOrderDetailPage(@PathVariable("orderId") Long orderId, Model model) {
-
-        model.addAttribute("template", "order_request_detail");
-
-        Optional<RequestOrder> requestOrder = requestOrderService.findRequestOrderById(orderId);
-        if (requestOrder.isPresent()) {
-            model.addAttribute("order", requestOrder.get());
-            model.addAttribute("products", collectionHelper.
-                    groupProductCount(requestOrder.get().
-                            getProducts()));
-        }
-
-        return "report";
-    }
-
-    @GetMapping(REQUEST_ORDER_PATH + "/pdf/{orderId}")
-    public ResponseEntity<?> getRequestOrderPdfPage(@PathVariable("orderId") Long orderId,
-                                                    HttpServletRequest request, HttpServletResponse response) {
-
-        Optional<RequestOrder> requestOrder = requestOrderService.findRequestOrderById(orderId);
-
-        WebContext context = new WebContext(request, response, servletContext);
-        context.setVariable("template", "order_request_detail");
-        context.setVariable("order", requestOrder.get());
-        context.setVariable("products", collectionHelper.
-                groupProductCount(requestOrder.get().
-                        getProducts()));
-
-        String html = templateEngine.process("report", context);
-
-        ConverterProperties converterProperties = new ConverterProperties();
-        converterProperties.setBaseUri("http://localhost:8080");
-
-        ByteArrayOutputStream target = new ByteArrayOutputStream();
-
-        HtmlConverter.convertToPdf(html, target, converterProperties);
-
-        byte[] bytes = target.toByteArray();
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
-
-    }
 
 }
