@@ -32,4 +32,11 @@ public class HomeController {
         model.addAttribute("template", "content");
         return "index";
     }
+
+    @GetMapping({"/report"})
+    public String getReportPage(Model model) {
+
+        model.addAttribute("template", "content");
+        return "report";
+    }
 }

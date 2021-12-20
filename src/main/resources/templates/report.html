@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/now-ui-dashboard.css?v=1.5.0}" rel="stylesheet"/>
+</head>
+
+<body>
+<div>
+    <div th:replace="('fragments/' + ${template}) :: ${template}"></div>
+</div>
+<script th:src="@{/js/now-ui-dashboard.min.js?v=1.5.0}" type="text/javascript"></script>
+
+
+</body>
+
+</html>

@@ -138,7 +138,8 @@
                             <a th:if=${#strings.equals(order.status,'CANCELED')} class="btn btn-dark btn-round">
                                 Cancel
                             </a>
-                            <button class="btn btn-info btn-round">Print</button>
+                            <a th:href="@{/order/request/pdf/{orderId}(orderId=${order.id})}"
+                               class="btn btn-info btn-round" target="_blank">Print</a>
                         </td>
                     </tr>
                     </tbody>

@@ -1,9 +1,5 @@
 package com.ta.kfc.mercu.interfaces.web.tagging;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.security.AuthorizationService;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
