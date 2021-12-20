@@ -36,6 +36,11 @@
                             <td class="card-title" th:inline="text">[[${order.from}]]</td>
                         </tr>
                         <tr>
+                            <td class="card-title">Department</td>
+                            <td class="card-title pull-right">:</td>
+                            <td class="card-title" th:inline="text">[[${order.requester.department}]]</td>
+                        </tr>
+                        <tr>
                             <td class="card-title">Approved By</td>
                             <td class="card-title pull-right">:</td>
                             <td class="card-title" th:inline="text">[[${order.approver}]]</td>

@@ -5,40 +5,50 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="order_request_detail" class="row">
+<div th:fragment="item_receipt_detail" class="row">
     <div class="card col-md-10 ml-auto mr-auto">
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6">
                     <table>
                         <tr>
+                            <td class="card-title">Receipt ID</td>
+                            <td class="card-title pull-right">:</td>
+                            <td class="card-title" th:inline="text">[[${receipt.id}]]</td>
+                        </tr>
+                        <tr>
                             <td class="card-title">RO ID</td>
                             <td class="card-title pull-right">:</td>
-                            <td class="card-title" th:inline="text">RO-[[${order.id}]]</td>
+                            <td class="card-title" th:inline="text">[[${receipt.requestOrder.id}]]</td>
                         </tr>
                         <tr>
-                            <td class="card-title">Requested By</td>
+                            <td class="card-title">Purchase Order</td>
                             <td class="card-title pull-right">:</td>
-                            <td class="card-title" th:inline="text">[[${order.requester}]]</td>
+                            <td class="card-title" th:inline="text">[[${receipt.purchaseOrder}]]</td>
                         </tr>
                         <tr>
-                            <td class="card-title">Status</td>
+                            <td class="card-title">Supplier</td>
                             <td class="card-title pull-right">:</td>
-                            <td class="card-title" th:inline="text">[[${order.status}]]</td>
+                            <td class="card-title" th:inline="text">[[${receipt.supplier}]]</td>
                         </tr>
                     </table>
                 </div>
                 <div class="col-md-6">
                     <table>
                         <tr>
-                            <td class="card-title">Unit</td>
+                            <td class="card-title">Status</td>
                             <td class="card-title pull-right">:</td>
-                            <td class="card-title" th:inline="text">[[${order.from}]]</td>
+                            <td class="card-title" th:inline="text">[[${receipt.status}]]</td>
                         </tr>
                         <tr>
-                            <td class="card-title">Approved By</td>
+                            <td class="card-title">Unit</td>
                             <td class="card-title pull-right">:</td>
-                            <td class="card-title" th:inline="text">[[${order.approver}]]</td>
+                            <td class="card-title" th:inline="text">[[${receipt.location}]]</td>
+                        </tr>
+                        <tr>
+                            <td class="card-title">Received By</td>
+                            <td class="card-title pull-right">:</td>
+                            <td class="card-title" th:inline="text">[[${receipt.receiver}]]</td>
                         </tr>
                     </table>
                 </div>
@@ -50,21 +60,19 @@
                 <table class="table table-shopping">
                     <thead>
                     <tr>
-                        <th class="text-center">Product ID</th>
+                        <th class="text-center">Asset Code</th>
+                        <th class="text-center">Product Name</th>
                         <th class="text-center">Brand</th>
                         <th class="text-center">Model</th>
-                        <th class="text-center">Product Name</th>
-                        <th class="text-center">Qty</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="product : ${products}">
-                        <td class="text-center" th:inline="text">[[${product.key.id}]]</td>
-                        <td class="text-center" th:inline="text">[[${product.key.brand.name}]]</td>
-                        <td class="text-center" th:inline="text">[[${product.key.model.name}]]</td>
-                        <td class="text-center" th:inline="text">[[${product.key.name}]]</td>
-                        <td class="text-center" th:inline="text">[[${product.value}]]</td>
+                    <tr th:each="as : ${receipt.assets}">
+                        <td class="text-center" th:inline="text">[[${as.code}]]</td>
+                        <td class="text-center" th:inline="text">[[${as.product.name}]]</td>
+                        <td class="text-center" th:inline="text">[[${as.product.brand}]]</td>
+                        <td class="text-center" th:inline="text">[[${as.product.model}]]</td>
                     </tr>
                     </tbody>
                 </table>
@@ -72,13 +80,10 @@
         </div>
         <hr>
         <div class="card-footer">
-            <table>
-                <tr>
-                    <td class="card-title">Created Date</td>
-                    <td class="card-title pull-right">:</td>
-                    <td class="card-title" th:inline="text">[[${order.createdDate}]]</td>
-                </tr>
-            </table>
+            <tr>
+                <td class="card-title">Received at</td>
+                <td class="card-title" th:inline="text">[[${receipt.receivedDate}]]</td>
+            </tr>
         </div>
     </div>
 </div>

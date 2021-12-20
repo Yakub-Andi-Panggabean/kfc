@@ -83,7 +83,8 @@
                         <td class="text-center" th:inline="text">[[${r.supplier.name}]]</td>
                         <td class="text-center" th:inline="text">[[${r.status}]]</td>
                         <th class="text-center">
-                            <a th:href=""></a>
+                            <a th:href="@{/item/receipt/pdf/{receiptId}(receiptId=${r.id})}"
+                               class="btn btn-info btn-round" target="_blank">Print</a>
                         </th>
                     </tr>
                     </tbody>

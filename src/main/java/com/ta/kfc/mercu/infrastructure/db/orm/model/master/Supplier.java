@@ -143,4 +143,9 @@ public class Supplier {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

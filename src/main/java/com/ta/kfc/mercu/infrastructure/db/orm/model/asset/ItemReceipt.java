@@ -4,8 +4,10 @@ import com.ta.kfc.mercu.infrastructure.db.orm.model.actor.UserDetail;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Supplier;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.master.Unit;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -32,6 +34,11 @@ public class ItemReceipt {
     private ItemReceiptStatus status;
     @OneToOne
     private Unit location;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "received_date")
+    private Date receivedDate;
 
 
     public Long getId() {
@@ -96,5 +103,13 @@ public class ItemReceipt {
 
     public void setLocation(Unit location) {
         this.location = location;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
     }
 }

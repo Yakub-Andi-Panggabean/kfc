@@ -7,6 +7,42 @@
 </head>
 <body>
 <div th:fragment="content" class="content">
+    <div class="card col-md-12 ml-auto mr-auto">
+        <div class="card-header">
+            <div class="row">
+                <div id="dashboardAssetCountPieChart" class="col-md-6"></div>
+                <div id="dashboardProductCountPieChart" class="col-md-6"></div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="asset_dashboard_table" class="table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Asset Code</th>
+                        <th class="text-center">Location</th>
+                        <th class="text-center">Product Name</th>
+                        <th class="text-center">Brand</th>
+                        <th class="text-center">Model</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Created At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each=" a:${assets} ">
+                        <td class="text-center" th:inline="text">[[${a.code}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.unit}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.product.name}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.product.brand}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.product.model}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.assetStatus}]]</td>
+                        <td class="text-center" th:inline="text">[[${a.product.createdDate}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

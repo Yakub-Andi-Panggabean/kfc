@@ -2,8 +2,11 @@ package com.ta.kfc.mercu.interfaces.web.report;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.transaction.RequestOrder;
+import com.ta.kfc.mercu.interfaces.web.item.ItemModule;
 import com.ta.kfc.mercu.interfaces.web.order.OrderModule;
+import com.ta.kfc.mercu.service.asset.AssetService;
 import com.ta.kfc.mercu.service.transaction.RequestOrderService;
 import com.ta.kfc.mercu.shared.CollectionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class ReportController {
 
     private RequestOrderService requestOrderService;
+    private AssetService assetService;
     private ServletContext servletContext;
     private CollectionHelper collectionHelper;
     private SpringTemplateEngine templateEngine;
@@ -33,6 +37,7 @@ public class ReportController {
     @Autowired
     public ReportController(RequestOrderService requestOrderService,
                             ServletContext servletContext,
+                            AssetService assetService,
                             SpringTemplateEngine templateEngine,
                             CollectionHelper collectionHelper) {
 
@@ -40,6 +45,7 @@ public class ReportController {
         this.servletContext = servletContext;
         this.collectionHelper = collectionHelper;
         this.templateEngine = templateEngine;
+        this.assetService = assetService;
     }
 
     @GetMapping(OrderModule.REQUEST_ORDER_PATH + "/pdf/{orderId}")
@@ -70,6 +76,33 @@ public class ReportController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(bytes);
 
+    }
+
+    @GetMapping(ItemModule.ITEM_RECEIPT_PATH + "/pdf/{receiptId}")
+    public ResponseEntity<?> getItemReceiptDetailPdfPage(@PathVariable("receiptId") Long receiptId,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) {
+
+        Optional<ItemReceipt> itemReceipt = assetService.findItemReceiptById(receiptId);
+
+        WebContext context = new WebContext(request, response, servletContext);
+        context.setVariable("report_template", "item_receipt_detail");
+        context.setVariable("receipt", itemReceipt.get());
+
+        String html = templateEngine.process("report", context);
+
+        ConverterProperties converterProperties = new ConverterProperties();
+        converterProperties.setBaseUri(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
+
+        ByteArrayOutputStream target = new ByteArrayOutputStream();
+
+        HtmlConverter.convertToPdf(html, target, converterProperties);
+
+        byte[] bytes = target.toByteArray();
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(bytes);
     }
 
 }
