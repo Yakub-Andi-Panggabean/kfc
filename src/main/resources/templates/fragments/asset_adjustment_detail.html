@@ -15,23 +15,8 @@
                     <br>
                     <br>
                 </div>
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-6">
                     <table>
-                        <tr>
-                            <th colspan="text-left">Unit Name</th>
-                            <th colspan="text-left">&nbsp;:</th>
-                            <td colspan="text-right">&nbsp;[[${unit.unitName}]]</td>
-                        </tr>
-                        <tr>
-                            <th colspan="text-left">Product</th>
-                            <th colspan="text-left">&nbsp;:</th>
-                            <td colspan="text-right">&nbsp;[[${product.name}]]</td>
-                        </tr>
-                        <tr>
-                            <th colspan="text-left">Model</th>
-                            <th colspan="text-left">&nbsp;:</th>
-                            <td colspan="text-right">&nbsp;[[${product.model}]]</td>
-                        </tr>
                         <tr>
                             <th colspan="text-left">Brand</th>
                             <th colspan="text-left">&nbsp;:</th>
@@ -46,6 +31,30 @@
                             <th colspan="text-left">Adjusted Qty</th>
                             <th colspan="text-left">&nbsp;:</th>
                             <td colspan="text-left">&nbsp;[[${soDetail.qtyAdjustment}]]</td>
+                        </tr>
+                        <tr th:if="${soDetail.isComplete}">
+                            <th colspan="text-left">Adjusted By</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-left">&nbsp;[[${so.createdBy}]]</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group col-md-6">
+                    <table>
+                        <tr>
+                            <th colspan="text-right">Unit Name</th>
+                            <th colspan="text-right">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${unit.unitName}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Product</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${product.name}]]</td>
+                        </tr>
+                        <tr>
+                            <th colspan="text-left">Model</th>
+                            <th colspan="text-left">&nbsp;:</th>
+                            <td colspan="text-right">&nbsp;[[${product.model}]]</td>
                         </tr>
                     </table>
                 </div>

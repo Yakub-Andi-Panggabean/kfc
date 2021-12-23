@@ -106,4 +106,9 @@ public class Product {
     public Set<Supplier> getSuppliers() {
         return suppliers;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -18,37 +18,62 @@
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <div class="table-responsive">
-                        <table class="table table-shopping">
-                            <thead>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th class="text-left">Request ID</th>
-                                <td class="text-left" th:inline="text">[[${order.id}]]</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Location</th>
-                                <td class="text-left" th:inline="text">[[${order.from}]]</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Request Category</th>
-                                <td class="text-left" th:inline="text">[[${order.type}]]</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Approved By</th>
-                                <td class="text-left" th:inline="text">[[${order.approver}]]</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Submitted Date</th>
-                                <td class="text-left" th:inline="text">[[${order.createdDate}]]</td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Note</th>
-                                <td class="text-left" th:inline="text">[[${order.description}]]</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th class="text-left">Request ID</th>
+                                    <td class="text-left" th:inline="text">[[${order.id}]]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Location</th>
+                                    <td class="text-left" th:inline="text">[[${order.from}]]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Request Category</th>
+                                    <td class="text-left" th:inline="text">[[${order.type}]]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Approved By</th>
+                                    <td class="text-left" th:inline="text">[[${order.approver}]]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Submitted Date</th>
+                                    <td class="text-left" th:inline="text">[[${order.createdDate}]]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-left">Note</th>
+                                    <td class="text-left" th:inline="text">[[${order.description}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="table-responsive">
+                            <table class="table table-shopping">
+                                <thead>
+                                <tr>
+                                    <th class="text-left">Asset Code</th>
+                                    <th class="text-left">Product</th>
+                                    <th class="text-left">Brand</th>
+                                    <th class="text-left">Model</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="a : ${order.assets}">
+                                    <td class="text-left" th:inline="text">[[${a.code}]]</td>
+                                    <td class="text-left" th:inline="text">[[${a.product}]]</td>
+                                    <td class="text-left" th:inline="text">[[${a.product.brand}]]</td>
+                                    <td class="text-left" th:inline="text">[[${a.product.model}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

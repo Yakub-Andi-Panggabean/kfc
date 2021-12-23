@@ -29,13 +29,9 @@
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Created Date</th>
                                     <th class="text-center">Action</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:if="${assets.empty}">
-                                    <td colspan="5" class="text-center"> No Asset Available</td>
-                                </tr>
                                 <tr th:each="asset : ${assets}">
                                     <td class="text-center" th:inline="text">[[${asset.id}]]</td>
                                     <td class="text-center" th:inline="text">[[${asset.code}]]</td>
