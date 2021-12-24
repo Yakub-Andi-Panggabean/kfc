@@ -18,6 +18,8 @@ public interface AssetService {
 
     Optional<Asset> findById(Long id);
 
+    Optional<Asset> findByCode(String code);
+
     List<Asset> getAllAsset();
 
     List<ItemReceipt> getAllItemReceipt();

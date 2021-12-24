@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface AssetRepository extends CrudRepository<Asset, Long> {
     List<Asset> findAll();
+
+    Optional<Asset> findByCode(String code);
 }

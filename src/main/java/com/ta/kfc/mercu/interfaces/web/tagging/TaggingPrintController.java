@@ -53,9 +53,17 @@ public class TaggingPrintController {
     public void qrcode(@PathVariable("id") String id,
                        HttpServletResponse response) throws Exception {
 
+        String assetID = assetService.findByCode(id)
+                .map(a -> a.getCode()
+                        .concat(":")
+                        .concat(a.getUnit().getUnitName())
+                        .concat(":")
+                        .concat(a.getProduct().getName())
+                ).orElse(id);
+
         response.setContentType("image/png");
         OutputStream outputStream = response.getOutputStream();
-        outputStream.write(QRHelper.getQRCodeImage(id, 200, 200));
+        outputStream.write(QRHelper.getQRCodeImage(assetID, 200, 200));
         outputStream.flush();
         outputStream.close();
     }
@@ -63,9 +71,18 @@ public class TaggingPrintController {
     @GetMapping(value = "/download/qrcode/{id}")
     public ResponseEntity<?> qrcodePDF(@PathVariable("id") String id,
                                        HttpServletResponse response) throws Exception {
+
+        String assetID = assetService.findByCode(id)
+                .map(a -> a.getCode()
+                        .concat(":")
+                        .concat(a.getUnit().getUnitName())
+                        .concat(":")
+                        .concat(a.getProduct().getName())
+                ).orElse(id);
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.png", id))
-                .contentType(MediaType.IMAGE_PNG).body(QRHelper.getQRCodeImage(id, 400, 400));
+                .contentType(MediaType.IMAGE_PNG).body(QRHelper.getQRCodeImage(assetID, 400, 400));
 
     }
 

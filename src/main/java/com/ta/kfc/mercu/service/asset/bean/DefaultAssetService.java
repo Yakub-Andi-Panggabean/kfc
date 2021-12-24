@@ -55,6 +55,11 @@ public class DefaultAssetService implements AssetService {
     }
 
     @Override
+    public Optional<Asset> findByCode(String code) {
+        return assetRepository.findByCode(code);
+    }
+
+    @Override
     public List<ItemReceipt> getAllItemReceipt() {
         return itemReceiptRepository.findAll();
     }

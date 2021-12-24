@@ -101,8 +101,28 @@
             },
             series: [
                 {
-                    name: 'Product Count',
+                    name: 'Asset Count',
                     data: chartDataProduct(table),
+                },
+            ],
+        });
+
+        var container3 = $('#dashboardAssetStatusCountPieChart');
+
+        var chart3 = Highcharts.chart(container3[0], {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+            },
+            title: {
+                text: 'Asset Count Per Status',
+            },
+            series: [
+                {
+                    name: 'Asset Count',
+                    data: chartDataStatus(table),
                 },
             ],
         });
@@ -111,7 +131,9 @@
         table.on('draw', function () {
             chart.series[0].setData(chartData(table));
             chart2.series[0].setData(chartDataProduct(table));
+            chart3.series[0].setData(chartDataStatus(table));
         });
+
 
     });
 
@@ -145,6 +167,30 @@
         // Count the number of entries for each position
         table
             .column(2, {search: 'applied'})
+            .data({})
+            .each(function (val) {
+                if (counts[val]) {
+                    counts[val] += 1;
+                } else {
+                    counts[val] = 1;
+                }
+            });
+
+        // And map it to the format highcharts uses
+        return $.map(counts, function (val, key) {
+            return {
+                name: key,
+                y: val,
+            };
+        });
+    }
+
+    function chartDataStatus(table) {
+        var counts = {};
+
+        // Count the number of entries for each position
+        table
+            .column(5, {search: 'applied'})
             .data({})
             .each(function (val) {
                 if (counts[val]) {
