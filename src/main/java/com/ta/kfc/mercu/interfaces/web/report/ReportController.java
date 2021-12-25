@@ -1054,4 +1054,117 @@ public class ReportController {
     }
 
 
+    @GetMapping(REPORT_PATH + "/to/{toId}")
+    public ResponseEntity<?> getToDetailPdfPage(@PathVariable("toId") Long toId) throws DocumentException {
+
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        Optional<RequestOrder> to = requestOrderService.findRequestOrderById(toId);
+
+        Font font1 = new Font(Font.FontFamily.HELVETICA, 80, Font.BOLD
+                | Font.UNDERLINE);
+
+        Paragraph title = new Paragraph();
+        title.add("Transfer Request Detail");
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setFont(font1);
+
+        PdfPTable table = new PdfPTable(2);
+
+        Font headFont = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
+
+        PdfPCell hcell;
+        hcell = new PdfPCell(new Phrase("Transfer ID : TF-" + to.get().getId(), headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("From : " + to.get().getFrom().getUnitName(), headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Requested By :" + to.get().getRequester().getFirstName(), headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("To     : " + to.get().getTo().getUnitName(), headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Created At: " + new SimpleDateFormat("YYYY-MM-DD HH:mm:ss").format(to.get().getCreatedDate()), headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        hcell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(hcell);
+
+        PdfPTable tableAsset = new PdfPTable(4);
+
+        PdfPCell hcellDetail;
+        hcellDetail = new PdfPCell(new Phrase("Asset Code", headFont));
+        hcellDetail.setHorizontalAlignment(Element.ALIGN_LEFT);
+        tableAsset.addCell(hcellDetail);
+
+        hcellDetail = new PdfPCell(new Phrase("Product", headFont));
+        hcellDetail.setHorizontalAlignment(Element.ALIGN_LEFT);
+        tableAsset.addCell(hcellDetail);
+
+        hcellDetail = new PdfPCell(new Phrase("Brand", headFont));
+        hcellDetail.setHorizontalAlignment(Element.ALIGN_LEFT);
+        tableAsset.addCell(hcellDetail);
+
+        hcellDetail = new PdfPCell(new Phrase("Model", headFont));
+        hcellDetail.setHorizontalAlignment(Element.ALIGN_LEFT);
+        tableAsset.addCell(hcellDetail);
+
+        Font rowFont = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+
+        for (Asset as : to.get().getAssets()) {
+            PdfPCell cell;
+
+            cell = new PdfPCell(new Phrase(as.getCode(), rowFont));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            tableAsset.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(as.getProduct().getName(), rowFont));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            tableAsset.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(as.getProduct().getBrand().getName(), rowFont));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            tableAsset.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(as.getProduct().getModel().getName(), rowFont));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            tableAsset.addCell(cell);
+        }
+
+
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, out);
+        document.open();
+        document.add(title);
+        document.add(new Paragraph(" "));
+        document.add(table);
+        document.add(new Paragraph(" "));
+        document.add(tableAsset);
+        document.close();
+
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(out.toByteArray());
+    }
+
+
 }

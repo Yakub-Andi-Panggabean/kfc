@@ -38,13 +38,15 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputTransferTo">Transfer To</label>
-                            <select th:if="${isOrderExist}" id="inputTransferTo" class="form-control" th:field="*{to}" disabled>
+                            <select th:if="${isOrderExist}" id="inputTransferTo" class="form-control" th:field="*{to}"
+                                    disabled>
                                 <option th:each="u,i:${toUnits}" th:value="${u.id}" th:selected="${i==0}"
                                         th:inline="text">
                                     [[${u.unitName}]]
                                 </option>
                             </select>
-                            <select th:unless="${isOrderExist}" id="inputTransferTo" class="form-control" th:field="*{to}">
+                            <select th:unless="${isOrderExist}" id="inputTransferTo" class="form-control"
+                                    th:field="*{to}">
                                 <option th:each="u,i:${toUnits}" th:value="${u.id}" th:selected="${i==0}"
                                         th:inline="text">
                                     [[${u.unitName}]]
@@ -175,6 +177,9 @@
                                         data-toggle="modal"
                                         data-target="#assetTransferDetail">Detail
                                 </button>
+                                <a th:href="@{/report/to/{toId}(toId=${o.id})}" class="btn btn-primary btn-round"
+                                   target="_blank">
+                                    Print</a>
                             </td>
                         </tr>
                         </tbody>
