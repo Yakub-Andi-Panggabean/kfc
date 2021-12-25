@@ -58,7 +58,7 @@
                         <span class="card-title">Report Asset Per produk</span>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/report/asset/product/list}" th:object="${productParam}">
+                        <form th:action="@{/report/asset/product/list}" th:object="${productParam}" target="_blank">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="inputTransferFrom">Product</label>
@@ -93,8 +93,10 @@
                     </div>
                     <div class="card-body">
                         <div class="col-md-4">
-                            <button class="btn btn-round btn-lg btn-info" role="button">Generate
-                            </button>
+                            <form th:action="@{/report/user/list}" target="_blank">
+                                <button class="btn btn-round btn-lg btn-info" role="button">Generate
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -106,8 +108,10 @@
                     </div>
                     <div class="card-body">
                         <div class="col-md-4">
-                            <button class="btn btn-round btn-lg btn-info" role="button">Generate
-                            </button>
+                            <form th:action="@{/report/product/list}" target="_blank">
+                                <button class="btn btn-round btn-lg btn-info" role="button">Generate
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -121,7 +125,9 @@
                         <span class="card-title">RO Report</span>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                        <form th:action="@{/report/product/list}" target="_blank">
+                            <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                        </form>
                     </div>
                     <div class="card-footer"></div>
                 </div>
