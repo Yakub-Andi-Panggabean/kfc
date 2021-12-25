@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="report" class="row">
+    <div class="col-md-8 ml-auto mr-auto">
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Report Asset Count per unit</span>
+            </div>
+            <div class="card-body">
+                <a th:href="@{/report/asset/unit}" class="btn btn-round btn-info" role="button"
+                   target="_blank">
+                    Generate
+                </a>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Report Asset Per unit</span>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/report/asset/unit/list}" th:object="${unitParam}" target="_blank">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputTransferFrom">Unit</label>
+                                    <select id="inputTransferFrom" class="form-control pull-right" th:field="*{unit}">
+                                        <option th:each="u,i:${units}" th:value="${u.id}" th:selected="${i==0}"
+                                                th:inline="text">
+                                            [[${u.unitName}]]
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <br>
+                                    <button class="btn btn-round btn-info" role="button">
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Report Asset Per produk</span>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inputTransferFrom">Product</label>
+                                    <select id="inputTransferFrom" class="form-control pull-right">
+                                        <option th:each="u,i:${products}" th:value="${u.id}" th:selected="${i==0}"
+                                                th:inline="text">
+                                            [[${u}]]
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <br>
+                                    <button class="btn btn-round btn-info" role="button">
+                                        Generate
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Report User Data</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-4">
+                            <button class="btn btn-round btn-lg btn-info" role="button">Generate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Report Product Data</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-4">
+                            <button class="btn btn-round btn-lg btn-info" role="button">Generate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">RO Report</span>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Transfer Report</span>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+</div>
+</body>
+</html>

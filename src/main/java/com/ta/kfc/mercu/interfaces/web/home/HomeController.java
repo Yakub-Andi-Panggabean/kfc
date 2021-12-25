@@ -43,10 +43,4 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping({"/report"})
-    public String getReportPage(Model model) {
-
-        model.addAttribute("template", "content");
-        return "report";
-    }
 }

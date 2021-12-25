@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="asset_per_unit" class="row">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Asset Per Unit Report</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-left">Unit</th>
+                        <th class="text-left">Asset Count</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a:${assetCountPerUnit}">
+                        <td class="text-left" th:inline="text">[[${a.key.unitName}]]</td>
+                        <td class="text-left" th:inline="text">[[${a.value}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</div>
+</body>
+</html>
