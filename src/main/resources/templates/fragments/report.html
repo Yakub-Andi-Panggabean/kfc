@@ -125,7 +125,7 @@
                         <span class="card-title">RO Report</span>
                     </div>
                     <div class="card-body">
-                        <form th:action="@{/report/product/list}" target="_blank">
+                        <form th:action="@{/report/ro/list}" target="_blank">
                             <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
                         </form>
                     </div>
@@ -138,7 +138,9 @@
                         <span class="card-title">Transfer Report</span>
                     </div>
                     <div class="card-body">
-                        <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                        <form th:action="@{/report/to/list}" target="_blank">
+                            <button class="btn btn-round btn-lg btn-info" role="button">Generate</button>
+                        </form>
                     </div>
                     <div class="card-footer"></div>
                 </div>

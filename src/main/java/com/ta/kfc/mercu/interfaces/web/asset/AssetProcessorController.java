@@ -181,7 +181,10 @@ public class AssetProcessorController extends AssetModule {
             }
 
         }
-        return String.format("redirect:%s?unitId=%d", ASSET_ADJUSTMENT_PATH, stockOpname.get().getStockOpname().getUnit().getId());
+        return String.format("redirect:%s/%d/%d?so_id=%d", ASSET_ADJUSTMENT_PATH,
+                stockOpname.get().getStockOpname().getUnit().getId(),
+                stockOpname.get().getProduct().getId(),
+                stockOpname.get().getStockOpname().getId());
     }
 
     @PostMapping({ASSET_DETAIL_ADJUSTMENT_PATH + "/complete"})
@@ -198,7 +201,11 @@ public class AssetProcessorController extends AssetModule {
         stockOpnameDetail.get().setQtyAdjustment(qtyResult);
         stockOpnameDetail.get().setComplete(true);
         stockOpnameService.save(stockOpnameDetail.get());
-        return String.format("redirect:%s?unitId=%d", ASSET_ADJUSTMENT_PATH, stockOpnameDetail.get().getStockOpname().getUnit().getId());
+
+        return String.format("redirect:%s/%d/%d?so_id=%d", ASSET_ADJUSTMENT_PATH,
+                stockOpnameDetail.get().getStockOpname().getUnit().getId(),
+                stockOpnameDetail.get().getProduct().getId(),
+                stockOpnameDetail.get().getStockOpname().getId());
     }
 
 

@@ -142,6 +142,7 @@
                             <th class="text-center">Created By</th>
                             <th class="text-center">Created Date</th>
                             <th class="text-center">Status</th>
+                            <th class="text-center"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -155,6 +156,13 @@
                             </td>
                             <td class="text-center" th:inline="text">[[${cos.createdDate}]]</td>
                             <td class="text-center" th:inline="text">[[${cos.status}]]</td>
+                            <td class="text-center" th:inline="text">
+                                <a class="btn btn-primary btn-round"
+                                   th:if="${#strings.equals(cos.status,'COMPLETED')}"
+                                   th:href="@{/report/so/{soId}(soId=${cos.id})}" target="_blank">Print</a>
+                                <a class="btn btn-dark btn-round" th:unless="${#strings.equals(cos.status,'COMPLETED')}"
+                                   disabled="">Print</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -162,5 +170,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

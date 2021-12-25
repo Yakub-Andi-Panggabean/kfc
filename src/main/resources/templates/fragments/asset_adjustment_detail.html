@@ -100,13 +100,24 @@
                 <br>
                 <div th:if="${soDetail.isComplete}" class="col-md-12 text-xl-center">
                     <a th:href="@{/asset/adjustment(unitId=${unit.id})}" class="btn btn-info">Back</a>
-                    <a class="btn btn-dark">Print</a>
+                    <a th:href="@{/report/so/product/{soId}/{productId}(soId=${so.id},productId=${product.id})}"
+                       class="btn btn-dark" target="_blank">
+                        Print</a>
                 </div>
                 <div th:unless="${soDetail.isComplete}" class="col-md-12 text-xl-center">
-                    <a th:href="@{/asset/adjustment(unitId=${unit.id})}" class="btn btn-info">Back</a>
-                    <form th:action="@{/asset/detail/adjustment/complete(detailId=${soDetail.id})}" method="post">
-                        <button type="submit" class="btn btn-info">Complete</button>
-                    </form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a th:href="@{/asset/adjustment(unitId=${unit.id})}"
+                               class="btn btn-info pull-right">Back</a>
+                        </div>
+                        <div class="col-md-6">
+                            <form class="pull-left"
+                                  th:action="@{/asset/detail/adjustment/complete(detailId=${soDetail.id})}"
+                                  method="post">
+                                <button type="submit" class="btn btn-info">Complete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
