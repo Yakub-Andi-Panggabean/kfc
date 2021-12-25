@@ -58,11 +58,12 @@
                         <span class="card-title">Report Asset Per produk</span>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form th:action="@{/report/asset/product/list}" th:object="${productParam}">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="inputTransferFrom">Product</label>
-                                    <select id="inputTransferFrom" class="form-control pull-right">
+                                    <select id="inputTransferFrom" class="form-control pull-right"
+                                            th:field="*{product}">
                                         <option th:each="u,i:${products}" th:value="${u.id}" th:selected="${i==0}"
                                                 th:inline="text">
                                             [[${u}]]

@@ -9,6 +9,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.ta.kfc.mercu.context.FastContext;
+import com.ta.kfc.mercu.dto.report.ProductParameter;
 import com.ta.kfc.mercu.dto.report.UnitParameter;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.Asset;
 import com.ta.kfc.mercu.infrastructure.db.orm.model.asset.ItemReceipt;
@@ -81,6 +82,7 @@ public class ReportController {
         model.addAttribute("units", masterService.getAllUnit());
         model.addAttribute("products", masterService.getAllProducts());
         model.addAttribute("unitParam", new UnitParameter());
+        model.addAttribute("productParam", new ProductParameter());
 
 
         return "index";
@@ -258,6 +260,115 @@ public class ReportController {
         document.add(paragraph3);
         document.add(new Paragraph(" "));
         document.addTitle("Unit :".concat(unitParameter.getUnit().getUnitName()));
+        document.add(table);
+        document.close();
+
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(out.toByteArray());
+    }
+
+
+    @GetMapping(REPORT_PATH + "/asset/product/list")
+    public ResponseEntity<?> getAssetListPerproductPdfPage(ProductParameter productParameter,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws UnsupportedEncodingException, DocumentException {
+
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        Font font1 = new Font(Font.FontFamily.HELVETICA, 80, Font.BOLD
+                | Font.UNDERLINE);
+
+        List<Asset> assets = assetService.getAllAsset().stream()
+                .filter(a -> a.getProduct().getId() == productParameter.getProduct().getId())
+                .collect(Collectors.toList());
+
+        Paragraph paragraph1 = new Paragraph();
+        paragraph1.add("Asset Report Product");
+        paragraph1.setAlignment(Element.ALIGN_CENTER);
+        paragraph1.setFont(font1);
+
+        Paragraph paragraph2 = new Paragraph();
+        paragraph2.add(productParameter.getProduct().getName());
+        paragraph2.setAlignment(Element.ALIGN_CENTER);
+        paragraph2.setFont(font1);
+
+        Paragraph paragraph3 = new Paragraph();
+        paragraph3.add("Total Asset :" + assets.size());
+        paragraph3.setAlignment(Element.ALIGN_CENTER);
+        paragraph3.setFont(font1);
+
+
+        PdfPTable table = new PdfPTable(5);
+
+        Font headFont = FontFactory.getFont(FontFactory.HELVETICA, 17, BaseColor.WHITE);
+
+        PdfPCell hcell;
+        hcell = new PdfPCell(new Phrase("Asset Code", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hcell.setBackgroundColor(BaseColor.RED);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Product", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hcell.setBackgroundColor(BaseColor.RED);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Brand", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hcell.setBackgroundColor(BaseColor.RED);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Model", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hcell.setBackgroundColor(BaseColor.RED);
+        table.addCell(hcell);
+
+        hcell = new PdfPCell(new Phrase("Location", headFont));
+        hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        hcell.setBackgroundColor(BaseColor.RED);
+        table.addCell(hcell);
+
+        for (Asset a : assets) {
+            PdfPCell cell;
+
+            cell = new PdfPCell(new Phrase(a.getCode()));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase(a.getProduct().getName()));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase(a.getProduct().getBrand().getName()));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(a.getProduct().getModel().getName()));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(a.getUnit().getUnitName()));
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+        }
+
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, out);
+        document.open();
+        document.add(paragraph1);
+        document.add(paragraph2);
+        document.add(paragraph3);
+        document.add(new Paragraph(" "));
+        document.addTitle("Product :".concat(productParameter.getProduct().getName()));
         document.add(table);
         document.close();
 
